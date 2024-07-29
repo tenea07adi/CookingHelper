@@ -1,0 +1,16 @@
+<div class="card" style="width:100%">
+    <img class="card-img-top" [src]="recipe().imageUrl" alt="Card image" style="width:100%">
+    <div class="card-body">
+      <h4 class="card-title">{{recipe().name}}</h4>
+      <hr>
+       <div>
+            <span class="badge rounded-pill bg-secondary"><i class="fa fa-clock-o"></i> {{recipe().estimatedDurationInMinutes}} min</span>
+            @if(recipe().externalLink != ""){
+            <a [href]="recipe().externalLink"><span class="badge rounded-pill bg-primary"><i class="fa fa-globe"></i> External link</span></a>
+            }
+            <br><br>
+       </div>
+      <p class="card-text">{{recipe().description}}</p>
+      <a class="btn btn-warning" [routerLink]="['/recipe-details',recipe().id]"><i class="fa fa-search-plus"></i> Details</a>
+    </div>
+</div>

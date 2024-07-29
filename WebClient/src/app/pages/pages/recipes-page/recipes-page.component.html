@@ -1,0 +1,10 @@
+<app-loading-screen-component [loaded]="loadedRecipes">
+    <div class="container-fluid row">
+        @for (recipe of recipesList; track recipe.id) {
+            <div class="col-sm-6" style="padding:15px;">
+                <app-recipe-preview-component style="width: 100%;" [recipe]="recipe"></app-recipe-preview-component>
+            </div>
+        }
+    </div>
+    <button class="btn btn-warning" style="width: 100%;"><i class="fa fa-plus"></i> Load more</button>
+</app-loading-screen-component>

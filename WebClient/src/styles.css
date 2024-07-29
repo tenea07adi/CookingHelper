@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+    background-color: ghostwhite;
+    
+    font-family: "Playfair Display", serif !important;
+    font-optical-sizing: auto;
+    font-weight: 600 !important;
+    font-style: bold !important;
+}
+
+:root {
+    --main-color:rgba(182, 149, 106,0.8);
+    --sec-color:rgba(182, 149, 106,1);
+}
+

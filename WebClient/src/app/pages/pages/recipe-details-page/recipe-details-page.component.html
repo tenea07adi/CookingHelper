@@ -1,0 +1,55 @@
+<app-loading-screen-component [loaded]="loadedRecipe">
+    <img style="width: 100%;" [src]="recipe.imageUrl">
+    <br><br>
+    <div style="padding: 15px;">
+        <h1 class="text-center">{{recipe.name}}</h1>
+    <hr>
+    <div class="text-center">
+        <span class="badge rounded-pill bg-secondary"><i class="fa fa-clock-o"></i> {{recipe.estimatedDurationInMinutes}} min</span>
+        <a [href]="recipe.externalLink"><span class="badge rounded-pill bg-primary"><i class="fa fa-globe"></i> External link</span></a>
+    </div>
+    <br><br>
+    <div class="container-fluid row">
+        <div class="col-sm-6">
+            <h3>Details</h3><hr>
+            <p>{{recipe.description}}</p>
+        </div>
+        <div class="col-sm-6">
+            <h3>Ingredients</h3><hr>
+    
+            <app-loading-screen-component [loaded]="loadedIngredients">
+                @for (ing of ingredients; track ing.id) 
+                {
+                    <div class="card bg-secondary text-white">
+                        <div class="card-body">{{ing.name}} - Quantity: {{ing.quantity}} tbs</div>
+                        <div class="card-footer"><button class="btn btn-danger" style="width: 100%;" ><i class="fa fa-remove"></i></button></div>
+                    </div><br>
+                }
+            </app-loading-screen-component>
+
+
+            <button class="btn btn-warning" style="width: 100%;"><i class="fa fa-pencil"></i> Add ingredient</button>
+        </div>
+    </div>
+    <br><hr>
+    <div class="btn-group" style="width: 100%;">
+        <button class="btn btn-success" style="width: 100%;" (click)="displayIngredientsListModal = true"><i class="fa fa-print"></i> Export ingredients list</button>
+        <button class="btn btn-warning" style="width: 100%;"><i class="fa fa-pencil"></i> Update</button>
+        <button class="btn btn-danger" style="width: 100%;" (click)="displayDeleteRecipeConfirmationModal = true" ><i class="fa fa-remove"></i> Delete</button>
+    </div>
+    <br>
+    </div>
+</app-loading-screen-component>
+
+<app-simple-modal-component [display]="displayIngredientsListModal" [headerText]="'Ingredeints list'" (close)="displayIngredientsListModal = false">
+    <app-loading-screen-component [loaded]="loadedIngredients">
+        <ul>
+            @for (ing of ingredients; track ing.id) 
+            {
+                <li>{{ing.name}} - Quantity: {{ing.quantity}} tbs</li>
+            }
+        </ul>  
+    </app-loading-screen-component>
+</app-simple-modal-component>
+
+<app-confirmation-modal-component [display]="displayDeleteRecipeConfirmationModal" [questionText]="'Do you want to delete the recipe named: ' + recipe.name" (close)="displayDeleteRecipeConfirmationModal = false" (confirm)="onDeleteRecipe()"></app-confirmation-modal-component>

@@ -1,0 +1,6 @@
+<app-simple-modal-component [display]="display()" [headerText]="'Confirmation needed'" (close)="onClose()">
+    <h4>
+        {{questionText()}}
+    </h4><br><br>
+    <button class="btn btn-warning" (click)="onConfirm()">Confirm</button>
+</app-simple-modal-component>
