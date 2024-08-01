@@ -6,5 +6,6 @@ export interface RecipeIngredientModel extends BaseDataModel {
     name: string;
     description: string;
     measureUnit: number;
+    measureUnitName: string;
     quantity: number;
 }

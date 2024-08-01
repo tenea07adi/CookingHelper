@@ -1,0 +1,8 @@
+<div class="card bg-secondary text-white">
+    <div class="card-body">{{recipeIngredient().name}} - Quantity: {{recipeIngredient().quantity}} {{recipeIngredient().measureUnitName}}</div>
+    <div class="card-footer">
+        <button class="btn btn-danger" style="width: 100%;" (click)="displayRemoveIngredientConfirmationModal = true"><i class="fa fa-remove"></i></button>
+    </div>
+</div><br>
+
+<app-confirmation-modal-component [display]="displayRemoveIngredientConfirmationModal" [questionText]="'Do you want to remove the ingredient named: ' + recipeIngredient().name" (close)="displayRemoveIngredientConfirmationModal = false" (confirm)="onRemove()"></app-confirmation-modal-component>

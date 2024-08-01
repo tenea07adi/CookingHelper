@@ -20,15 +20,12 @@
             <app-loading-screen-component [loaded]="loadedIngredients">
                 @for (ing of ingredients; track ing.id) 
                 {
-                    <div class="card bg-secondary text-white">
-                        <div class="card-body">{{ing.name}} - Quantity: {{ing.quantity}} tbs</div>
-                        <div class="card-footer"><button class="btn btn-danger" style="width: 100%;" ><i class="fa fa-remove"></i></button></div>
-                    </div><br>
+                    <app-recipe-ingredient-preview-component [recipeIngredient]="ing" (remove)="onRemoveIngredient($event)"></app-recipe-ingredient-preview-component>
                 }
             </app-loading-screen-component>
 
 
-            <button class="btn btn-warning" style="width: 100%;"><i class="fa fa-pencil"></i> Add ingredient</button>
+            <button class="btn btn-warning" style="width: 100%;" (click)="displayNewIngredientModal = true"><i class="fa fa-pencil"></i> Add ingredient</button>
         </div>
     </div>
     <br><hr>
@@ -52,4 +49,9 @@
     </app-loading-screen-component>
 </app-simple-modal-component>
 
+<app-simple-modal-component [display]="displayNewIngredientModal" [headerText]="'Add ingredient to recipe'"  (close)="displayNewIngredientModal = false">
+    <app-recipe-ingredient-form-component [ingredients]="availableIngredients" [measureUnits]="measureUnits" (submitRecipe)="onAddIngredient($event)"></app-recipe-ingredient-form-component>
+</app-simple-modal-component>
+
 <app-confirmation-modal-component [display]="displayDeleteRecipeConfirmationModal" [questionText]="'Do you want to delete the recipe named: ' + recipe.name" (close)="displayDeleteRecipeConfirmationModal = false" (confirm)="onDeleteRecipe()"></app-confirmation-modal-component>
+

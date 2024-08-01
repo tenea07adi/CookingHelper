@@ -1,5 +1,8 @@
 import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
+import { EnumModel } from 'src/app/models/data-models/enum-model';
+import { IngredientModel } from 'src/app/models/data-models/ingredient-model';
+import { NewRecipeIngredientModel } from 'src/app/models/data-models/new-recipe-ingredient';
 import { RecipeIngredientModel } from 'src/app/models/data-models/recipe-ingredient-model';
 import { RecipeModel } from 'src/app/models/data-models/recipe-model';
 import { DataModelsMapper } from 'src/app/models/ModelMappers/data-models-mapper';
@@ -20,14 +23,17 @@ export class RecipeDetailsPageComponent {
 
   displayIngredientsListModal: boolean = false;
 
-  displayDeleteRecipeConfirmationModal: boolean = false;
-  displayDeleteIngredientConfirmationModal: boolean = false;
+  displayNewIngredientModal: boolean = false;
 
+  displayDeleteRecipeConfirmationModal: boolean = false;
 
   recipeId = input.required<number>();
 
   recipe: RecipeModel = {} as RecipeModel;
+  measureUnits: EnumModel[] = [];
   ingredients: RecipeIngredientModel[] = [];
+
+  availableIngredients: IngredientModel[] = [];
 
   ngOnInit(){
     this.loadRecipe();
@@ -41,6 +47,16 @@ export class RecipeDetailsPageComponent {
         this.recipe = data;
         this.loadedRecipe = true;
         this.loadIngredeints();
+        this.loadMeasureUnits();
+      }
+    })
+  }
+
+  loadMeasureUnits(){
+    this.loadedIngredients = false;
+    this.dataSourceService.getMeasureUnits().subscribe({
+      next: (data) => {
+        this.measureUnits = data;
       }
     })
   }
@@ -51,16 +67,34 @@ export class RecipeDetailsPageComponent {
       next: (data) => {
         this.ingredients = data;
         this.loadedIngredients = true;
+        this.loadAvailableIngredients();
       }
     })
   }
 
-  onAddIngredient(){
-    this.loadIngredeints();
+  loadAvailableIngredients(){
+    this.dataSourceService.getAllRecords<IngredientModel>(DataModelsMapper.Ingredient).subscribe({
+      next: (data) => {
+        this.availableIngredients = data.filter((aing) => this.ingredients.filter((ing) => ing.ingredientId == aing.id).length <= 0);
+      }
+    })
   }
 
-  onRemoveIngredeint(){
-    this.loadIngredeints();
+  onAddIngredient(newRecipeIngredient: NewRecipeIngredientModel){
+    this.dataSourceService.addRecipeIngredient(this.recipeId(), newRecipeIngredient.ingredientId, newRecipeIngredient).subscribe({
+      complete: () => {
+        this.loadIngredeints();
+        this.displayNewIngredientModal = false;
+      }
+    })
+  }
+
+  onRemoveIngredient(ingredientId: number){
+    this.dataSourceService.removeRecipeIngredient(this.recipeId(), ingredientId).subscribe({
+      complete: () => {
+        this.loadIngredeints();
+      }
+    })
   }
 
   onDeleteRecipe(){
@@ -70,4 +104,5 @@ export class RecipeDetailsPageComponent {
       }
     })
   }
+
 }

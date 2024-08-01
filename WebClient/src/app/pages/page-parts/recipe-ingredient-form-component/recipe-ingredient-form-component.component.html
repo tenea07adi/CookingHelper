@@ -1,1 +1,26 @@
-<p>recipe-ingredient-form-component works!</p>
+<div class="container">
+    <form (ngSubmit)="onSubmitData()">
+        <div class="form-group">
+            <label for="ingredientId">Ingredient:</label>
+            <select class="form-control" id="ingredientId" name="ingredientId" [(ngModel)]="newRecipeIngredient.ingredientId" required="true">
+                @for (ing of ingredients(); track ing.id) {
+                    <option [value]="ing.id">{{ing.name}}</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+                <label for="name">Measure unit:</label>
+                <select class="form-control" id="measureUnit" name="measureUnit" [(ngModel)]="newRecipeIngredient.measureUnit" required="true">
+                    @for (ms of measureUnits(); track ms.value) {
+                        <option [value]="ms.value">{{ms.name}}</option>
+                    }
+                </select>
+        </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="number" class="form-control" id="name" placeholder="Enter name" name="name" [(ngModel)]="newRecipeIngredient.quantity" required="true">
+        </div>
+      <br>
+      <button type="submit" class="btn btn-warning">Submit</button>
+    </form>
+</div>

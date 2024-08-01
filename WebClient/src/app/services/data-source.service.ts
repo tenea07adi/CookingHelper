@@ -5,6 +5,8 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { DataModelsMapper } from "../models/ModelMappers/data-models-mapper";
 import { RecipeIngredientModel } from "../models/data-models/recipe-ingredient-model";
+import { EnumModel } from "../models/data-models/enum-model";
+import { NewRecipeIngredientModel } from "../models/data-models/new-recipe-ingredient";
 
 @Injectable({providedIn: "root"})
 export class DataSourceService {
@@ -14,6 +16,11 @@ export class DataSourceService {
     private httpClient = inject(HttpClient)
 
     // Generic functions
+
+    getAllRecords<T extends BaseDataModel>(entityMapp: DataModelsMapper) : Observable<T[]>{
+      let url = this.compozeUrl(entityMapp) + "/all";
+      return this.httpClient.get<T[]>(url);
+    }
 
     getRecords<T extends BaseDataModel>(entityMapp: DataModelsMapper) : Observable<PaginatedListModel<T>>{
         let url = this.compozeUrl(entityMapp);
@@ -40,6 +47,13 @@ export class DataSourceService {
       return this.httpClient.delete<T>(url);
     }
 
+    // Ingredient specific functions
+
+    getMeasureUnits() : Observable<EnumModel[]>{
+      let url = `${this.restApiUrl}/ingredients/measureunits`; 
+      return this.httpClient.get<EnumModel[]>(url);
+    }
+
     // Recipe specific functions
 
     getRecipeIngredients(recipeId: number) : Observable<RecipeIngredientModel[]>{
@@ -47,9 +61,11 @@ export class DataSourceService {
       return this.httpClient.get<RecipeIngredientModel[]>(url);
     }
 
-    addRecipeIngredient(recipeId: number, ingredientId: number, data: {measureUnit: number, quantity: number}) : Observable<RecipeIngredientModel>{
+    addRecipeIngredient(recipeId: number, ingredientId: number, data: NewRecipeIngredientModel) : Observable<RecipeIngredientModel>{
       let url = `${this.restApiUrl}/recipes/${recipeId}/ingredient/${ingredientId}`; 
-      return this.httpClient.post<RecipeIngredientModel>(url, null);
+      let reqData = {MeasureUnit: data.measureUnit, Quantity: data.quantity};
+      console.log(reqData);
+      return this.httpClient.post<RecipeIngredientModel>(url, reqData);
     }
 
     removeRecipeIngredient(recipeId: number, ingredientId: number) : Observable<RecipeIngredientModel>{

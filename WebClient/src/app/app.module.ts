@@ -18,6 +18,7 @@ import { ActionsShortcutsComponentComponent } from './pages/page-parts/actions-s
 import { IngredientFormComponentComponent } from './pages/page-parts/ingredient-form-component/ingredient-form-component.component';
 import { ConfirmationModalComponentComponent } from './shared/confirmation-modal-component/confirmation-modal-component.component';
 import { RecipeIngredientFormComponentComponent } from './pages/page-parts/recipe-ingredient-form-component/recipe-ingredient-form-component.component';
+import { RecipeIngredientPreviewComponentComponent } from './pages/page-parts/recipe-ingredient-preview-component/recipe-ingredient-preview-component.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { RecipeIngredientFormComponentComponent } from './pages/page-parts/recip
     ActionsShortcutsComponentComponent,
     IngredientFormComponentComponent,
     ConfirmationModalComponentComponent,
-    RecipeIngredientFormComponentComponent
+    RecipeIngredientFormComponentComponent,
+    RecipeIngredientPreviewComponentComponent
   ],
   imports: [
     BrowserModule,
