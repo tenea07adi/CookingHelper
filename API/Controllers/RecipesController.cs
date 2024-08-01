@@ -116,6 +116,7 @@ namespace API.Controllers
                 Name = ingredient.Name,
                 Description = ingredient.Description,
                 MeasureUnit = recipeIngredientDBM.MeasureUnit,
+                MeasureUnitName = Enum.GetName(typeof(MeasureUnit), recipeIngredientDBM.MeasureUnit),
                 Quantity = recipeIngredientDBM.Quantity
             };
         }
