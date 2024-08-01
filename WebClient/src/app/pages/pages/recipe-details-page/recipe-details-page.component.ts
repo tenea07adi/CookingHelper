@@ -24,6 +24,7 @@ export class RecipeDetailsPageComponent {
   displayIngredientsListModal: boolean = false;
 
   displayNewIngredientModal: boolean = false;
+  displayUpdateRecipeModal: boolean = false;
 
   displayDeleteRecipeConfirmationModal: boolean = false;
 
@@ -93,6 +94,15 @@ export class RecipeDetailsPageComponent {
     this.dataSourceService.removeRecipeIngredient(this.recipeId(), ingredientId).subscribe({
       complete: () => {
         this.loadIngredeints();
+      }
+    })
+  }
+
+  onUpdateRecipe(recipe: RecipeModel){
+    this.dataSourceService.updateRecord<RecipeModel>(recipe, DataModelsMapper.Recipe).subscribe({
+      complete: () => {
+        this.displayUpdateRecipeModal = false;
+        this.router.navigate(['/recipe-details', this.recipeId()]);
       }
     })
   }

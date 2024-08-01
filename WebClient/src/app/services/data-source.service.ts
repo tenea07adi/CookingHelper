@@ -38,7 +38,7 @@ export class DataSourceService {
     }
 
     updateRecord<T extends BaseDataModel>(record: T, entityMapp: DataModelsMapper) : Observable<T>{
-      let url = this.compozeUrl(entityMapp);
+      let url = this.compozeUrl(entityMapp) + "/" + record.id;
       return this.httpClient.put<T>(url, record);
     }
 

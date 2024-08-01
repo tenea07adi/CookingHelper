@@ -31,7 +31,7 @@
     <br><hr>
     <div class="btn-group" style="width: 100%;">
         <button class="btn btn-success" style="width: 100%;" (click)="displayIngredientsListModal = true"><i class="fa fa-print"></i> Export ingredients list</button>
-        <button class="btn btn-warning" style="width: 100%;"><i class="fa fa-pencil"></i> Update</button>
+        <button class="btn btn-warning" style="width: 100%;" (click)="displayUpdateRecipeModal = true"><i class="fa fa-pencil"></i> Update</button>
         <button class="btn btn-danger" style="width: 100%;" (click)="displayDeleteRecipeConfirmationModal = true" ><i class="fa fa-remove"></i> Delete</button>
     </div>
     <br>
@@ -55,3 +55,6 @@
 
 <app-confirmation-modal-component [display]="displayDeleteRecipeConfirmationModal" [questionText]="'Do you want to delete the recipe named: ' + recipe.name" (close)="displayDeleteRecipeConfirmationModal = false" (confirm)="onDeleteRecipe()"></app-confirmation-modal-component>
 
+<app-simple-modal-component [display]="displayUpdateRecipeModal" [headerText]="'Update recipe'" (close)="displayUpdateRecipeModal = false">
+    <app-recipe-form-component [recipe]="recipe" (submitRecipe)="onUpdateRecipe($event)"></app-recipe-form-component>
+</app-simple-modal-component>
