@@ -1,7 +1,7 @@
 <app-loading-screen-component [loaded]="loadedIngredients">
     @for(ing of ingredients; track ing.id){
         <div style="padding: 25px;">
-            <app-ingredient-preview-component [ingredient]="ing" ></app-ingredient-preview-component>
+            <app-ingredient-preview-component [ingredient]="ing" (update)="onUpdateIngredient($event)" (delete)="onDeleteIngredient($event)" ></app-ingredient-preview-component>
         </div>
     }
 </app-loading-screen-component>

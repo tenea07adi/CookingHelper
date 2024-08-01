@@ -22,10 +22,27 @@ export class IngredientsPageComponent {
   }
 
   loadIngredients(){
+    this.loadedIngredients = false;
     this.dataSourceService.getRecords<IngredientModel>(DataModelsMapper.Ingredient)
     .subscribe({next: async (data) => {
       this.ingredients = data.records;
       this.loadedIngredients = true;
     }});
+  }
+
+  onUpdateIngredient(ingredient: IngredientModel){
+    this.dataSourceService.updateRecord<IngredientModel>(ingredient, DataModelsMapper.Ingredient).subscribe({
+      complete: () => {
+        this.loadIngredients();
+      }
+    })
+  }
+
+  onDeleteIngredient(ingredientId: number){
+    this.dataSourceService.deleteRecord<IngredientModel>(ingredientId, DataModelsMapper.Ingredient).subscribe({
+      complete: () => {
+        this.loadIngredients();
+      }
+    })
   }
 }

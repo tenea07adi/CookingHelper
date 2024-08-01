@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { IngredientModel } from 'src/app/models/data-models/ingredient-model';
 import { RecipeModel } from 'src/app/models/data-models/recipe-model';
 import { DataModelsMapper } from 'src/app/models/ModelMappers/data-models-mapper';
 import { DataSourceService } from 'src/app/services/data-source.service';
@@ -26,6 +27,17 @@ export class ActionsShortcutsComponentComponent {
       complete: () =>{
         this.displayNewRecipeModal = false;
         this.router.navigate(['/recipe-details', newUserId]);
+      }
+    })
+  }
+
+  onAddIngredient(data: IngredientModel){
+    this.dataSourceService.addRecord<IngredientModel>(data,DataModelsMapper.Ingredient).subscribe({
+      next: (data) => {
+      },
+      complete: () =>{
+        this.displayNewIngredientModal = false;
+        this.router.navigate(['/ingredients']);
       }
     })
   }
