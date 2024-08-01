@@ -13,6 +13,10 @@ namespace API.Controllers.Generics
 
         private readonly IGenericRepo<T> _genericRepo;
 
+        protected Action<T> onAddAction = (t) => { };
+        protected Action<T> onUpdateAction = (t) => { };
+        protected Action<int> onDeleteAction = (t) => { };
+
         public GenericController(IGenericRepo<T> repo)
         {
             this._genericRepo = repo;
@@ -62,6 +66,8 @@ namespace API.Controllers.Generics
         [HttpPost]
         public IActionResult Add(T entity)
         {
+            onAddAction(entity);
+
             _genericRepo.Add(entity);
 
             return Get(entity.Id);
@@ -70,6 +76,10 @@ namespace API.Controllers.Generics
         [HttpPut("{id}")]
         public IActionResult Update(int id, T entity)
         {
+            entity.Id = id;
+
+            onUpdateAction(entity);
+
             _genericRepo.Update(entity);
 
             return Get(entity.Id);
@@ -78,6 +88,8 @@ namespace API.Controllers.Generics
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            onDeleteAction(id);
+
             _genericRepo.Delete(id);
 
             return Ok();

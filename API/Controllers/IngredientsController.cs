@@ -10,14 +10,23 @@ namespace API.Controllers
     [ApiController]
     public class IngredientsController : GenericController<IngredientDBM>
     {
-        public IngredientsController(IGenericRepo<IngredientDBM> ingredientRepo) : base(ingredientRepo)
+        private readonly IGenericRepo<RecipeIngredientDBM> _recipeIngredientRepo;
+
+        public IngredientsController(IGenericRepo<IngredientDBM> ingredientRepo, IGenericRepo<RecipeIngredientDBM> recipeIngredientRepo) : base(ingredientRepo)
         {
+            _recipeIngredientRepo = recipeIngredientRepo;
+            onDeleteAction = RemoveLinkedEntitiesOnDelete;
         }
 
         [HttpGet("MeasureUnits")]
         public IActionResult GetMeasureUnits()
         {
             return Ok(EnumHelper.GetEnumValues<MeasureUnit>());
+        }
+
+        private void RemoveLinkedEntitiesOnDelete(int id)
+        {
+            _recipeIngredientRepo.Delete(c => c.IngredientId == id);
         }
     }
 }

@@ -23,6 +23,8 @@ namespace API.Controllers
             _recipesRepo = recipesRepo;
             _ingredientsRepo = ingredientsRepo;
             _recipeIngredientRepo = recipeIngredientRepo;
+
+            onDeleteAction = RemoveLinkedEntitiesOnDelete;
         }
 
         [HttpPost("{recipeId}/ingredient/{ingredientId}")]
@@ -109,6 +111,12 @@ namespace API.Controllers
         {
             var ingredient = _ingredientsRepo.Get(recipeIngredientDBM.IngredientId);
 
+            if(ingredient == null)
+            {
+                _recipeIngredientRepo.Delete(recipeIngredientDBM.Id);
+                return null;
+            }
+
             return new RecipeIngredientDTO()
             {
                 RecipeId = recipeIngredientDBM.RecipeId,
@@ -119,6 +127,11 @@ namespace API.Controllers
                 MeasureUnitName = Enum.GetName(typeof(MeasureUnit), recipeIngredientDBM.MeasureUnit),
                 Quantity = recipeIngredientDBM.Quantity
             };
+        }
+
+        private void RemoveLinkedEntitiesOnDelete(int id)
+        {
+            _recipeIngredientRepo.Delete(c => c.RecipeId == id);
         }
     }
 }
