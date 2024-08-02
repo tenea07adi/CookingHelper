@@ -11,6 +11,8 @@ import { DataSourceService } from 'src/app/services/data-source.service';
 export class IngredientsPageComponent {
 
   private dataSourceService = inject(DataSourceService);
+
+  ingredientsOffset: number = 0;
   
   loadedIngredients: boolean = false;
   error: boolean = false;
@@ -23,9 +25,10 @@ export class IngredientsPageComponent {
 
   loadIngredients(){
     this.loadedIngredients = false;
-    this.dataSourceService.getRecords<IngredientModel>(DataModelsMapper.Ingredient)
+    this.dataSourceService.getRecords<IngredientModel>(DataModelsMapper.Ingredient, this.ingredientsOffset)
     .subscribe({next: async (data) => {
-      this.ingredients = data.records;
+      this.ingredients = [...this.ingredients, ...data.records];
+      this.ingredientsOffset = data.nextOffset;
       this.loadedIngredients = true;
     }});
   }

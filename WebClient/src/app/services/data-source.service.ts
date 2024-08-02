@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { BaseDataModel } from "../models/data-models/base-data-model";
 import { PaginatedListModel } from "../models/structural-models/paginated-list-model";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { DataModelsMapper } from "../models/ModelMappers/data-models-mapper";
 import { RecipeIngredientModel } from "../models/data-models/recipe-ingredient-model";
@@ -22,9 +22,19 @@ export class DataSourceService {
       return this.httpClient.get<T[]>(url);
     }
 
-    getRecords<T extends BaseDataModel>(entityMapp: DataModelsMapper) : Observable<PaginatedListModel<T>>{
+    getRecords<T extends BaseDataModel>(entityMapp: DataModelsMapper, offset?: number) : Observable<PaginatedListModel<T>>{
+        if(offset == undefined){
+          offset = 0;
+        }
+
+        let params = new HttpParams();
+
+        params= params.append('offset', offset);
+        params= params.append('maxsize', 20);
+
         let url = this.compozeUrl(entityMapp);
-        return this.httpClient.get<PaginatedListModel<T>>(url);
+
+        return this.httpClient.get<PaginatedListModel<T>>(url, {params: params});
     }
 
     getRecordById<T extends BaseDataModel>(id: number, entityMapp: DataModelsMapper) : Observable<T> {

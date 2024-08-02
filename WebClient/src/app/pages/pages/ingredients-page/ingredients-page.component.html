@@ -4,4 +4,6 @@
             <app-ingredient-preview-component [ingredient]="ing" (update)="onUpdateIngredient($event)" (delete)="onDeleteIngredient($event)" ></app-ingredient-preview-component>
         </div>
     }
+
+    <button class="btn btn-warning" style="width: 100%;" [disabled]="ingredientsOffset < 0" (click)="loadIngredients()"><i class="fa fa-plus"></i> Load more</button>
 </app-loading-screen-component>

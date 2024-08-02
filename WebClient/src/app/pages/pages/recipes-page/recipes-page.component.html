@@ -6,5 +6,5 @@
             </div>
         }
     </div>
-    <button class="btn btn-warning" style="width: 100%;"><i class="fa fa-plus"></i> Load more</button>
+    <button class="btn btn-warning" style="width: 100%;" [disabled]="recipesOffset < 0" (click)="loadRecipes()"><i class="fa fa-plus"></i> Load more</button>
 </app-loading-screen-component>

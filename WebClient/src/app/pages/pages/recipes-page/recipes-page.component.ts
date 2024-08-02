@@ -12,7 +12,7 @@ export class RecipesPageComponent {
 
   private dataSourceService = inject(DataSourceService);
 
-  nextOffset: number = -1; 
+  recipesOffset: number = 0;
 
   loadedRecipes: boolean = false;
   recipesList: RecipeModel[] = [];
@@ -21,11 +21,11 @@ export class RecipesPageComponent {
     this.loadRecipes();
   }
 
-  private loadRecipes(){
+  loadRecipes(){
     //this.recipesList = this.dataSourceService.getRecipes();
-    this.dataSourceService.getRecords<RecipeModel>(DataModelsMapper.Recipe).subscribe({next: (data) => {
-      this.recipesList = data.records;
-      this.nextOffset = data.nextOffset;
+    this.dataSourceService.getRecords<RecipeModel>(DataModelsMapper.Recipe, this.recipesOffset).subscribe({next: (data) => {
+      this.recipesList = [...this.recipesList, ...data.records];
+      this.recipesOffset = data.nextOffset;
       this.loadedRecipes = true;
     }});
   }
