@@ -7,6 +7,7 @@ import { DataModelsMapper } from "../models/ModelMappers/data-models-mapper";
 import { RecipeIngredientModel } from "../models/data-models/recipe-ingredient-model";
 import { EnumModel } from "../models/data-models/enum-model";
 import { NewRecipeIngredientModel } from "../models/data-models/new-recipe-ingredient";
+import { IngredientModel } from "../models/data-models/ingredient-model";
 
 @Injectable({providedIn: "root"})
 export class DataSourceService {
@@ -69,6 +70,11 @@ export class DataSourceService {
     getRecipeIngredients(recipeId: number) : Observable<RecipeIngredientModel[]>{
       let url = `${this.restApiUrl}/recipes/${recipeId}/ingredients`; 
       return this.httpClient.get<RecipeIngredientModel[]>(url);
+    }
+
+    getRecipeAvailableIngredients(recipeId: number) : Observable<IngredientModel[]>{
+      let url = `${this.restApiUrl}/recipes/${recipeId}/availableIngredients`; 
+      return this.httpClient.get<IngredientModel[]>(url);
     }
 
     addRecipeIngredient(recipeId: number, ingredientId: number, data: NewRecipeIngredientModel) : Observable<RecipeIngredientModel>{

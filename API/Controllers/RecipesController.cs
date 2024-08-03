@@ -107,6 +107,23 @@ namespace API.Controllers
             return Ok(RecipeIngredientToDTO(recipeIngredient));
         }
 
+        [HttpGet("{recipeId}/AvailableIngredients")]
+        public IActionResult GetAvailableIngredients(int recipeId)
+        {
+            if (!_recipesRepo.Exists(recipeId))
+            {
+                return BadRequest("Not valid recipe id!");
+            }
+
+            var resultList = new List<RecipeIngredientDTO>();
+
+            var usedIngredients = _recipeIngredientRepo.Get(c => c.RecipeId == recipeId);
+
+            var availableIngredients = _ingredientsRepo.Get(c => usedIngredients.Where(x => x.IngredientId == c.Id).Count() <= 0);
+
+            return Ok(availableIngredients);
+        }
+
         private RecipeIngredientDTO RecipeIngredientToDTO(RecipeIngredientDBM recipeIngredientDBM)
         {
             var ingredient = _ingredientsRepo.Get(recipeIngredientDBM.IngredientId);

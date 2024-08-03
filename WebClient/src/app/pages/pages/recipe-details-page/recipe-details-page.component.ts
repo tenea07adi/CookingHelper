@@ -74,9 +74,9 @@ export class RecipeDetailsPageComponent {
   }
 
   loadAvailableIngredients(){
-    this.dataSourceService.getAllRecords<IngredientModel>(DataModelsMapper.Ingredient).subscribe({
+    this.dataSourceService.getRecipeAvailableIngredients(this.recipeId()).subscribe({
       next: (data) => {
-        this.availableIngredients = data.filter((aing) => this.ingredients.filter((ing) => ing.ingredientId == aing.id).length <= 0);
+        this.availableIngredients = data;
       }
     })
   }
