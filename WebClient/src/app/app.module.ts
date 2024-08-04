@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -19,6 +19,8 @@ import { IngredientFormComponentComponent } from './pages/page-parts/ingredient-
 import { ConfirmationModalComponentComponent } from './shared/confirmation-modal-component/confirmation-modal-component.component';
 import { RecipeIngredientFormComponentComponent } from './pages/page-parts/recipe-ingredient-form-component/recipe-ingredient-form-component.component';
 import { RecipeIngredientPreviewComponentComponent } from './pages/page-parts/recipe-ingredient-preview-component/recipe-ingredient-preview-component.component';
+import { AuthenticationPageComponent } from './pages/pages/authentication-page/authentication-page.component';
+import { AppConfigService } from './services/app-config.service';
 
 @NgModule({
   declarations: [
@@ -36,14 +38,29 @@ import { RecipeIngredientPreviewComponentComponent } from './pages/page-parts/re
     IngredientFormComponentComponent,
     ConfirmationModalComponentComponent,
     RecipeIngredientFormComponentComponent,
-    RecipeIngredientPreviewComponentComponent
+    RecipeIngredientPreviewComponentComponent,
+    AuthenticationPageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule
   ],
-  providers: [provideHttpClient()],
+  providers: [
+    provideHttpClient(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFactory,
+      deps: [AppConfigService],
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function appInitializerFactory(
+  appConfigService: AppConfigService
+) {
+  return () => appConfigService.loadConfig();
+}

@@ -5,12 +5,24 @@
             <h1>Cooking Helper</h1>
         </div>
         <div class="col-sm-3 menu">
-            <br>
-            <h3 class="text-center">Menu</h3><hr>
-            <button class="btn btn-warning" style="width: 100%;" routerLink="/recipes" routerLinkActive="disabled"><i class="fa fa-book"></i> Recipes</button> <br><br>
-            <button class="btn btn-warning" style="width: 100%;" routerLink="/ingredients" routerLinkActive="disabled"><i class="fa fa-shopping-basket"></i> Ingredients</button> <br><br>
+            @if(isLoggedIn){
+                <br>
+                <h3 class="text-center">Menu</h3><hr>
+                <button class="btn btn-warning" style="width: 100%;" routerLink="/recipes" routerLinkActive="disabled"><i class="fa fa-book"></i> Recipes</button> <br><br>
+                <button class="btn btn-warning" style="width: 100%;" routerLink="/ingredients" routerLinkActive="disabled"><i class="fa fa-shopping-basket"></i> Ingredients</button> <br><br>
+               
+                <app-actions-shortcuts-component></app-actions-shortcuts-component>
+            }
 
-            <app-actions-shortcuts-component></app-actions-shortcuts-component>
+            <h3 class="text-center">Account</h3><hr>
+            @if(!isLoggedIn){
+                <button class="btn btn-warning" style="width: 100%;" routerLink="/auth" routerLinkActive="disabled"><i class="fa fa-sign-in"></i> LogIn</button> <br><br>
+            }
+            @else {
+                <h3 class="text-center">Hello {{currentTokenData.name}}!</h3><hr>
+                <button class="btn btn-warning" style="width: 100%;" (click)="logOut()"><i class="fa fa-sign-out"></i> Log out</button> <br><br>
+                <button class="btn btn-warning" style="width: 100%;"><i class="fa fa-user-circle-o"></i> About me</button> <br><br>
+            }
         </div>
         <div class="col-sm-8" style="overflow-y:scroll; height:100vh; padding: 5px;">
             <router-outlet></router-outlet>

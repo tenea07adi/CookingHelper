@@ -1,0 +1,22 @@
+.content{
+    margin: auto;
+    margin-top: 20vh;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+@media (min-width: 800px) {
+    .content-size {
+        width: 50vw; /* Full height */
+        min-height: 30vh; /* Full height */
+        max-height: 80vh; /* Full height */
+    }
+}
+@media (max-width: 800px) {
+    .content-size {
+        width: 90vw; /* Full height */
+        min-height: 30vh; /* Full height */
+        max-height: 80vh; /* Full height */
+    }
+}
+
+  

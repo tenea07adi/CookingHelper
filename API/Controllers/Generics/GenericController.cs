@@ -1,4 +1,5 @@
-﻿using API.Models.BaseModels;
+﻿using API.Controllers.ActionFilters;
+using API.Models.BaseModels;
 using API.Models.DTOs;
 using API.Repository.Generics;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ namespace API.Controllers.Generics
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AuthActionFilterAttribute]
     public abstract class GenericController<T> : ControllerBase
         where T : BaseDBM
     {
@@ -64,6 +66,7 @@ namespace API.Controllers.Generics
         }
 
         [HttpPost]
+        [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
         public IActionResult Add(T entity)
         {
             onAddAction(entity);
@@ -74,6 +77,7 @@ namespace API.Controllers.Generics
         }
 
         [HttpPut("{id}")]
+        [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
         public IActionResult Update(int id, T entity)
         {
             entity.Id = id;
@@ -86,6 +90,7 @@ namespace API.Controllers.Generics
         }
 
         [HttpDelete("{id}")]
+        [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
         public IActionResult Delete(int id)
         {
             onDeleteAction(id);

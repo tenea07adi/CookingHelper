@@ -11,11 +11,13 @@ namespace API.Controllers
     [ApiController]
     public class UtilityController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
         private readonly DataBaseContext _dataBaseContext;
         private readonly IGenericRepo<UserDBM> _userRepo;
 
-        public UtilityController(DataBaseContext dataBaseContext, IGenericRepo<UserDBM> userRepo)
+        public UtilityController(IConfiguration configuration, DataBaseContext dataBaseContext, IGenericRepo<UserDBM> userRepo)
         {
+            _configuration= configuration;
             _dataBaseContext = dataBaseContext;
             _userRepo = userRepo;
         }
@@ -70,8 +72,8 @@ namespace API.Controllers
 
         private string AddDefaultUser()
         {
-            string defaultUserEmail = "admin@aditenea.net";
-            string defaultUserName = "admin";
+            string defaultUserEmail = _configuration["AppConfigurations:DefaultUserEmail"];
+            string defaultUserName = _configuration["AppConfigurations:DefaultUserDisplayName"];
 
             string randomGeneratedPassword = CryptographyHelper.GenerateRandomString(6);
 
@@ -83,6 +85,7 @@ namespace API.Controllers
             UserDBM defaultUser = new UserDBM();
             defaultUser.Email = defaultUserEmail;
             defaultUser.DisplayName = defaultUserName;
+            defaultUser.Role = Roles.Admin;
             defaultUser.PasswordSalt = CryptographyHelper.GeneratePasswordSalt();
             defaultUser.PasswordHash = CryptographyHelper.HashPassword(randomGeneratedPassword, defaultUser.PasswordSalt);
 

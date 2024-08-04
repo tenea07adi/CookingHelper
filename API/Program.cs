@@ -1,6 +1,9 @@
 using API.DataBase;
 using API.Repository.Generics;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace API
 {
@@ -20,8 +23,28 @@ namespace API
             builder.Services.AddDbContext<DataBaseContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MainDbContext")));
 
+            builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
             //builder.Services.AddScoped<IMyDependency, MyDependency>();
             builder.Services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+             .AddJwtBearer(options =>
+             {
+                 var jwtIssuer = builder.Configuration.GetSection("Security:Issuer").Get<string>();
+                 var jwtSecretKey = builder.Configuration.GetSection("Security:SecretKey").Get<string>();
+
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = false,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = jwtIssuer,
+                     ValidAudience = jwtIssuer,
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey))
+                 };
+             });
 
             var app = builder.Build();
 

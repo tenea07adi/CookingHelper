@@ -1,4 +1,5 @@
-﻿using API.Controllers.Generics;
+﻿using API.Controllers.ActionFilters;
+using API.Controllers.Generics;
 using API.Models.DBModels;
 using API.Models.DTOs;
 using API.Repository.Generics;
@@ -8,6 +9,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AuthActionFilterAttribute]
     public class RecipesController : GenericController<RecipeDBM>
     {
         private readonly IGenericRepo<RecipeDBM> _recipesRepo;
@@ -28,6 +30,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{recipeId}/ingredient/{ingredientId}")]
+        [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
         public IActionResult AddIngredient(int recipeId, int ingredientId, RecipeIngredientQuantityDTO quantity)
         {
             if(!_recipesRepo.Exists(recipeId))
@@ -54,6 +57,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{recipeId}/ingredient/{ingredientId}")]
+        [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
         public IActionResult RemoveIngredient(int recipeId, int ingredientId)
         {
             if (!_recipesRepo.Exists(recipeId))

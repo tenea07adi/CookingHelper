@@ -14,6 +14,7 @@ namespace API.DataBase
         public DbSet<RecipeDBM> Recipes { get; set; }
         public DbSet<RecipeIngredientDBM> RecipeIngredients { get; set; }
         public DbSet<UserDBM> Users { get; set; }
+        public DbSet<UserInviteDBM> UserInvites { get; set; }
 
     }
 }

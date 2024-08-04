@@ -36,7 +36,7 @@ export class IngredientsPageComponent {
   onUpdateIngredient(ingredient: IngredientModel){
     this.dataSourceService.updateRecord<IngredientModel>(ingredient, DataModelsMapper.Ingredient).subscribe({
       complete: () => {
-        this.loadIngredients();
+        this.reloadIngredients();
       }
     })
   }
@@ -44,8 +44,14 @@ export class IngredientsPageComponent {
   onDeleteIngredient(ingredientId: number){
     this.dataSourceService.deleteRecord<IngredientModel>(ingredientId, DataModelsMapper.Ingredient).subscribe({
       complete: () => {
-        this.loadIngredients();
+        this.reloadIngredients();
       }
     })
+  }
+
+  reloadIngredients(){
+    this.ingredientsOffset = 0;
+    this.ingredients = [];
+    this.loadIngredients();
   }
 }

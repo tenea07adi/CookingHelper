@@ -1,0 +1,47 @@
+<div class="card content content-size">
+    <div class="card-header" style="padding: 0; border-radius: 0;">
+          <button type="button" class="btn btn-warning" style="width: 50%; border-radius: 0;" [disabled]="!newAccount" (click)="newAccount = false">LogIn</button>
+          <button type="button" class="btn btn-warning" style="width: 50%; border-radius: 0;" [disabled]="newAccount" (click)="newAccount = true">Register</button>
+    </div>
+    <div class="card-body">
+
+        @if (!newAccount) {
+            <div class="container">
+                <form (ngSubmit)="onLogIn()">
+                  <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" [(ngModel)]="logInData.email" required="true">
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" [(ngModel)]="logInData.password">
+                  </div><br>
+                  <button type="submit" class="btn btn-warning">Submit</button>
+                </form>
+            </div>
+        }
+        @else {
+            <div class="container">
+                <form (ngSubmit)="onRegister()">
+                    <div class="form-group">
+                        <label for="code">Code:</label>
+                        <input type="text" class="form-control" id="code" placeholder="Enter code" name="code" [(ngModel)]="registerData.code" required="true">
+                    </div>
+                  <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" [(ngModel)]="registerData.email" required="true">
+                  </div>
+                  <div class="form-group">
+                    <label for="displayName">Display name:</label>
+                    <input type="text" class="form-control" id="displayName" placeholder="Enter display name" name="displayName" [(ngModel)]="registerData.displayName" required="true">
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" [(ngModel)]="registerData.password">
+                  </div><br>
+                  <button type="submit" class="btn btn-warning">Submit</button>
+                </form>
+            </div>
+        }
+    </div>
+</div>
