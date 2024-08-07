@@ -54,7 +54,6 @@ export class RecipeDetailsPageComponent {
   }
 
   loadMeasureUnits(){
-    this.loadedIngredients = false;
     this.dataSourceService.getMeasureUnits().subscribe({
       next: (data) => {
         this.measureUnits = data;

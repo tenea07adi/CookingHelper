@@ -24,7 +24,6 @@ export class IngredientsPageComponent {
   }
 
   loadIngredients(){
-    this.loadedIngredients = false;
     this.dataSourceService.getRecords<IngredientModel>(DataModelsMapper.Ingredient, this.ingredientsOffset)
     .subscribe({next: async (data) => {
       this.ingredients = [...this.ingredients, ...data.records];
@@ -50,6 +49,7 @@ export class IngredientsPageComponent {
   }
 
   reloadIngredients(){
+    this.loadedIngredients = false;
     this.ingredientsOffset = 0;
     this.ingredients = [];
     this.loadIngredients();

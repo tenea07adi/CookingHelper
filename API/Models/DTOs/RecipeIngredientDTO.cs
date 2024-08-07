@@ -10,6 +10,6 @@ namespace API.Models.DTOs
         public string? Description { get; set; }
         public MeasureUnit MeasureUnit { get; set; }
         public string MeasureUnitName { get; set; }
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
     }
 }

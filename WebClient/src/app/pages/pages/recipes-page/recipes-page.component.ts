@@ -22,7 +22,6 @@ export class RecipesPageComponent {
   }
 
   loadRecipes(){
-    //this.recipesList = this.dataSourceService.getRecipes();
     this.dataSourceService.getRecords<RecipeModel>(DataModelsMapper.Recipe, this.recipesOffset).subscribe({next: (data) => {
       this.recipesList = [...this.recipesList, ...data.records];
       this.recipesOffset = data.nextOffset;

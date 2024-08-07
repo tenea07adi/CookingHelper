@@ -18,7 +18,7 @@
             <h3>Ingredients</h3><hr>
     
             <app-loading-screen-component [loaded]="loadedIngredients">
-                @for (ing of ingredients; track ing.id) 
+                @for (ing of ingredients; track ing.ingredientId) 
                 {
                     <app-recipe-ingredient-preview-component [recipeIngredient]="ing" (remove)="onRemoveIngredient($event)"></app-recipe-ingredient-preview-component>
                 }
@@ -41,7 +41,7 @@
 <app-simple-modal-component [display]="displayIngredientsListModal" [headerText]="'Ingredeints list'" (close)="displayIngredientsListModal = false">
     <app-loading-screen-component [loaded]="loadedIngredients">
         <ul>
-            @for (ing of ingredients; track ing.id) 
+            @for (ing of ingredients; track ing.ingredientId) 
             {
                 <li>{{ing.name}} - Quantity: {{ing.quantity}} tbs</li>
             }
