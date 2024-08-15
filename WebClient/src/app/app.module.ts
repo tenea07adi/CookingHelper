@@ -21,6 +21,8 @@ import { RecipeIngredientFormComponentComponent } from './pages/page-parts/recip
 import { RecipeIngredientPreviewComponentComponent } from './pages/page-parts/recipe-ingredient-preview-component/recipe-ingredient-preview-component.component';
 import { AuthenticationPageComponent } from './pages/pages/authentication-page/authentication-page.component';
 import { AppConfigService } from './services/app-config.service';
+import { SetRowSizeButtonsComponent } from './shared/set-row-size-buttons/set-row-size-buttons.component';
+import { ImageFromUrlSourceComponent } from './shared/image-from-url-source/image-from-url-source.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { AppConfigService } from './services/app-config.service';
     ConfirmationModalComponentComponent,
     RecipeIngredientFormComponentComponent,
     RecipeIngredientPreviewComponentComponent,
-    AuthenticationPageComponent
+    AuthenticationPageComponent,
+    SetRowSizeButtonsComponent,
+    ImageFromUrlSourceComponent
   ],
   imports: [
     BrowserModule,

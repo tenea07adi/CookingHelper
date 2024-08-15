@@ -12,6 +12,8 @@ export class RecipesPageComponent {
 
   private dataSourceService = inject(DataSourceService);
 
+  recordsOnRow: number = 2;
+
   recipesOffset: number = 0;
 
   loadedRecipes: boolean = false;
@@ -27,6 +29,10 @@ export class RecipesPageComponent {
       this.recipesOffset = data.nextOffset;
       this.loadedRecipes = true;
     }});
+  }
+
+  setRowSize(size: number){
+    this.recordsOnRow = size;
   }
 
 }

@@ -1,9 +1,15 @@
 <app-loading-screen-component [loaded]="loadedIngredients">
-    @for(ing of ingredients; track ing.id){
-        <div style="padding: 25px;">
-            <app-ingredient-preview-component [ingredient]="ing" (update)="onUpdateIngredient($event)" (delete)="onDeleteIngredient($event)" ></app-ingredient-preview-component>
-        </div>
-    }
+
+    <div class="container-fluid row">
+        @for(ing of ingredients; track ing.id) {
+            <div class="col-sm-{{12/recordsOnRow}}" style="padding:15px;">
+                <app-ingredient-preview-component [ingredient]="ing" (update)="onUpdateIngredient($event)" (delete)="onDeleteIngredient($event)" ></app-ingredient-preview-component>
+            </div>
+        }
+    </div>
 
     <button class="btn btn-warning" style="width: 100%;" [disabled]="ingredientsOffset < 0" (click)="loadIngredients()"><i class="fa fa-plus"></i> Load more</button>
+
+    <app-set-row-size-buttons (onSizeChange)="setRowSize($event)" [initialSize]="1" [maxSize]="4"></app-set-row-size-buttons>
+
 </app-loading-screen-component>

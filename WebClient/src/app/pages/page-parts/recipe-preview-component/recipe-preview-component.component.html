@@ -1,5 +1,5 @@
 <div class="card" style="width:100%">
-    <img class="card-img-top" [src]="recipe().imageUrl" alt="Card image" style="width:100%">
+    <app-image-from-url-source [imageUrl]="recipe().imageUrl" [classesToApply]="'card-img-top'"></app-image-from-url-source>
     <div class="card-body">
       <h4 class="card-title">{{recipe().name}}</h4>
       <hr>

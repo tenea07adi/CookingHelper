@@ -13,6 +13,8 @@ export class IngredientsPageComponent {
   private dataSourceService = inject(DataSourceService);
 
   ingredientsOffset: number = 0;
+
+  recordsOnRow: number = 1;
   
   loadedIngredients: boolean = false;
   error: boolean = false;
@@ -54,4 +56,9 @@ export class IngredientsPageComponent {
     this.ingredients = [];
     this.loadIngredients();
   }
+
+  setRowSize(size: number){
+    this.recordsOnRow = size;
+  }
+
 }

@@ -1,5 +1,5 @@
 <app-loading-screen-component [loaded]="loadedRecipe">
-    <img style="width: 100%;" [src]="recipe.imageUrl">
+    <app-image-from-url-source [imageUrl]="recipe.imageUrl" style="margin: auto;"  [cssToApply]="'display: block;max-height: 80vh; margin-left: auto; margin-right: auto;'"></app-image-from-url-source>
     <br><br>
     <div style="padding: 15px;">
         <h1 class="text-center">{{recipe.name}}</h1>
