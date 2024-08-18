@@ -6,7 +6,7 @@
        <div>
             <span class="badge rounded-pill bg-secondary"><i class="fa fa-clock-o"></i> {{recipe().estimatedDurationInMinutes}} min</span>
             @if(recipe().externalLink != ""){
-            <a [href]="recipe().externalLink"><span class="badge rounded-pill bg-primary"><i class="fa fa-globe"></i> External link</span></a>
+            <app-external-link [url]="recipe().externalLink" [text]="'External link'" [showConfirmationModal]="true"></app-external-link>
             }
             <br><br>
        </div>

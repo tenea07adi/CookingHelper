@@ -1,6 +1,6 @@
 <app-loading-screen-component [loaded]="loadedIngredients">
 
-    <div class="container-fluid row">
+    <div class="container-fluid row mx-auto">
         @for(ing of ingredients; track ing.id) {
             <div class="col-sm-{{12/recordsOnRow}}" style="padding:15px;">
                 <app-ingredient-preview-component [ingredient]="ing" (update)="onUpdateIngredient($event)" (delete)="onDeleteIngredient($event)" ></app-ingredient-preview-component>

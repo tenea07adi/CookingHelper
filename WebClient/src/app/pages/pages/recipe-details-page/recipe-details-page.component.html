@@ -1,15 +1,15 @@
 <app-loading-screen-component [loaded]="loadedRecipe">
-    <app-image-from-url-source [imageUrl]="recipe.imageUrl" style="margin: auto;"  [cssToApply]="'display: block;max-height: 80vh; margin-left: auto; margin-right: auto;'"></app-image-from-url-source>
+    <app-image-from-url-source [imageUrl]="recipe.imageUrl" style="margin: auto;"  [cssToApply]="'display: block; max-height: 80vh; max-width: 100%; margin-left: auto; margin-right: auto;'"></app-image-from-url-source>
     <br><br>
     <div style="padding: 15px;">
         <h1 class="text-center">{{recipe.name}}</h1>
     <hr>
     <div class="text-center">
         <span class="badge rounded-pill bg-secondary"><i class="fa fa-clock-o"></i> {{recipe.estimatedDurationInMinutes}} min</span>
-        <a [href]="recipe.externalLink"><span class="badge rounded-pill bg-primary"><i class="fa fa-globe"></i> External link</span></a>
+        <app-external-link [url]="recipe.externalLink" [text]="'External link'" [showConfirmationModal]="true"></app-external-link>
     </div>
     <br><br>
-    <div class="container-fluid row">
+    <div class="container-fluid row mx-auto">
         <div class="col-sm-6">
             <h3>Details</h3><hr>
             <p>{{recipe.description}}</p>
@@ -46,6 +46,7 @@
                 <li>{{ing.name}} - Quantity: {{ing.quantity}} tbs</li>
             }
         </ul>  
+        <button class="btn btn-success" (click)="onCopyIngredientsToClipboard()">Copy</button>
     </app-loading-screen-component>
 </app-simple-modal-component>
 

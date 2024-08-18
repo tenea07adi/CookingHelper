@@ -114,4 +114,25 @@ export class RecipeDetailsPageComponent {
     })
   }
 
+  onCopyIngredientsToClipboard(){
+    let lineSeparator = '\r\n';
+    
+    let val = `Ingredients for "${this.recipe.name}": ${lineSeparator}`;
+
+    this.ingredients.forEach((ing) =>{
+      val += ing.name + `${ing.name} - ${ing.quantity} ${ing.measureUnitName} ${lineSeparator}`; 
+    })
+
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = val;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
 }

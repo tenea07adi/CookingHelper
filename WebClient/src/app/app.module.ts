@@ -23,6 +23,7 @@ import { AuthenticationPageComponent } from './pages/pages/authentication-page/a
 import { AppConfigService } from './services/app-config.service';
 import { SetRowSizeButtonsComponent } from './shared/set-row-size-buttons/set-row-size-buttons.component';
 import { ImageFromUrlSourceComponent } from './shared/image-from-url-source/image-from-url-source.component';
+import { ExternalLinkComponent } from './shared/external-link/external-link.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ImageFromUrlSourceComponent } from './shared/image-from-url-source/imag
     RecipeIngredientPreviewComponentComponent,
     AuthenticationPageComponent,
     SetRowSizeButtonsComponent,
-    ImageFromUrlSourceComponent
+    ImageFromUrlSourceComponent,
+    ExternalLinkComponent
   ],
   imports: [
     BrowserModule,
