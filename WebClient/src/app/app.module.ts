@@ -13,7 +13,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { LoadingScreenComponentComponent } from './shared/loading-screen-component/loading-screen-component.component';
 import { ErrorScreenComponentComponent } from './shared/error-screen-component/error-screen-component.component';
 import { SimpleModalComponentComponent } from './shared/simple-modal-component/simple-modal-component.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActionsShortcutsComponentComponent } from './pages/page-parts/actions-shortcuts-component/actions-shortcuts-component.component';
 import { IngredientFormComponentComponent } from './pages/page-parts/ingredient-form-component/ingredient-form-component.component';
 import { ConfirmationModalComponentComponent } from './shared/confirmation-modal-component/confirmation-modal-component.component';
@@ -24,6 +24,7 @@ import { AppConfigService } from './services/app-config.service';
 import { SetRowSizeButtonsComponent } from './shared/set-row-size-buttons/set-row-size-buttons.component';
 import { ImageFromUrlSourceComponent } from './shared/image-from-url-source/image-from-url-source.component';
 import { ExternalLinkComponent } from './shared/external-link/external-link.component';
+import { DataFormComponent } from './shared/data-form/data-form.component';
 
 @NgModule({
   declarations: [
@@ -45,12 +46,14 @@ import { ExternalLinkComponent } from './shared/external-link/external-link.comp
     AuthenticationPageComponent,
     SetRowSizeButtonsComponent,
     ImageFromUrlSourceComponent,
-    ExternalLinkComponent
+    ExternalLinkComponent,
+    DataFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideHttpClient(),

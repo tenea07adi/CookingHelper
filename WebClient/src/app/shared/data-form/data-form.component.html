@@ -1,0 +1,42 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" >
+    @for (field of formFields(); track field.fieldName) {
+        @if(field.hidden == false){
+            @switch (field.fieldType) {
+                @case ("text") {
+                    <div class="form-group">
+                        <label for="{{field.fieldName}}">{{field.fieldLable}}:</label>
+                        <input type="text" class="form-control" id="{{field.fieldName}}" placeholder="{{field.fieldPlaceholder}}" [formControlName]="field.fieldName">
+                    </div>
+                }
+                @case ("textarea") {
+                    <div class="form-group">
+                        <label for="{{field.fieldName}}">{{field.fieldLable}}:</label>
+                        <textarea class="form-control" rows="5" id="{{field.fieldName}}" [formControlName]="field.fieldName"></textarea>
+                    </div>
+                }
+                @case ("select") {
+                    <div class="form-group">
+                        <label for="{{field.fieldName}}">{{field.fieldLable}}:</label>
+                        <select class="form-control" id="{{field.fieldName}}" [formControlName]="field.fieldName">
+                            @for (ms of field.selectValues; track ms.value) {
+                                <option [value]="ms.value">{{ms.name}}</option>
+                            }
+                        </select>
+                    </div>
+                }
+                
+            }
+            @if(this.dataForm.touched && this.dataForm.get(field.fieldName)?.invalid){
+                <div class="invalidData">
+                    @if(!field.fieldErrorMessage || field.fieldErrorMessage == ''){
+                        Please provide a valid {{field.fieldLable.toLowerCase()}}.
+                    } @else {
+                        {{field.fieldErrorMessage}}
+                    }
+                </div>
+            }
+        }
+    }
+    <br>
+    <button type="submit" class="btn btn-warning">{{submitButtonText()}}</button>
+</form>

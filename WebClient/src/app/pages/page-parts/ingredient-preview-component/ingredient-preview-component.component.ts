@@ -23,6 +23,6 @@ export class IngredientPreviewComponentComponent {
 
   onUpdate(ingredient: IngredientModel){
     this.displayUpdateIngredientModal = false;
-    this.update.emit(this.ingredient());
+    this.update.emit(ingredient);
   }
 }
