@@ -6,5 +6,5 @@ import { Component, input } from '@angular/core';
   styleUrl: './loading-screen-component.component.css'
 })
 export class LoadingScreenComponentComponent {
-  loaded = input<boolean>()
+  loaded = input.required<boolean>()
 }

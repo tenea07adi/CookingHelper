@@ -1,25 +1,4 @@
 <div class="container">
-    <form (ngSubmit)="onSubmitData()">
-      <div class="form-group">
-        <label for="name">Name:</label>
-        <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" [(ngModel)]="recipe().name" required="true">
-      </div>
-      <div class="form-group">
-        <label for="image">Image url:</label>
-        <input type="url" class="form-control" id="image" placeholder="Enter image url" name="image" [(ngModel)]="recipe().imageUrl">
-      </div>
-      <div class="form-group">
-        <label for="externalLink">External link:</label>
-        <input type="url" class="form-control" id="externalLink" placeholder="Enter external link" name="externalLink" [(ngModel)]="recipe().externalLink">
-      </div>
-      <div class="form-group">
-        <label for="duration">Duration in minutes:</label>
-        <input type="number" class="form-control" id="duration" placeholder="Enter duration in minutes" name="duration" [(ngModel)]="recipe().estimatedDurationInMinutes">
-      </div>
-      <div class="form-group">
-        <label for="description">Description:</label>
-        <textarea class="form-control" rows="5" id="description" name="description" [(ngModel)]="recipe().description"></textarea>
-      </div><br>
-      <button type="submit" class="btn btn-warning">Submit</button>
-    </form>
+  <app-data-form [formName]="'Recipe'" [submitButtonText]="'Submit'"
+  [formFields]="formStructure" (onSubmitedForm)="onSubmitForm($event)"></app-data-form>
 </div>

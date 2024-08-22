@@ -1,4 +1,5 @@
 import { ValidatorFn } from "@angular/forms";
+import { SelectFormFieldValueModel } from "./select-form-field-value.model";
 
 export interface DataFormFieldModel {
     hidden?: boolean;
@@ -9,5 +10,5 @@ export interface DataFormFieldModel {
     fieldValidators?: ValidatorFn[];
     fieldErrorMessage?: string;
     fieldDefaultValue?: string;
-    selectValues?: {name:"", value:""}[];
+    selectValues?: SelectFormFieldValueModel[];
 }

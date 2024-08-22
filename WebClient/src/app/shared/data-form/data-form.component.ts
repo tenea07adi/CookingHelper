@@ -12,6 +12,8 @@ export class DataFormComponent {
   public submitButtonText = input<string>("Submit");
   public formFields = input.required<DataFormFieldModel[]>();
 
+  public activateFormChangeDetection = input<boolean>(false);
+
   public onChangedForm = output<FormGroup>();
   public onSubmitedForm = output<FormGroup>();
 
@@ -19,6 +21,14 @@ export class DataFormComponent {
 
   ngOnInit(){
     this.populateForm();
+
+    if(this.activateFormChangeDetection()){
+      this.dataForm.valueChanges.subscribe({
+        next: () => {
+          this.onChanged();
+        }
+      })
+    }
   }
 
   public onChanged(){
@@ -40,6 +50,14 @@ export class DataFormComponent {
     }
     else {
       return false;
+    }
+  }
+
+  public getPlaceHolder(field: DataFormFieldModel): string{
+    if(field.fieldPlaceholder){
+      return field.fieldPlaceholder;
+    } else {
+      return `Enter ${field.fieldLable.toLowerCase()}`;
     }
   }
 

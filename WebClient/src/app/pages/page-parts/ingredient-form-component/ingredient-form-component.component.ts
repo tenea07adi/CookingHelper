@@ -20,7 +20,6 @@ export class IngredientFormComponentComponent {
         fieldLable: "Name",
         fieldName: "name",    
         fieldType: "text",
-        fieldPlaceholder: "Enter name",
         fieldValidators: [Validators.required, Validators.minLength(1)],
         fieldDefaultValue: this.ingredient().name
       },
@@ -29,7 +28,6 @@ export class IngredientFormComponentComponent {
         fieldLable: "Description",
         fieldName: "description",    
         fieldType: "textarea",
-        fieldPlaceholder: "Enter description",
         fieldValidators: [Validators.required, Validators.minLength(1)],
         fieldDefaultValue: this.ingredient().description
       }
@@ -43,7 +41,6 @@ export class IngredientFormComponentComponent {
           fieldName: "id",
           fieldType: "number",
           fieldDefaultValue: this.ingredient().id.toString(),
-          fieldPlaceholder: '',
           fieldValidators: []
         }
       );
@@ -53,7 +50,6 @@ export class IngredientFormComponentComponent {
   }
 
   onSubmitForm(dataForm: FormGroup){
-    console.log(dataForm.value);
     this.submitIngredient.emit(dataForm.value);
   }
 }
