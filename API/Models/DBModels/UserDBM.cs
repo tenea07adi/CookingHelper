@@ -16,6 +16,8 @@ namespace API.Models.DBModels
 
         public bool IsActive { get; set; }
 
+        public int LoginAttemptsStreak { get; set; }
+
         public DateTime LastLogInMoment { get; set; }
         public DateTime LastLogInReset { get; set; }
     }

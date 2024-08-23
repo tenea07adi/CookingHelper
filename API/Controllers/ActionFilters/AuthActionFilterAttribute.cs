@@ -1,5 +1,6 @@
 ﻿using API.Helpers;
 using API.Models.DBModels;
+using API.Repository.Generics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
@@ -25,6 +26,9 @@ namespace API.Controllers.ActionFilters
             var jwtTokenHeaderKey = "AuthToken";
 
             var configuration = context.HttpContext.RequestServices.GetService<IConfiguration>();
+            var userRepo = context.HttpContext.RequestServices.GetService<IGenericRepo<UserDBM>>();
+
+            UserDBM user = null;
 
             bool isValid = false;
 
@@ -32,6 +36,13 @@ namespace API.Controllers.ActionFilters
             {
                 context.HttpContext.Request.Headers.TryGetValue(jwtTokenHeaderKey, out StringValues jwtToken);
                 isValid = AuthHelper.ValidateToken(jwtToken, configuration["Security:Issuer"], configuration["Security:SecretKey"], _role);
+
+                user = GetUserByToken(userRepo, jwtToken);
+            }
+
+            if (user == null || !user.IsActive)
+            {
+                isValid = false;
             }
 
             if (isValid)
@@ -47,6 +58,13 @@ namespace API.Controllers.ActionFilters
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
+        }
+
+        private UserDBM GetUserByToken(IGenericRepo<UserDBM> userRepo, string jwtToken)
+        {
+            var email = AuthHelper.GetEmailFromJwtToken(jwtToken);
+
+            return userRepo.Get(c => c.Email == email).FirstOrDefault();
         }
     }
 }

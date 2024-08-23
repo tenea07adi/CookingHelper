@@ -27,6 +27,8 @@ namespace API.Controllers
         {
             string invalidMessage = "Invalid credentials!";
 
+            int maxLoginAtteptsStreak = Int32.Parse(_configuration["Security:MaxLoginAtteptsStreak"]);
+
             var dbUser = GetUserByEmail(logInData.Email);
 
             if (dbUser == null)
@@ -34,10 +36,13 @@ namespace API.Controllers
                 return Unauthorized(invalidMessage);
             }
 
-            if (!CryptographyHelper.IsCorrectPassword(logInData.Password, dbUser.PasswordHash, dbUser.PasswordSalt))
+            if (dbUser.LoginAttemptsStreak > maxLoginAtteptsStreak || !dbUser.IsActive || !CryptographyHelper.IsCorrectPassword(logInData.Password, dbUser.PasswordHash, dbUser.PasswordSalt))
             {
+                AddLogInAttept(dbUser);
                 return Unauthorized(invalidMessage);
             }
+
+            ResetLogInAttept(dbUser);
 
             var response = new JwtTokenContainerDTO()
             {
@@ -194,6 +199,8 @@ namespace API.Controllers
 
             dbUser.IsActive = true;
 
+            _userRepo.Update(dbUser);
+
             return Ok();
         }
 
@@ -210,6 +217,24 @@ namespace API.Controllers
 
             dbUser.IsActive = false;
 
+            _userRepo.Update(dbUser);
+
+            return Ok();
+        }
+
+        [HttpGet("user/ResetLoginAttepts/{userEmail}")]
+        [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
+        public IActionResult ResetLoginAtteptsStreak(string userEmail)
+        {
+            var dbUser = GetUserByEmail(userEmail);
+
+            if (dbUser == null)
+            {
+                return NotFound();
+            }
+
+            ResetLogInAttept(dbUser);
+
             return Ok();
         }
 
@@ -221,6 +246,18 @@ namespace API.Controllers
         private void ResetLastLogIn(UserDBM user)
         {
             user.LastLogInMoment = DateTime.UtcNow;
+            _userRepo.Update(user);
+        }
+
+        private void AddLogInAttept(UserDBM user)
+        {
+            user.LoginAttemptsStreak++;
+            _userRepo.Update(user);
+        }
+
+        private void ResetLogInAttept(UserDBM user)
+        {
+            user.LoginAttemptsStreak = 0;
             _userRepo.Update(user);
         }
     }
