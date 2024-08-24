@@ -12,7 +12,7 @@ namespace API.Controllers
     {
         private readonly IGenericRepo<RecipeIngredientDBM> _recipeIngredientRepo;
 
-        public IngredientsController(IGenericRepo<IngredientDBM> ingredientRepo, IGenericRepo<RecipeIngredientDBM> recipeIngredientRepo) : base(ingredientRepo)
+        public IngredientsController(IGenericRepo<IngredientDBM> ingredientRepo, IGenericRepo<RecipeIngredientDBM> recipeIngredientRepo) : base(ingredientRepo, "Name")
         {
             _recipeIngredientRepo = recipeIngredientRepo;
             onDeleteAction = RemoveLinkedEntitiesOnDelete;

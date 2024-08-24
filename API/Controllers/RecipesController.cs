@@ -20,7 +20,7 @@ namespace API.Controllers
         public RecipesController(
             IGenericRepo<RecipeDBM> recipesRepo, 
             IGenericRepo<IngredientDBM> ingredientsRepo, 
-            IGenericRepo<RecipeIngredientDBM> recipeIngredientRepo) : base(recipesRepo)
+            IGenericRepo<RecipeIngredientDBM> recipeIngredientRepo) : base(recipesRepo, "Name")
         {
             _recipesRepo = recipesRepo;
             _ingredientsRepo = ingredientsRepo;
@@ -123,7 +123,7 @@ namespace API.Controllers
 
             var usedIngredients = _recipeIngredientRepo.Get(c => c.RecipeId == recipeId);
 
-            var availableIngredients = _ingredientsRepo.Get(c => usedIngredients.Where(x => x.IngredientId == c.Id).Count() <= 0);
+            var availableIngredients = _ingredientsRepo.Get(c => c.Name, c => usedIngredients.Where(x => x.IngredientId == c.Id).Count() <= 0);
 
             return Ok(availableIngredients);
         }

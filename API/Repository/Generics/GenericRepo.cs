@@ -22,14 +22,42 @@ namespace API.Repository.Generics
             return _dbContext.Set<T>().ToList();
         }
 
-        public List<T> Get(Func<T,bool> filter)
+        public List<T> Get(Func<T, object>? orderByExpresion, Func<T,bool>? filter)
         {
-            return _dbContext.Set<T>().AsEnumerable().Where(c => filter.Invoke(c)).ToList();
+            if (orderByExpresion == null)
+            {
+                orderByExpresion = (c => c.UpdatedAt);
+            }
+
+            if (filter == null)
+            {
+                filter = (c => true);
+            }
+
+            return _dbContext.Set<T>().AsEnumerable().OrderBy(orderByExpresion).Where(c => filter.Invoke(c)).ToList();
         }
 
         public List<T> Get(int offset, int maxsize)
         {
+            return Get(offset, maxsize, null, null);
+        }
+
+        public List<T> Get(int offset, int maxsize, Func<T,object>? orderByExpresion, Func<T, bool>? filter)
+        {
+            if(orderByExpresion == null)
+            {
+                orderByExpresion = (c => c.UpdatedAt);
+            }
+
+            if(filter == null)
+            {
+                filter = (c => true);
+            }
+
             return _dbContext.Set<T>()
+                .AsEnumerable()
+                .OrderBy(orderByExpresion)
+                .Where(filter)
                 .Skip(offset)
                 .Take(maxsize)
                 .ToList();

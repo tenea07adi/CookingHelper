@@ -8,9 +8,11 @@ namespace API.Repository.Generics
 
         public List<T> Get();
 
-        public List<T> Get(Func<T, bool> filter);
+        public List<T> Get(Func<T, object>? orderByExpresion = null, Func<T, bool>? filter = null);
 
         public List<T> Get(int offset, int maxsize);
+
+        public List<T> Get(int offset, int maxsize, Func<T, object>? orderByExpresion = null, Func<T, bool>? filter = null);
 
         public void Add(T entity);
 

@@ -3,6 +3,7 @@ using API.Models.BaseModels;
 using API.Models.DTOs;
 using API.Repository.Generics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers.Generics
 {
@@ -12,16 +13,17 @@ namespace API.Controllers.Generics
     public abstract class GenericController<T> : ControllerBase
         where T : BaseDBM
     {
-
         private readonly IGenericRepo<T> _genericRepo;
+        private string? _defaultOrderField;
 
         protected Action<T> onAddAction = (t) => { };
         protected Action<T> onUpdateAction = (t) => { };
         protected Action<int> onDeleteAction = (t) => { };
 
-        public GenericController(IGenericRepo<T> repo)
+        public GenericController(IGenericRepo<T> repo, string? defaultOrderField = null)
         {
             this._genericRepo = repo;
+            this._defaultOrderField = defaultOrderField;
         }
 
         [HttpGet("{id}")]
@@ -33,7 +35,7 @@ namespace API.Controllers.Generics
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery(Name = "offset")] int offset, [FromQuery(Name = "maxsize")] int maxsize)
+        public IActionResult Get([FromQuery(Name = "offset")] int offset, [FromQuery(Name = "maxsize")] int maxsize, [FromQuery(Name = "orderBy")] string? orderBy)
         {
             if(offset < 0)
             {
@@ -45,7 +47,12 @@ namespace API.Controllers.Generics
                 maxsize = 20;
             }
 
-            var entities = _genericRepo.Get(offset, maxsize);
+            if(orderBy == null)
+            {
+                orderBy = _defaultOrderField;
+            }
+
+            var entities = _genericRepo.Get(offset, maxsize, GetOrderByExpresion<T>(orderBy), null);
 
             var result = new ListContainerDTO<T>()
             {
@@ -104,6 +111,25 @@ namespace API.Controllers.Generics
         public IActionResult Count(int id)
         {
             return Ok(_genericRepo.Count());
+        }
+
+        protected Func<TOrderObj, object> GetOrderByExpresion<TOrderObj>(string fieldName)
+        {
+            Func<TOrderObj, object> returnExp = null;
+
+            if (fieldName.IsNullOrEmpty())
+            {
+                return returnExp;
+            }
+
+            var propertyInfo = typeof(TOrderObj).GetProperty(fieldName);
+
+            if(propertyInfo != null)
+            {
+                returnExp = (x => propertyInfo.GetValue(x, null));
+            }
+
+            return returnExp;
         }
     }
 }
