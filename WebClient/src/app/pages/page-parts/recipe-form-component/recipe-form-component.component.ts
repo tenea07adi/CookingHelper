@@ -26,7 +26,7 @@ export class RecipeFormComponentComponent {
       {
         hidden: false,
         fieldLable: "Image url",
-        fieldName: "image",    
+        fieldName: "imageUrl",    
         fieldType: "text",
         fieldValidators: [],
         fieldDefaultValue: this.recipe()?.imageUrl
