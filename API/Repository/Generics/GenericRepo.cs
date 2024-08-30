@@ -17,12 +17,7 @@ namespace API.Repository.Generics
             return _dbContext.Set<T>().FirstOrDefault(x => x.Id == id);
         }
 
-        public List<T> Get()
-        {
-            return _dbContext.Set<T>().ToList();
-        }
-
-        public List<T> Get(Func<T, object>? orderByExpresion, Func<T,bool>? filter)
+        public List<T> Get(Func<T, bool>? filter = null, Func<T, object>? orderByExpresion = null)
         {
             if (orderByExpresion == null)
             {

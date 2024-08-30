@@ -6,9 +6,7 @@ namespace API.Repository.Generics
     {
         public T Get(int id);
 
-        public List<T> Get();
-
-        public List<T> Get(Func<T, object>? orderByExpresion = null, Func<T, bool>? filter = null);
+        public List<T> Get(Func<T, bool> filter = null, Func<T, object>? orderByExpresion = null);
 
         public List<T> Get(int offset, int maxsize);
 

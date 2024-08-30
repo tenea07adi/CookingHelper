@@ -123,7 +123,7 @@ namespace API.Controllers
 
             var usedIngredients = _recipeIngredientRepo.Get(c => c.RecipeId == recipeId);
 
-            var availableIngredients = _ingredientsRepo.Get(c => c.Name, c => usedIngredients.Where(x => x.IngredientId == c.Id).Count() <= 0);
+            var availableIngredients = _ingredientsRepo.Get(c => usedIngredients.Where(x => x.IngredientId == c.Id).Count() <= 0, c => c.Name);
 
             return Ok(availableIngredients);
         }
