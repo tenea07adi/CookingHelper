@@ -1,44 +1,30 @@
-.menu{
+.leftSideMenu{
     background-color: var(--main-color);
 
     -webkit-box-shadow: 10px 0px 5px 0px rgba(0,0,0,0.2);
     -moz-box-shadow: 10px 0px 5px 0px rgba(0,0,0,0.2);
     box-shadow: 10px 0px 5px 0px rgba(0,0,0,0.2);
+
+    padding: 0;
 }
 
-@media (min-width: 800px) {
+.menu{
+    padding: 5%;
 
-    .appTitle{
-        background-color: var(--sec-color);
-    
-        -webkit-box-shadow: 10px 0px 5px 0px rgba(0,0,0,0.5);
-        -moz-box-shadow: 10px 0px 5px 0px rgba(0,0,0,0.5);
-        box-shadow: 10px 0px 5px 0px rgba(0,0,0,0.5);
-    
-        writing-mode: vertical-lr;
-        text-orientation: upright;
-    
-        text-align: center;
-
-        height: 100vh;
-    }
-    
 }
 
-@media (max-width: 800px) {
-    /* CSS that should be displayed if width is equal to or less than 800px goes here */
+.appTitle{
+    padding: 5px;
+    background-color: var(--sec-color);
 
-    .appTitle{
-        background-color: var(--sec-color);
-    
-        -webkit-box-shadow: 10px 0px 5px 0px rgba(0,0,0,0.5);
-        -moz-box-shadow: 10px 0px 5px 0px rgba(0,0,0,0.5);
-        box-shadow: 10px 0px 5px 0px rgba(0,0,0,0.5);
-    
-        text-align: center;
+    -webkit-box-shadow: 0px 10px 0px 0px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 10px 0px 0px rgba(0,0,0,0.1);
+    box-shadow: 0px 10px 0px 0px rgba(0,0,0,0.1);
 
-        padding: 5px;
+    text-align: center;
 
-        height: auto;
-    }   
+    width: 100%;
+
+    filter: blur(0px);
+    -webkit-filter: blur(0px);
 }
