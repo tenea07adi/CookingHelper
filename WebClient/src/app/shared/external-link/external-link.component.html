@@ -1,13 +1,16 @@
-@switch (type()) {
-    @case (0) {
-        <p (click)="onClick()"><i class="fa fa-globe clickable"></i> {{text()}}</p>
-    }
-    @case (1) {
-        <span (click)="onClick()" class="badge rounded-pill bg-primary clickable" target="_blank"><i class="fa fa-globe"></i> {{text()}}</span>
-    }
-    @case (2) {
-        <button (click)="onClick()" class="btn btn-primary"><i class="fa fa-globe"></i> {{text()}}</button>
-    }
-}
+@if(isUrlValid){
 
-<app-confirmation-modal-component [display]="displayConfirmationModal" [questionText]="'Do you want to navigate to: ' + url()" (close)="displayConfirmationModal = false" (confirm)="openUrl()" style="text-align: left;"></app-confirmation-modal-component>
+    @switch (type()) {
+        @case (0) {
+            <p (click)="onClick()"><i class="fa fa-globe clickable"></i> {{text()}}</p>
+        }
+        @case (1) {
+            <span (click)="onClick()" class="badge rounded-pill bg-primary clickable" target="_blank"><i class="fa fa-globe"></i> {{text()}}</span>
+        }
+        @case (2) {
+            <button (click)="onClick()" class="btn btn-primary"><i class="fa fa-globe"></i> {{text()}}</button>
+        }
+    }
+    
+    <app-confirmation-modal-component [display]="displayConfirmationModal" [questionText]="'Do you want to navigate to: ' + url()" (close)="displayConfirmationModal = false" (confirm)="openUrl()" style="text-align: left;"></app-confirmation-modal-component>
+}

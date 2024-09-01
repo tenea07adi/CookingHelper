@@ -14,7 +14,7 @@ export class IngredientsPageComponent {
 
   ingredientsOffset: number = 0;
 
-  recordsOnRow: number = 1;
+  recordsOnRow: number = 3;
   
   loadedIngredients: boolean = false;
   error: boolean = false;

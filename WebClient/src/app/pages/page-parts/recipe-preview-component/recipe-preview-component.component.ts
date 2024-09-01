@@ -8,4 +8,12 @@ import { RecipeModel } from 'src/app/models/data-models/recipe-model';
 })
 export class RecipePreviewComponentComponent {
   recipe = input.required<RecipeModel>();
+
+  get description(): string {
+    if(this.recipe().description == null || this.recipe().description == null){
+      return '';
+    }
+
+    return this.recipe().description.substring(0, 200);
+  }
 }

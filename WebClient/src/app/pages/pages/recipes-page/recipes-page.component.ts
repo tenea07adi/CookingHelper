@@ -12,7 +12,7 @@ export class RecipesPageComponent {
 
   private dataSourceService = inject(DataSourceService);
 
-  recordsOnRow: number = 2;
+  recordsOnRow: number = 3;
 
   recipesOffset: number = 0;
 

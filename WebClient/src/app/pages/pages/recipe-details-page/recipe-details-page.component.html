@@ -10,22 +10,30 @@
     </div>
     <br><br>
     <div class="container-fluid row mx-auto">
+        <div class="col-sm-12">
+            <h3>
+                Ingredients 
+                <button class="btn btn-warning" (click)="displayNewIngredientModal = true"><i class="fa fa-plus"></i></button>
+            </h3>
+            <hr>
+                <app-loading-screen-component [loaded]="loadedIngredients">
+                    <div class="container-fluid row">
+                        @for (ing of ingredients; track ing.ingredientId) 
+                        {
+                            <div class="col-sm-4">
+                                <app-recipe-ingredient-preview-component [recipeIngredient]="ing" (remove)="onRemoveIngredient($event)"></app-recipe-ingredient-preview-component>
+                            </div>
+                        }
+                    </div>
+                </app-loading-screen-component>
+        </div>
         <div class="col-sm-6">
             <h3>Details</h3><hr>
             <p>{{recipe.description}}</p>
         </div>
         <div class="col-sm-6">
-            <h3>Ingredients</h3><hr>
-    
-            <app-loading-screen-component [loaded]="loadedIngredients">
-                @for (ing of ingredients; track ing.ingredientId) 
-                {
-                    <app-recipe-ingredient-preview-component [recipeIngredient]="ing" (remove)="onRemoveIngredient($event)"></app-recipe-ingredient-preview-component>
-                }
-            </app-loading-screen-component>
-
-
-            <button class="btn btn-warning" style="width: 100%;" (click)="displayNewIngredientModal = true"><i class="fa fa-pencil"></i> Add ingredient</button>
+            <h3>Preparation steps</h3><hr>
+            <p>Comming soon!</p>
         </div>
     </div>
     <br><hr>
@@ -44,7 +52,7 @@
             <ul>
                 @for (ing of ingredients; track ing.ingredientId) 
                 {
-                    <li>{{ing.name}} - Quantity: {{ing.quantity}} tbs</li>
+                    <li>{{ing.name}} - Quantity: {{ing.quantity}} {{ing.measureUnitName}}</li>
                 }
             </ul>  
             <button class="btn btn-success" (click)="onCopyIngredientsToClipboard()">Copy</button>

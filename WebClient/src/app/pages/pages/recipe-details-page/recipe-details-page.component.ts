@@ -120,7 +120,7 @@ export class RecipeDetailsPageComponent {
     let val = `Ingredients for "${this.recipe.name}": ${lineSeparator}`;
 
     this.ingredients.forEach((ing) =>{
-      val += ing.name + `${ing.name} - ${ing.quantity} ${ing.measureUnitName} ${lineSeparator}`; 
+      val += `- ${ing.name} | ${ing.quantity} ${ing.measureUnitName} ${lineSeparator}`; 
     })
 
     const selBox = document.createElement('textarea');

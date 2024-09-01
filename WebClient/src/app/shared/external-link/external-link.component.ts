@@ -13,6 +13,26 @@ export class ExternalLinkComponent {
 
   displayConfirmationModal: boolean = false;
 
+  get isUrlValid() : boolean {
+    if(this.url() == undefined){
+      return false;
+    }
+
+    if(this.url() == null){
+      return false;
+    }
+
+    if(this.url() == '' || this.url().trim() == ''){
+      return false;
+    }
+
+    if(this.url() == undefined || this.url() == null || this.url() == '' || this.url().trim() == ''){
+      return false;
+    }
+
+    return true;
+  }
+
   onClick(){
     if(this.showConfirmationModal()){
       this.displayConfirmationModal = true;
