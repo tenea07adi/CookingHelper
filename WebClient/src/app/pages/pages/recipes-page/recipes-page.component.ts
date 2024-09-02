@@ -12,6 +12,10 @@ export class RecipesPageComponent {
 
   private dataSourceService = inject(DataSourceService);
 
+  searchField: string = 'Name';
+  searchType: number = 2;
+  searchValue: string = '';
+
   recordsOnRow: number = 3;
 
   recipesOffset: number = 0;
@@ -24,7 +28,7 @@ export class RecipesPageComponent {
   }
 
   loadRecipes(){
-    this.dataSourceService.getRecords<RecipeModel>(DataModelsMapper.Recipe, this.recipesOffset).subscribe({next: (data) => {
+    this.dataSourceService.getRecords<RecipeModel>(DataModelsMapper.Recipe, this.recipesOffset, this.searchField, this.searchValue, this.searchType).subscribe({next: (data) => {
       this.recipesList = [...this.recipesList, ...data.records];
       this.recipesOffset = data.nextOffset;
       this.loadedRecipes = true;
@@ -33,6 +37,14 @@ export class RecipesPageComponent {
 
   setRowSize(size: number){
     this.recordsOnRow = size;
+  }
+
+  onSearch(searchTerm: string){
+    this.searchValue = searchTerm;
+    this.recipesOffset = 0;
+    this.recipesList = [];
+
+    this.loadRecipes();
   }
 
 }

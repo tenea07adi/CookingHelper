@@ -15,6 +15,10 @@ export class IngredientsPageComponent {
   ingredientsOffset: number = 0;
 
   recordsOnRow: number = 3;
+
+  searchField: string = 'Name';
+  searchType: number = 2;
+  searchValue: string = '';
   
   loadedIngredients: boolean = false;
   error: boolean = false;
@@ -26,7 +30,7 @@ export class IngredientsPageComponent {
   }
 
   loadIngredients(){
-    this.dataSourceService.getRecords<IngredientModel>(DataModelsMapper.Ingredient, this.ingredientsOffset)
+    this.dataSourceService.getRecords<IngredientModel>(DataModelsMapper.Ingredient, this.ingredientsOffset, this.searchField, this.searchValue, this.searchType)
     .subscribe({next: async (data) => {
       this.ingredients = [...this.ingredients, ...data.records];
       this.ingredientsOffset = data.nextOffset;
@@ -59,6 +63,14 @@ export class IngredientsPageComponent {
 
   setRowSize(size: number){
     this.recordsOnRow = size;
+  }
+
+  onSearch(searchTerm: string){
+    this.searchValue = searchTerm;
+    this.ingredientsOffset = 0;
+    this.ingredients = [];
+
+    this.loadIngredients();
   }
 
 }

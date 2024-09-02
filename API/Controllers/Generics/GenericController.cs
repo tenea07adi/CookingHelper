@@ -4,6 +4,7 @@ using API.Models.DTOs;
 using API.Repository.Generics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel;
 
 namespace API.Controllers.Generics
 {
@@ -35,9 +36,20 @@ namespace API.Controllers.Generics
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery(Name = "offset")] int offset, [FromQuery(Name = "maxsize")] int maxsize, [FromQuery(Name = "orderBy")] string? orderBy)
+        public IActionResult Get(
+            [FromQuery(Name = "offset")] int offset, [FromQuery(Name = "maxsize")] int maxsize,
+            [FromQuery(Name = "orderBy")] string? orderBy,
+            [FromQuery(Name = "filterField")] string? filterField, [FromQuery(Name = "filterValue")] string? filterValue, [FromQuery(Name = "filterType")] SearchEvaluationTypes? filterType
+            )
         {
-            if(offset < 0)
+            var filter = new SearchDTO()
+            {
+                Field = filterField,
+                Value = filterValue,
+                EvaluationType = filterType
+            };
+
+            if (offset < 0)
             {
                 return BadRequest();
             }
@@ -52,7 +64,7 @@ namespace API.Controllers.Generics
                 orderBy = _defaultOrderField;
             }
 
-            var entities = _genericRepo.Get(offset, maxsize, GetOrderByExpresion<T>(orderBy), null);
+            var entities = _genericRepo.Get(offset, maxsize, GetOrderByExpresion<T>(orderBy), GetFilterExpresion<T>(filter));
 
             var result = new ListContainerDTO<T>()
             {
@@ -108,12 +120,12 @@ namespace API.Controllers.Generics
         }
 
         [HttpDelete("count")]
-        public IActionResult Count(int id)
+        public IActionResult Count()
         {
             return Ok(_genericRepo.Count());
         }
 
-        protected Func<TOrderObj, object> GetOrderByExpresion<TOrderObj>(string fieldName)
+        protected Func<TOrderObj, object>? GetOrderByExpresion<TOrderObj>(string fieldName)
         {
             Func<TOrderObj, object> returnExp = null;
 
@@ -127,6 +139,50 @@ namespace API.Controllers.Generics
             if(propertyInfo != null)
             {
                 returnExp = (x => propertyInfo.GetValue(x, null));
+            }
+
+            return returnExp;
+        }
+
+        protected Func<TFilterObj, bool>? GetFilterExpresion<TFilterObj>(SearchDTO filter)
+        {
+            Func<TFilterObj, bool> returnExp = null;
+
+            if (filter.Field.IsNullOrEmpty() || filter.Value.IsNullOrEmpty() || filter.EvaluationType == null)
+            {
+                return returnExp;
+            }
+
+            var propertyInfo = typeof(TFilterObj).GetProperty(filter.Field);
+
+            if (propertyInfo != null)
+            {
+                returnExp = (x => {
+                    try
+                    {
+                        var converter = TypeDescriptor.GetConverter(propertyInfo.PropertyType);
+                        var convertedValue = converter.ConvertFromString(filter.Value);
+
+                        switch (filter.EvaluationType)
+                        {
+                            case (SearchEvaluationTypes.Equals):
+                                return propertyInfo.GetValue(x, null).Equals(convertedValue);
+                            case (SearchEvaluationTypes.NotEquals):
+                                return !propertyInfo.GetValue(x, null).Equals(convertedValue);
+                            case (SearchEvaluationTypes.Contains):
+                                if(propertyInfo.PropertyType == typeof(string))
+                                {
+                                    return propertyInfo.GetValue(x, null).ToString().ToLower().Contains(convertedValue.ToString().ToLower());
+                                }
+                                return false;
+                        }
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                    return false;
+                });
             }
 
             return returnExp;

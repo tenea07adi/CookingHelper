@@ -25,6 +25,7 @@ import { SetRowSizeButtonsComponent } from './shared/set-row-size-buttons/set-ro
 import { ImageFromUrlSourceComponent } from './shared/image-from-url-source/image-from-url-source.component';
 import { ExternalLinkComponent } from './shared/external-link/external-link.component';
 import { DataFormComponent } from './shared/data-form/data-form.component';
+import { SearchBarComponent } from './shared/search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { DataFormComponent } from './shared/data-form/data-form.component';
     SetRowSizeButtonsComponent,
     ImageFromUrlSourceComponent,
     ExternalLinkComponent,
-    DataFormComponent
+    DataFormComponent,
+    SearchBarComponent
   ],
   imports: [
     BrowserModule,

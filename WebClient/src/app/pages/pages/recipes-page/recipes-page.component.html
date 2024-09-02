@@ -1,4 +1,8 @@
 <app-loading-screen-component [loaded]="loadedRecipes">
+    <div class="container-fluid row mx-auto" style="margin-top: 1vh;">
+        <app-search-bar (onSearch)="onSearch($event)">
+        </app-search-bar>
+    </div>
     <div class="container-fluid row mx-auto">
         @for (recipe of recipesList; track recipe.id) {
             <div class="col-sm-{{12/recordsOnRow}}" style="padding:15px;">

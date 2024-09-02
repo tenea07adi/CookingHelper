@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <div class="container-fluid row">
+                <div class="col-sm-3">
+                    <h4><button class="btn btn-danger" (click)="resetSearch()"><i class="fa fa-refresh"></i></button> Current search:</h4><hr>
+                    <h6 class="text-center"><b>"{{currentSearch == '' ? 'Nothing...' : currentSearch}}"</b></h6><br>
+                </div>
+                <div class="col-sm-9">
+                    <app-data-form [formName]="'Search box'" [submitButtonText]="'Search'"
+                    [formFields]="formStructure" (onSubmitedForm)="onSubmit($event)"></app-data-form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

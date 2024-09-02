@@ -30,7 +30,8 @@ export class DataSourceService {
       return this.DoGet<T[]>(url);
     }
 
-    getRecords<T extends BaseDataModel>(entityMapp: DataModelsMapper, offset?: number) : Observable<PaginatedListModel<T>>{
+    getRecords<T extends BaseDataModel>(entityMapp: DataModelsMapper, offset?: number, 
+      searchField?: string, searchValue?: string, searchType?: number) : Observable<PaginatedListModel<T>>{
         if(offset == undefined){
           offset = 0;
         }
@@ -40,6 +41,14 @@ export class DataSourceService {
         params= params.append('offset', offset);
         params= params.append('maxsize', 20);
 
+        if(searchField && searchField.length > 0 && 
+          searchValue && searchValue.length > 0 && 
+          searchType){
+            params= params.append('filterField', searchField);
+            params= params.append('filterValue', searchValue);
+            params= params.append('filterType', searchType);
+          }
+          
         let url = this.compozeUrl(entityMapp);
 
         return this.DoGet<PaginatedListModel<T>>(url, params);
