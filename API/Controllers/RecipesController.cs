@@ -93,6 +93,40 @@ namespace API.Controllers
             return Ok(resultList);
         }
 
+        [HttpGet("ingredients")]
+        public IActionResult GetIngredientsForManyRecipes([FromQuery(Name = "recipesIds")]List<int> recipesIds)
+        {
+            var resultList = new List<RecipeIngredientDTO>();
+            foreach (var recipeId in recipesIds)
+            {
+                if (!_recipesRepo.Exists(recipeId))
+                {
+                    return BadRequest("Not valid recipe id!");
+                }
+
+                foreach (var recipeIngredient in _recipeIngredientRepo.Get(c => c.RecipeId == recipeId))
+                {
+                    var i = RecipeIngredientToDTO(recipeIngredient);
+                    i.RecipeId = -1;
+
+                    var foundIngredient = resultList.FirstOrDefault(c => c.IngredientId == i.IngredientId && c.MeasureUnit == i.MeasureUnit);
+
+                    if (foundIngredient != null)
+                    {
+                        foundIngredient.Quantity += i.Quantity;
+                    }
+                    else
+                    {
+                        resultList.Add(i);
+                    }
+                }
+            }
+
+            resultList = resultList.OrderBy(c => c.Name).ToList();
+
+            return Ok(resultList);
+        }
+
         [HttpGet("{recipeId}/ingredient/{ingredientId}")]
         public IActionResult GetIngredient(int recipeId, int ingredientId)
         {

@@ -38,7 +38,7 @@
     </div>
     <br><hr>
     <div class="btn-group" style="width: 100%;">
-        <button class="btn btn-success" style="width: 100%;" (click)="displayIngredientsListModal = true"><i class="fa fa-print"></i> Export ingredients list</button>
+        <button class="btn btn-success" style="width: 100%;" (click)="openIngredientsExportModal()"><i class="fa fa-print"></i> Export ingredients list</button>
         <button class="btn btn-warning" style="width: 100%;" (click)="displayUpdateRecipeModal = true"><i class="fa fa-pencil"></i> Update</button>
         <button class="btn btn-danger" style="width: 100%;" (click)="displayDeleteRecipeConfirmationModal = true" ><i class="fa fa-remove"></i> Delete</button>
     </div>
@@ -47,17 +47,10 @@
 </app-loading-screen-component>
 
 @if(loadedRecipe){
-    <app-simple-modal-component [display]="displayIngredientsListModal" [headerText]="'Ingredeints list'" (close)="displayIngredientsListModal = false">
-        <app-loading-screen-component [loaded]="loadedIngredients">
-            <ul>
-                @for (ing of ingredients; track ing.ingredientId) 
-                {
-                    <li>{{ing.name}} - Quantity: {{ing.quantity}} {{ing.measureUnitName}}</li>
-                }
-            </ul>  
-            <button class="btn btn-success" (click)="onCopyIngredientsToClipboard()">Copy</button>
-        </app-loading-screen-component>
-    </app-simple-modal-component>
+
+    @if(loadedIngredients){
+        <app-ingredients-list-export-modal [ingredients]="ingredients" [recipeName]="recipe.name" #ingredientsExportModal></app-ingredients-list-export-modal>
+    }
 
     <app-simple-modal-component [display]="displayUpdateRecipeModal" [headerText]="'Update recipe'" (close)="displayUpdateRecipeModal = false">
         <app-recipe-form-component [recipe]="recipe" (submitRecipe)="onUpdateRecipe($event)"></app-recipe-form-component>

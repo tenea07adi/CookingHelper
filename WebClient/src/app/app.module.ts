@@ -26,6 +26,9 @@ import { ImageFromUrlSourceComponent } from './shared/image-from-url-source/imag
 import { ExternalLinkComponent } from './shared/external-link/external-link.component';
 import { DataFormComponent } from './shared/data-form/data-form.component';
 import { SearchBarComponent } from './shared/search-bar/search-bar.component';
+import { UiLongPressDirective } from './directives/ui-long-press.directive';
+import { IngredientsListExportModalComponent } from './pages/page-parts/ingredients-list-export-modal/ingredients-list-export-modal.component';
+import { SelectedRecipesActionsComponent } from './pages/page-parts/selected-recipes-actions/selected-recipes-actions.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,10 @@ import { SearchBarComponent } from './shared/search-bar/search-bar.component';
     ImageFromUrlSourceComponent,
     ExternalLinkComponent,
     DataFormComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    UiLongPressDirective,
+    IngredientsListExportModalComponent,
+    SelectedRecipesActionsComponent
   ],
   imports: [
     BrowserModule,

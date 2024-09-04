@@ -88,6 +88,18 @@ export class DataSourceService {
       return this.DoGet<RecipeIngredientModel[]>(url);
     }
 
+    getRecipesIngredients(recipesIds: number[]) : Observable<RecipeIngredientModel[]>{
+      let url = `${this.restApiUrl}/recipes/ingredients`; 
+
+      let params = new HttpParams();
+
+      recipesIds.forEach(c => {
+        params= params.append('recipesIds', c);
+      })
+      
+      return this.DoGet<RecipeIngredientModel[]>(url, params);
+    }
+
     getRecipeAvailableIngredients(recipeId: number) : Observable<IngredientModel[]>{
       let url = `${this.restApiUrl}/recipes/${recipeId}/availableIngredients`; 
       return this.DoGet<IngredientModel[]>(url);

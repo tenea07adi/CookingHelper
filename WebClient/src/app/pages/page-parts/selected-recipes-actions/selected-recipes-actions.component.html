@@ -1,0 +1,22 @@
+@if(selectedRecipesList().length > 0){
+    <div class="actionsBar container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="container-fluid row" style="margin: auto;">
+                    <div class="col-sm-4">
+                        <h5><button class="btn btn-danger" (click)="resetSelection()"><i class="fa fa-refresh"></i></button> Selected: {{selectedRecipesList().length}} recipes</h5>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-success" (click)="exportIngredientsList()">Export ingredients list</button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-success" style="width: 100%;" [disabled]="true">Add to calendar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <app-ingredients-list-export-modal [ingredients]="ingredients" [recipeName]="' the selected recipes'" #ingredientsExportModal></app-ingredients-list-export-modal>
+}

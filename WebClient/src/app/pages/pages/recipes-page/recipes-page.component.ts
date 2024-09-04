@@ -23,6 +23,8 @@ export class RecipesPageComponent {
   loadedRecipes: boolean = false;
   recipesList: RecipeModel[] = [];
 
+  selectedRecipesList: number[] = [];
+
   ngOnInit(){
     this.loadRecipes();
   }
@@ -47,4 +49,35 @@ export class RecipesPageComponent {
     this.loadRecipes();
   }
 
+  // start selection logic
+  selectRecipe(id: number){
+    this.selectedRecipesList.push(id);
+  }
+
+  unselectRecipe(id: number){
+    this.selectedRecipesList = this.selectedRecipesList.filter(c => c != id);
+  }
+
+  resetSelection(){
+    this.selectedRecipesList = [];
+  }
+
+  toggleSelection(id: number){
+    if(this.selectedRecipesList.find(c => c == id) != undefined){
+      this.unselectRecipe(id);
+    }
+    else {
+      this.selectRecipe(id);
+    }
+  }
+
+  getSelectionStyles(id: number) :string {
+    if(this.selectedRecipesList.find(c => c == id) != undefined){
+      return 'selected';
+    }
+    else {
+      return '';
+    }
+  }
+    // end selection logic
 }

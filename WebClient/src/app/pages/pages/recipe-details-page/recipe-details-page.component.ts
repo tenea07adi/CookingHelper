@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { EnumModel } from 'src/app/models/data-models/enum-model';
 import { IngredientModel } from 'src/app/models/data-models/ingredient-model';
@@ -7,6 +7,7 @@ import { RecipeIngredientModel } from 'src/app/models/data-models/recipe-ingredi
 import { RecipeModel } from 'src/app/models/data-models/recipe-model';
 import { DataModelsMapper } from 'src/app/models/ModelMappers/data-models-mapper';
 import { DataSourceService } from 'src/app/services/data-source.service';
+import { IngredientsListExportModalComponent } from '../../page-parts/ingredients-list-export-modal/ingredients-list-export-modal.component';
 
 @Component({
   selector: 'app-recipe-details-page',
@@ -21,8 +22,6 @@ export class RecipeDetailsPageComponent {
   loadedRecipe: boolean = false;
   loadedIngredients: boolean = false;
 
-  displayIngredientsListModal: boolean = false;
-
   displayNewIngredientModal: boolean = false;
   displayUpdateRecipeModal: boolean = false;
 
@@ -35,6 +34,8 @@ export class RecipeDetailsPageComponent {
   ingredients: RecipeIngredientModel[] = [];
 
   availableIngredients: IngredientModel[] = [];
+  
+  @ViewChild("ingredientsExportModal") ingredientsExportModal! : IngredientsListExportModalComponent;
 
   ngOnInit(){
     this.loadRecipe();
@@ -114,25 +115,7 @@ export class RecipeDetailsPageComponent {
     })
   }
 
-  onCopyIngredientsToClipboard(){
-    let lineSeparator = '\r\n';
-    
-    let val = `Ingredients for "${this.recipe.name}": ${lineSeparator}`;
-
-    this.ingredients.forEach((ing) =>{
-      val += `- ${ing.name} | ${ing.quantity} ${ing.measureUnitName} ${lineSeparator}`; 
-    })
-
-    const selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = val;
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
+  openIngredientsExportModal(){
+    this.ingredientsExportModal.openModal();
   }
 }

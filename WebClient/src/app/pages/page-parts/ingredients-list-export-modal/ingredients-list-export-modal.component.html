@@ -1,0 +1,9 @@
+<app-simple-modal-component [display]="displayIngredientsListModal" [headerText]="'Ingredeints list'" (close)="displayIngredientsListModal = false">
+    <ul>
+        @for (ing of ingredients(); track ing.ingredientId) 
+        {
+            <li>{{ing.name}} - Quantity: {{ing.quantity}} {{ing.measureUnitName}}</li>
+        }
+    </ul>  
+    <button class="btn btn-success" (click)="onCopyIngredientsToClipboard()">Copy</button>
+</app-simple-modal-component>
