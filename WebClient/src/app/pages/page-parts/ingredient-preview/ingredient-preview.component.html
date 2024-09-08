@@ -16,8 +16,8 @@
     </div>
   </div>
 
-  <app-simple-modal-component [display]="displayUpdateIngredientModal" [headerText]="'Update ingredient'" (close)="displayUpdateIngredientModal = false">
-    <app-ingredient-form-component [ingredient]="ingredient()" (submitIngredient)="onUpdate($event)"></app-ingredient-form-component>
-  </app-simple-modal-component>
+  <app-simple-modal [display]="displayUpdateIngredientModal" [headerText]="'Update ingredient'" (close)="displayUpdateIngredientModal = false">
+    <app-ingredient-form [ingredient]="ingredient()" (submitIngredient)="onUpdate($event)"></app-ingredient-form>
+  </app-simple-modal>
 
-<app-confirmation-modal-component [display]="displayDeleteIngredientModal" [questionText]="'Do you want to delete the ingredient named: ' + ingredient().name" (close)="displayDeleteIngredientModal = false" (confirm)="onDelete()"></app-confirmation-modal-component>
+<app-confirmation-modal [display]="displayDeleteIngredientModal" [questionText]="'Do you want to delete the ingredient named: ' + ingredient().name" (close)="displayDeleteIngredientModal = false" (confirm)="onDelete()"></app-confirmation-modal>

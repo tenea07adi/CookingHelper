@@ -16,6 +16,10 @@ export class SetRowSizeButtonsComponent {
 
   private currentSize: number = this.initialSize();
 
+  ngOnInit(){
+    this.currentSize = this.initialSize();
+  }
+
   public Increase() {
     if(this.currentSize < this.maxSize()){
       this.currentSize ++;

@@ -5,4 +5,4 @@
     </div>
 </div><br>
 
-<app-confirmation-modal-component [display]="displayRemoveIngredientConfirmationModal" [questionText]="'Do you want to remove the ingredient named: ' + recipeIngredient().name" (close)="displayRemoveIngredientConfirmationModal = false" (confirm)="onRemove()"></app-confirmation-modal-component>
+<app-confirmation-modal [display]="displayRemoveIngredientConfirmationModal" [questionText]="'Do you want to remove the ingredient named: ' + recipeIngredient().name" (close)="displayRemoveIngredientConfirmationModal = false" (confirm)="onRemove()"></app-confirmation-modal>

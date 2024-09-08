@@ -1,4 +1,4 @@
-<app-loading-screen-component [loaded]="loadedIngredients">
+<app-loading-screen [loaded]="loadedIngredients">
     <div class="container-fluid row mx-auto" style="margin-top: 1vh;">
         <app-search-bar (onSearch)="onSearch($event)">
         </app-search-bar>
@@ -6,7 +6,7 @@
     <div class="container-fluid row mx-auto">
         @for(ing of ingredients; track ing.id) {
             <div class="col-sm-{{12/recordsOnRow}}" style="padding:15px;">
-                <app-ingredient-preview-component [ingredient]="ing" (update)="onUpdateIngredient($event)" (delete)="onDeleteIngredient($event)" ></app-ingredient-preview-component>
+                <app-ingredient-preview [ingredient]="ing" (update)="onUpdateIngredient($event)" (delete)="onDeleteIngredient($event)" ></app-ingredient-preview>
             </div>
         }
     </div>
@@ -15,4 +15,4 @@
 
     <app-set-row-size-buttons (onSizeChange)="setRowSize($event)" [initialSize]="1" [maxSize]="4"></app-set-row-size-buttons>
 
-</app-loading-screen-component>
+</app-loading-screen>

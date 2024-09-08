@@ -1,4 +1,4 @@
-<app-simple-modal-component [display]="displayIngredientsListModal" [headerText]="'Ingredeints list'" (close)="displayIngredientsListModal = false">
+<app-simple-modal [display]="displayIngredientsListModal" [headerText]="'Ingredeints list'" (close)="displayIngredientsListModal = false">
     <ul>
         @for (ing of ingredients(); track ing.ingredientId) 
         {
@@ -6,4 +6,4 @@
         }
     </ul>  
     <button class="btn btn-success" (click)="onCopyIngredientsToClipboard()">Copy</button>
-</app-simple-modal-component>
+</app-simple-modal>

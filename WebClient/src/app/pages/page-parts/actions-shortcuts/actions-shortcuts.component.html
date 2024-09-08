@@ -1,0 +1,12 @@
+<h3 class="text-center">Actions shortcuts</h3><hr>
+<button class="btn btn-warning" style="width: 100%;" (click)="displayNewRecipeModal = true"><i class="fa fa-book"></i> Add recipe</button> <br><br>
+<button class="btn btn-warning" style="width: 100%;" (click)="displayNewIngredientModal = true"><i class="fa fa-shopping-basket"></i> Add ingredient</button> <br><br>
+
+
+<app-simple-modal [display]="displayNewRecipeModal" [headerText]="'New recipe'" (close)="displayNewRecipeModal = false">
+  <app-recipe-form (submitRecipe)="onAddRecipe($event)"></app-recipe-form>
+</app-simple-modal>
+
+<app-simple-modal [display]="displayNewIngredientModal" [headerText]="'New ingredient'" (close)="displayNewIngredientModal = false">
+  <app-ingredient-form (submitIngredient)="onAddIngredient($event)"></app-ingredient-form>
+</app-simple-modal>

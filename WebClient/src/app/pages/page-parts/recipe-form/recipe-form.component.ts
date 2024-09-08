@@ -4,11 +4,11 @@ import { RecipeModel } from 'src/app/models/data-models/recipe-model';
 import { DataFormFieldModel } from 'src/app/shared/data-form/model/data-form-field.model';
 
 @Component({
-  selector: 'app-recipe-form-component',
-  templateUrl: './recipe-form-component.component.html',
-  styleUrls: ['./recipe-form-component.component.css']
+  selector: 'app-recipe-form',
+  templateUrl: './recipe-form.component.html',
+  styleUrls: ['./recipe-form.component.css']
 })
-export class RecipeFormComponentComponent {
+export class RecipeFormComponent {
 
   recipe = input<RecipeModel>({} as RecipeModel);
   submitRecipe = output<RecipeModel>();

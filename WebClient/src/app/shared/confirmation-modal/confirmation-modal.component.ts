@@ -1,11 +1,11 @@
 import { Component, input, output } from '@angular/core';
 
 @Component({
-  selector: 'app-confirmation-modal-component',
-  templateUrl: './confirmation-modal-component.component.html',
-  styleUrl: './confirmation-modal-component.component.css'
+  selector: 'app-confirmation-modal',
+  templateUrl: './confirmation-modal.component.html',
+  styleUrl: './confirmation-modal.component.css'
 })
-export class ConfirmationModalComponentComponent {
+export class ConfirmationModalComponent {
   display = input.required<boolean>();
   questionText = input.required<string>();
   close = output<void>();

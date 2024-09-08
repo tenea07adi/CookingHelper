@@ -1,4 +1,4 @@
-<app-loading-screen-component [loaded]="loadedRecipe">
+<app-loading-screen [loaded]="loadedRecipe">
     <app-image-from-url-source [imageUrl]="recipe.imageUrl" style="margin: auto;"  [cssToApply]="'display: block; max-height: 80vh; max-width: 100%; margin-left: auto; margin-right: auto;'"></app-image-from-url-source>
     <br><br>
     <div style="padding: 15px;">
@@ -16,16 +16,16 @@
                 <button class="btn btn-warning" (click)="displayNewIngredientModal = true"><i class="fa fa-plus"></i></button>
             </h3>
             <hr>
-                <app-loading-screen-component [loaded]="loadedIngredients">
+                <app-loading-screen [loaded]="loadedIngredients">
                     <div class="container-fluid row">
                         @for (ing of ingredients; track ing.ingredientId) 
                         {
                             <div class="col-sm-4">
-                                <app-recipe-ingredient-preview-component [recipeIngredient]="ing" (remove)="onRemoveIngredient($event)"></app-recipe-ingredient-preview-component>
+                                <app-recipe-ingredient-preview [recipeIngredient]="ing" (remove)="onRemoveIngredient($event)"></app-recipe-ingredient-preview>
                             </div>
                         }
                     </div>
-                </app-loading-screen-component>
+                </app-loading-screen>
         </div>
         <div class="col-sm-6">
             <h3>Details</h3><hr>
@@ -44,7 +44,7 @@
     </div>
     <br>
     </div>
-</app-loading-screen-component>
+</app-loading-screen>
 
 @if(loadedRecipe){
 
@@ -52,13 +52,13 @@
         <app-ingredients-list-export-modal [ingredients]="ingredients" [recipeName]="recipe.name" #ingredientsExportModal></app-ingredients-list-export-modal>
     }
 
-    <app-simple-modal-component [display]="displayUpdateRecipeModal" [headerText]="'Update recipe'" (close)="displayUpdateRecipeModal = false">
-        <app-recipe-form-component [recipe]="recipe" (submitRecipe)="onUpdateRecipe($event)"></app-recipe-form-component>
-    </app-simple-modal-component>
+    <app-simple-modal [display]="displayUpdateRecipeModal" [headerText]="'Update recipe'" (close)="displayUpdateRecipeModal = false">
+        <app-recipe-form [recipe]="recipe" (submitRecipe)="onUpdateRecipe($event)"></app-recipe-form>
+    </app-simple-modal>
 
-    <app-simple-modal-component [display]="displayNewIngredientModal" [headerText]="'Add ingredient to recipe'"  (close)="displayNewIngredientModal = false">
-        <app-recipe-ingredient-form-component [ingredients]="availableIngredients" [measureUnits]="measureUnits" (submitRecipeIngredient)="onAddIngredient($event)"></app-recipe-ingredient-form-component>
-    </app-simple-modal-component>
+    <app-simple-modal [display]="displayNewIngredientModal" [headerText]="'Add ingredient to recipe'"  (close)="displayNewIngredientModal = false">
+        <app-recipe-ingredient-form [ingredients]="availableIngredients" [measureUnits]="measureUnits" (submitRecipeIngredient)="onAddIngredient($event)"></app-recipe-ingredient-form>
+    </app-simple-modal>
     
-    <app-confirmation-modal-component [display]="displayDeleteRecipeConfirmationModal" [questionText]="'Do you want to delete the recipe named: ' + recipe.name" (close)="displayDeleteRecipeConfirmationModal = false" (confirm)="onDeleteRecipe()"></app-confirmation-modal-component>
+    <app-confirmation-modal [display]="displayDeleteRecipeConfirmationModal" [questionText]="'Do you want to delete the recipe named: ' + recipe.name" (close)="displayDeleteRecipeConfirmationModal = false" (confirm)="onDeleteRecipe()"></app-confirmation-modal>
 }

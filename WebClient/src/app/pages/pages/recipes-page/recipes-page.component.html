@@ -1,4 +1,4 @@
-<app-loading-screen-component [loaded]="loadedRecipes">
+<app-loading-screen [loaded]="loadedRecipes">
     <div class="container-fluid row mx-auto" style="margin-top: 1vh;">
         <app-search-bar (onSearch)="onSearch($event)">
         </app-search-bar>
@@ -6,13 +6,13 @@
     <div class="container-fluid row mx-auto">
         @for (recipe of recipesList; track recipe.id) {
             <div class="col-sm-{{12/recordsOnRow}} {{getSelectionStyles(recipe.id)}}" style="padding:15px;" (longPress)="toggleSelection(recipe.id)">
-                <app-recipe-preview-component style="width: 100%;" [recipe]="recipe"></app-recipe-preview-component>
+                <app-recipe-preview style="width: 100%;" [recipe]="recipe"></app-recipe-preview>
             </div>
         }
     </div>
     <button class="btn btn-warning" style="width: 100%;" [disabled]="recipesOffset < 0" (click)="loadRecipes()"><i class="fa fa-plus"></i> Load more</button>
 
-    <app-set-row-size-buttons (onSizeChange)="setRowSize($event)" [maxSize]="4"></app-set-row-size-buttons>
+    <app-set-row-size-buttons (onSizeChange)="setRowSize($event)" [initialSize]="3" [maxSize]="4"></app-set-row-size-buttons>
 
     <app-selected-recipes-actions [selectedRecipesList]="selectedRecipesList" (onResetSelection)="resetSelection()"></app-selected-recipes-actions>
-</app-loading-screen-component>
+</app-loading-screen>

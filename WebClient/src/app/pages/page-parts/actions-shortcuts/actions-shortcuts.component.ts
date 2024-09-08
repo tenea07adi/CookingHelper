@@ -6,11 +6,11 @@ import { DataModelsMapper } from 'src/app/models/ModelMappers/data-models-mapper
 import { DataSourceService } from 'src/app/services/data-source.service';
 
 @Component({
-  selector: 'app-actions-shortcuts-component',
-  templateUrl: './actions-shortcuts-component.component.html',
-  styleUrl: './actions-shortcuts-component.component.css'
+  selector: 'app-actions-shortcuts',
+  templateUrl: './actions-shortcuts.component.html',
+  styleUrl: './actions-shortcuts.component.css'
 })
-export class ActionsShortcutsComponentComponent {
+export class ActionsShortcutsComponent {
 
   private dataSourceService = inject(DataSourceService);
   private router = inject(Router);

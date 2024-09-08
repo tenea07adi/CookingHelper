@@ -7,11 +7,11 @@ import { DataFormFieldModel } from 'src/app/shared/data-form/model/data-form-fie
 import { SelectFormFieldValueModel } from 'src/app/shared/data-form/model/select-form-field-value.model';
 
 @Component({
-  selector: 'app-recipe-ingredient-form-component',
-  templateUrl: './recipe-ingredient-form-component.component.html',
-  styleUrl: './recipe-ingredient-form-component.component.css'
+  selector: 'app-recipe-ingredient-form',
+  templateUrl: './recipe-ingredient-form.component.html',
+  styleUrl: './recipe-ingredient-form.component.css'
 })
-export class RecipeIngredientFormComponentComponent {
+export class RecipeIngredientFormComponent {
   ingredients = input.required<IngredientModel[]>();
   measureUnits = input.required<EnumModel[]>();
 

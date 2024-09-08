@@ -4,11 +4,11 @@ import { IngredientModel } from 'src/app/models/data-models/ingredient-model';
 import { DataFormFieldModel } from 'src/app/shared/data-form/model/data-form-field.model';
 
 @Component({
-  selector: 'app-ingredient-form-component',
-  templateUrl: './ingredient-form-component.component.html',
-  styleUrl: './ingredient-form-component.component.css'
+  selector: 'app-ingredient-form',
+  templateUrl: './ingredient-form.component.html',
+  styleUrl: './ingredient-form.component.css'
 })
-export class IngredientFormComponentComponent {
+export class IngredientFormComponent {
   ingredient = input<IngredientModel>({} as IngredientModel);
 
   submitIngredient = output<IngredientModel>();
