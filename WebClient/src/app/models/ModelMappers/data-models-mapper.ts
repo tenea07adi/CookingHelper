@@ -1,4 +1,5 @@
 export enum DataModelsMapper {
     Ingredient = "ingredients",
-    Recipe = "recipes"
+    Recipe = "recipes",
+    PreparationSteps = "preparationSteps",
   }

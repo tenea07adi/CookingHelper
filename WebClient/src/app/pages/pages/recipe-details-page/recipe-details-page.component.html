@@ -28,12 +28,30 @@
                 </app-loading-screen>
         </div>
         <div class="col-sm-6">
-            <h3>Details</h3><hr>
+            <h3>
+                Details
+                <button class="btn btn-warning" (click)="displayUpdateRecipeModal = true"><i class="fa fa-pencil"></i></button>
+            </h3><hr>
             <p>{{recipe.description}}</p>
         </div>
         <div class="col-sm-6">
-            <h3>Preparation steps</h3><hr>
-            <p>Comming soon!</p>
+            <h3>
+                Preparation steps
+                <button class="btn btn-warning" (click)="displayNewPreparationStepModal = true"><i class="fa fa-plus"></i></button>
+            </h3><hr>
+            <app-loading-screen [loaded]="loadedPreparationSteps">
+                <div class="container-fluid row">
+                    @if(preparationSteps.length <= 0){
+                        <p>Missing preparation steps :(</p>
+                    }
+                    @for (step of preparationSteps; track step.id) 
+                    {
+                        <div class="col-sm-12">
+                            <app-preparation-step-preview [preparationStep]="step" (onChanged)="onChangedPreparationStep($event)"></app-preparation-step-preview>
+                        </div>
+                    }
+                </div>
+            </app-loading-screen>
         </div>
     </div>
     <br><hr>
@@ -58,6 +76,10 @@
 
     <app-simple-modal [display]="displayNewIngredientModal" [headerText]="'Add ingredient to recipe'"  (close)="displayNewIngredientModal = false">
         <app-recipe-ingredient-form [ingredients]="availableIngredients" [measureUnits]="measureUnits" (submitRecipeIngredient)="onAddIngredient($event)"></app-recipe-ingredient-form>
+    </app-simple-modal>
+
+    <app-simple-modal [display]="displayNewPreparationStepModal" [headerText]="'Add preparation step to recipe'"  (close)="displayNewPreparationStepModal = false">
+        <app-preparation-step-form (submitPreparationStep)="onAddPreparationStep($event)"></app-preparation-step-form>
     </app-simple-modal>
     
     <app-confirmation-modal [display]="displayDeleteRecipeConfirmationModal" [questionText]="'Do you want to delete the recipe named: ' + recipe.name" (close)="displayDeleteRecipeConfirmationModal = false" (confirm)="onDeleteRecipe()"></app-confirmation-modal>

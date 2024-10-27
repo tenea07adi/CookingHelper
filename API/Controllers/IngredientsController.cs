@@ -24,9 +24,9 @@ namespace API.Controllers
             return Ok(EnumHelper.GetEnumValues<MeasureUnit>());
         }
 
-        private void RemoveLinkedEntitiesOnDelete(int id)
+        private void RemoveLinkedEntitiesOnDelete(IngredientDBM entity)
         {
-            _recipeIngredientRepo.Delete(c => c.IngredientId == id);
+            _recipeIngredientRepo.Delete(c => c.IngredientId == entity.Id);
         }
     }
 }

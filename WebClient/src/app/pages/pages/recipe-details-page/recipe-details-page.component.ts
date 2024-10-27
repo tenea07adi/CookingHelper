@@ -8,6 +8,7 @@ import { RecipeModel } from 'src/app/models/data-models/recipe-model';
 import { DataModelsMapper } from 'src/app/models/ModelMappers/data-models-mapper';
 import { DataSourceService } from 'src/app/services/data-source.service';
 import { IngredientsListExportModalComponent } from '../../page-parts/ingredients-list-export-modal/ingredients-list-export-modal.component';
+import { PreparationStepModel } from 'src/app/models/data-models/preparation-step-model';
 
 @Component({
   selector: 'app-recipe-details-page',
@@ -21,9 +22,11 @@ export class RecipeDetailsPageComponent {
 
   loadedRecipe: boolean = false;
   loadedIngredients: boolean = false;
+  loadedPreparationSteps: boolean = false;
 
   displayNewIngredientModal: boolean = false;
   displayUpdateRecipeModal: boolean = false;
+  displayNewPreparationStepModal: boolean = false;
 
   displayDeleteRecipeConfirmationModal: boolean = false;
 
@@ -34,6 +37,8 @@ export class RecipeDetailsPageComponent {
   ingredients: RecipeIngredientModel[] = [];
 
   availableIngredients: IngredientModel[] = [];
+
+  preparationSteps: PreparationStepModel[] = [];
   
   @ViewChild("ingredientsExportModal") ingredientsExportModal! : IngredientsListExportModalComponent;
 
@@ -50,6 +55,7 @@ export class RecipeDetailsPageComponent {
         this.loadedRecipe = true;
         this.loadIngredeints();
         this.loadMeasureUnits();
+        this.loadPreparationSteps();
       }
     })
   }
@@ -79,6 +85,30 @@ export class RecipeDetailsPageComponent {
         this.availableIngredients = data;
       }
     })
+  }
+
+  loadPreparationSteps(){
+    this.dataSourceService.getRecipePreparationSteps(this.recipeId()).subscribe({
+      next: (data) => {
+        this.preparationSteps = data;
+        this.loadedPreparationSteps = true;
+      }
+    })
+  }
+
+  onAddPreparationStep(newPreparationStep: PreparationStepModel){
+    newPreparationStep.recipeId = this.recipeId();
+
+    this.dataSourceService.addRecord<PreparationStepModel>(newPreparationStep, DataModelsMapper.PreparationSteps).subscribe({
+      next: (data) => {
+        this.loadPreparationSteps();
+        this.displayNewPreparationStepModal = false;
+      }
+    })
+  }
+
+  onChangedPreparationStep(stepId: number){
+    this.loadPreparationSteps();
   }
 
   onAddIngredient(newRecipeIngredient: NewRecipeIngredientModel){

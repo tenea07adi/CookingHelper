@@ -15,16 +15,18 @@ namespace API.Controllers
         private readonly IGenericRepo<RecipeDBM> _recipesRepo;
         private readonly IGenericRepo<IngredientDBM> _ingredientsRepo;
         private readonly IGenericRepo<RecipeIngredientDBM> _recipeIngredientRepo;
-
+        private readonly IGenericRepo<PreparationStepDBM> _preparationStepsRepo;
 
         public RecipesController(
             IGenericRepo<RecipeDBM> recipesRepo, 
             IGenericRepo<IngredientDBM> ingredientsRepo, 
-            IGenericRepo<RecipeIngredientDBM> recipeIngredientRepo) : base(recipesRepo, "Name")
+            IGenericRepo<RecipeIngredientDBM> recipeIngredientRepo,
+            IGenericRepo<PreparationStepDBM> preparationStepRepo) : base(recipesRepo, "Name")
         {
             _recipesRepo = recipesRepo;
             _ingredientsRepo = ingredientsRepo;
             _recipeIngredientRepo = recipeIngredientRepo;
+            _preparationStepsRepo = preparationStepRepo;
 
             onDeleteAction = RemoveLinkedEntitiesOnDelete;
         }
@@ -162,6 +164,19 @@ namespace API.Controllers
             return Ok(availableIngredients);
         }
 
+        [HttpGet("{recipeId}/PreparationSteps")]
+        public IActionResult GetPreparationSteps(int recipeId)
+        {
+            if (!_recipesRepo.Exists(recipeId))
+            {
+                return BadRequest("Not valid recipe id!");
+            }
+
+            var resultList = _preparationStepsRepo.Get(c => c.RecipeId == recipeId).OrderBy(c => c.OrderNumber).ToList();
+
+            return Ok(resultList);
+        }
+
         private RecipeIngredientDTO RecipeIngredientToDTO(RecipeIngredientDBM recipeIngredientDBM)
         {
             var ingredient = _ingredientsRepo.Get(recipeIngredientDBM.IngredientId);
@@ -184,9 +199,9 @@ namespace API.Controllers
             };
         }
 
-        private void RemoveLinkedEntitiesOnDelete(int id)
+        private void RemoveLinkedEntitiesOnDelete(RecipeDBM entity)
         {
-            _recipeIngredientRepo.Delete(c => c.RecipeId == id);
+            _recipeIngredientRepo.Delete(c => c.RecipeId == entity.Id);
         }
     }
 }
