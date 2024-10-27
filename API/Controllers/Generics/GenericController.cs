@@ -19,7 +19,11 @@ namespace API.Controllers.Generics
 
         protected Action<T> onAddAction = (t) => { };
         protected Action<T> onUpdateAction = (t) => { };
-        protected Action<int> onDeleteAction = (t) => { };
+        protected Action<T> onDeleteAction = (t) => { };
+
+        protected Action<T> afterAddAction = (t) => { };
+        protected Action<T> afterUpdateAction = (t) => { };
+        protected Action<T> afterDeleteAction = (t) => { };
 
         public GenericController(IGenericRepo<T> repo, string? defaultOrderField = null)
         {
@@ -92,6 +96,8 @@ namespace API.Controllers.Generics
 
             _genericRepo.Add(entity);
 
+            afterAddAction(entity);
+
             return Get(entity.Id);
         }
 
@@ -105,6 +111,8 @@ namespace API.Controllers.Generics
 
             _genericRepo.Update(entity);
 
+            afterUpdateAction(entity);
+
             return Get(entity.Id);
         }
 
@@ -112,9 +120,18 @@ namespace API.Controllers.Generics
         [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
         public IActionResult Delete(int id)
         {
-            onDeleteAction(id);
+            var entity = _genericRepo.Get(id);
+
+            if(entity == null)
+            {
+                return NotFound();
+            }
+
+            onDeleteAction(entity);
 
             _genericRepo.Delete(id);
+
+            afterDeleteAction(entity);
 
             return Ok();
         }

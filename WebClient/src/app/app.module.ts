@@ -29,6 +29,8 @@ import { SearchBarComponent } from './shared/search-bar/search-bar.component';
 import { UiLongPressDirective } from './directives/ui-long-press.directive';
 import { IngredientsListExportModalComponent } from './pages/page-parts/ingredients-list-export-modal/ingredients-list-export-modal.component';
 import { SelectedRecipesActionsComponent } from './pages/page-parts/selected-recipes-actions/selected-recipes-actions.component';
+import { PreparationStepFormComponent } from './pages/page-parts/preparation-step-form/preparation-step-form.component';
+import { PreparationStepPreviewComponent } from './pages/page-parts/preparation-step-preview/preparation-step-preview.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { SelectedRecipesActionsComponent } from './pages/page-parts/selected-rec
     SearchBarComponent,
     UiLongPressDirective,
     IngredientsListExportModalComponent,
-    SelectedRecipesActionsComponent
+    SelectedRecipesActionsComponent,
+    PreparationStepFormComponent,
+    PreparationStepPreviewComponent
   ],
   imports: [
     BrowserModule,

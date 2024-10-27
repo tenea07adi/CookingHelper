@@ -10,6 +10,7 @@ import { NewRecipeIngredientModel } from "../models/data-models/new-recipe-ingre
 import { IngredientModel } from "../models/data-models/ingredient-model";
 import { AppConfigService } from "./app-config.service";
 import { AuthService } from "./auth.service";
+import { PreparationStepModel } from "../models/data-models/preparation-step-model";
 
 @Injectable({providedIn: "root"})
 export class DataSourceService {
@@ -114,6 +115,23 @@ export class DataSourceService {
     removeRecipeIngredient(recipeId: number, ingredientId: number) : Observable<RecipeIngredientModel>{
       let url = `${this.restApiUrl}/recipes/${recipeId}/ingredient/${ingredientId}`; 
       return this.DoDelete<RecipeIngredientModel>(url);
+    }
+
+    getRecipePreparationSteps(recipeId: number) : Observable<PreparationStepModel[]>{
+      let url = `${this.restApiUrl}/recipes/${recipeId}/preparationSteps`; 
+      return this.DoGet<PreparationStepModel[]>(url);
+    }
+
+    // Recipe specific functions
+
+    moveUpPreparationSteps(stepId: number) : Observable<any>{
+      let url = `${this.restApiUrl}/preparationSteps/${stepId}/moveUp`; 
+      return this.DoGet<any>(url);
+    }
+
+    moveDownPreparationSteps(stepId: number) : Observable<any>{
+      let url = `${this.restApiUrl}/preparationSteps/${stepId}/moveDown`; 
+      return this.DoGet<any>(url);
     }
 
     // Private
