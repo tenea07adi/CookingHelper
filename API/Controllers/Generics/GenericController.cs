@@ -1,10 +1,10 @@
 ﻿using API.Controllers.ActionFilters;
-using API.Models.BaseModels;
-using API.Models.DTOs;
-using API.Repository.Generics;
+using API.DTOs;
+using Core.Entities.Abstract;
+using Core.Entities.Persisted;
+using Core.Entities.Transfer;
+using Core.Ports.Driving;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.ComponentModel;
 
 namespace API.Controllers.Generics
 {
@@ -12,29 +12,19 @@ namespace API.Controllers.Generics
     [ApiController]
     [AuthActionFilterAttribute]
     public abstract class GenericController<T> : ControllerBase
-        where T : BaseDBM
+        where T : BaseEntity
     {
-        private readonly IGenericRepo<T> _genericRepo;
-        private string? _defaultOrderField;
+        private readonly IGenericEntityService<T> _genericEntityService;
 
-        protected Action<T> onAddAction = (t) => { };
-        protected Action<T> onUpdateAction = (t) => { };
-        protected Action<T> onDeleteAction = (t) => { };
-
-        protected Action<T> afterAddAction = (t) => { };
-        protected Action<T> afterUpdateAction = (t) => { };
-        protected Action<T> afterDeleteAction = (t) => { };
-
-        public GenericController(IGenericRepo<T> repo, string? defaultOrderField = null)
+        public GenericController(IGenericEntityService<T> genericEntityService)
         {
-            this._genericRepo = repo;
-            this._defaultOrderField = defaultOrderField;
+            _genericEntityService = genericEntityService;
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var entity = _genericRepo.Get(id);
+            var entity = _genericEntityService.Get(id);
 
             return Ok(entity);
         }
@@ -43,32 +33,25 @@ namespace API.Controllers.Generics
         public IActionResult Get(
             [FromQuery(Name = "offset")] int offset, [FromQuery(Name = "maxsize")] int maxsize,
             [FromQuery(Name = "orderBy")] string? orderBy,
-            [FromQuery(Name = "filterField")] string? filterField, [FromQuery(Name = "filterValue")] string? filterValue, [FromQuery(Name = "filterType")] SearchEvaluationTypes? filterType
+            [FromQuery(Name = "filterField")] string? filterField, [FromQuery(Name = "filterValue")] string? filterValue, 
+            [FromQuery(Name = "filterType")] Core.Entities.Transfer.SearchEvaluationTypes? filterType
             )
         {
-            var filter = new SearchDTO()
+            var filter = new SearchParameters()
             {
                 Field = filterField,
                 Value = filterValue,
                 EvaluationType = filterType
             };
 
-            if (offset < 0)
+            var paginationParameters = new PaginationParameters()
             {
-                return BadRequest();
-            }
+                Offset = offset,
+                Maxsize = maxsize,
+                OrderBy = orderBy
+            };
 
-            if (maxsize == 0)
-            {
-                maxsize = 20;
-            }
-
-            if(orderBy == null)
-            {
-                orderBy = _defaultOrderField;
-            }
-
-            var entities = _genericRepo.Get(offset, maxsize, GetOrderByExpresion<T>(orderBy), GetFilterExpresion<T>(filter));
+            var entities = _genericEntityService.Get(paginationParameters, filter);
 
             var result = new ListContainerDTO<T>()
             {
@@ -83,55 +66,30 @@ namespace API.Controllers.Generics
         [HttpGet("all")]
         public IActionResult GetAll()
         {
-            var entities = _genericRepo.Get();
+            var entities = _genericEntityService.GetAll();
 
             return Ok(entities);
         }
 
         [HttpPost]
-        [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
+        [AuthActionFilterAttribute(Roles.Admin)]
         public IActionResult Add(T entity)
         {
-            onAddAction(entity);
-
-            _genericRepo.Add(entity);
-
-            afterAddAction(entity);
-
-            return Get(entity.Id);
+            return Ok(_genericEntityService.Add(entity));
         }
 
         [HttpPut("{id}")]
-        [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
+        [AuthActionFilterAttribute(Roles.Admin)]
         public IActionResult Update(int id, T entity)
         {
-            entity.Id = id;
-
-            onUpdateAction(entity);
-
-            _genericRepo.Update(entity);
-
-            afterUpdateAction(entity);
-
-            return Get(entity.Id);
+            return Ok(_genericEntityService.Update(id, entity));
         }
 
         [HttpDelete("{id}")]
-        [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
+        [AuthActionFilterAttribute(Roles.Admin)]
         public IActionResult Delete(int id)
         {
-            var entity = _genericRepo.Get(id);
-
-            if(entity == null)
-            {
-                return NotFound();
-            }
-
-            onDeleteAction(entity);
-
-            _genericRepo.Delete(id);
-
-            afterDeleteAction(entity);
+            _genericEntityService.Delete(id);
 
             return Ok();
         }
@@ -139,70 +97,9 @@ namespace API.Controllers.Generics
         [HttpDelete("count")]
         public IActionResult Count()
         {
-            return Ok(_genericRepo.Count());
-        }
+            var count = _genericEntityService.Count();
 
-        protected Func<TOrderObj, object>? GetOrderByExpresion<TOrderObj>(string fieldName)
-        {
-            Func<TOrderObj, object> returnExp = null;
-
-            if (fieldName.IsNullOrEmpty())
-            {
-                return returnExp;
-            }
-
-            var propertyInfo = typeof(TOrderObj).GetProperty(fieldName);
-
-            if(propertyInfo != null)
-            {
-                returnExp = (x => propertyInfo.GetValue(x, null));
-            }
-
-            return returnExp;
-        }
-
-        protected Func<TFilterObj, bool>? GetFilterExpresion<TFilterObj>(SearchDTO filter)
-        {
-            Func<TFilterObj, bool> returnExp = null;
-
-            if (filter.Field.IsNullOrEmpty() || filter.Value.IsNullOrEmpty() || filter.EvaluationType == null)
-            {
-                return returnExp;
-            }
-
-            var propertyInfo = typeof(TFilterObj).GetProperty(filter.Field);
-
-            if (propertyInfo != null)
-            {
-                returnExp = (x => {
-                    try
-                    {
-                        var converter = TypeDescriptor.GetConverter(propertyInfo.PropertyType);
-                        var convertedValue = converter.ConvertFromString(filter.Value);
-
-                        switch (filter.EvaluationType)
-                        {
-                            case (SearchEvaluationTypes.Equals):
-                                return propertyInfo.GetValue(x, null).Equals(convertedValue);
-                            case (SearchEvaluationTypes.NotEquals):
-                                return !propertyInfo.GetValue(x, null).Equals(convertedValue);
-                            case (SearchEvaluationTypes.Contains):
-                                if(propertyInfo.PropertyType == typeof(string))
-                                {
-                                    return propertyInfo.GetValue(x, null).ToString().ToLower().Contains(convertedValue.ToString().ToLower());
-                                }
-                                return false;
-                        }
-                    }
-                    catch
-                    {
-                        return false;
-                    }
-                    return false;
-                });
-            }
-
-            return returnExp;
+            return Ok(count);
         }
     }
 }

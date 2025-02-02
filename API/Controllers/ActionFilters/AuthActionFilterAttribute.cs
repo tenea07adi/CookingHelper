@@ -1,6 +1,5 @@
-﻿using API.Helpers;
-using API.Models.DBModels;
-using API.Repository.Generics;
+﻿using Core.Entities.Persisted;
+using Core.Ports.Driving;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
@@ -26,18 +25,19 @@ namespace API.Controllers.ActionFilters
             var jwtTokenHeaderKey = "AuthToken";
 
             var configuration = context.HttpContext.RequestServices.GetService<IConfiguration>();
-            var userRepo = context.HttpContext.RequestServices.GetService<IGenericRepo<UserDBM>>();
+            var authService = context.HttpContext.RequestServices.GetService<IAuthService>();
+            var jwtTokenService = context.HttpContext.RequestServices.GetService<IJwtTokenService>();
 
-            UserDBM user = null;
+            User? user = null;
 
             bool isValid = false;
 
             if (context.HttpContext.Request.Headers.ContainsKey(jwtTokenHeaderKey))
             {
                 context.HttpContext.Request.Headers.TryGetValue(jwtTokenHeaderKey, out StringValues jwtToken);
-                isValid = AuthHelper.ValidateToken(jwtToken, configuration["Security:Issuer"], configuration["Security:SecretKey"], _role);
+                isValid = jwtTokenService!.ValidateToken(jwtToken, configuration["Security:Issuer"], configuration["Security:SecretKey"], _role);
 
-                user = GetUserByToken(userRepo, jwtToken);
+                user = GetUserByToken(jwtTokenService, authService!, jwtToken!);
             }
 
             if (user == null || !user.IsActive)
@@ -60,11 +60,11 @@ namespace API.Controllers.ActionFilters
         {
         }
 
-        private UserDBM GetUserByToken(IGenericRepo<UserDBM> userRepo, string jwtToken)
+        private User? GetUserByToken(IJwtTokenService jwtTokenService, IAuthService authService, string jwtToken)
         {
-            var email = AuthHelper.GetEmailFromJwtToken(jwtToken);
+            var email = jwtTokenService.GetEmailFromJwtToken(jwtToken);
 
-            return userRepo.Get(c => c.Email == email).FirstOrDefault();
+            return authService.GetUserByEmail(email);
         }
     }
 }
