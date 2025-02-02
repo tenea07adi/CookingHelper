@@ -17,7 +17,7 @@ namespace Core.Services
 
             if (searchedStep == null)
             {
-                throw new Exception(Constants.Exceptions.EntityNotFound);
+                throw new KeyNotFoundException(Constants.Exceptions.EntityNotFound);
             }
 
             ChangeStepPosition(searchedStep, true);
@@ -29,7 +29,7 @@ namespace Core.Services
 
             if (searchedStep == null)
             {
-                throw new Exception(Constants.Exceptions.EntityNotFound);
+                throw new KeyNotFoundException(Constants.Exceptions.EntityNotFound);
             }
 
             ChangeStepPosition(searchedStep, false);

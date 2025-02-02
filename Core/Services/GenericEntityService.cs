@@ -32,7 +32,7 @@ namespace Core.Services
         {
             if (paginationParameters.Offset < 0)
             {
-                throw new Exception(Constants.Exceptions.InvalidEntityFilter);
+                throw new ArgumentException(Constants.Exceptions.InvalidEntityFilter);
             }
 
             if (paginationParameters.Maxsize == 0)

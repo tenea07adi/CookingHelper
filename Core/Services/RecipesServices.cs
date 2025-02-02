@@ -29,12 +29,12 @@ namespace Core.Services
         {
             if (!_recipesRepo.Exists(recipeIngredient.RecipeId))
             {
-                throw new Exception(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
+                throw new KeyNotFoundException(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
             }
 
             if (!_ingredientsRepo.Exists(recipeIngredient.IngredientId))
             {
-                throw new Exception(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Ingredient).Name));
+                throw new KeyNotFoundException(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Ingredient).Name));
             }
 
             _recipeIngredientRepo.Add(recipeIngredient);
@@ -46,12 +46,12 @@ namespace Core.Services
         {
             if (!_recipesRepo.Exists(recipeId))
             {
-                throw new Exception(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
+                throw new KeyNotFoundException(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
             }
 
             if (!_ingredientsRepo.Exists(ingredientId))
             {
-                throw new Exception(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Ingredient).Name));
+                throw new KeyNotFoundException(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Ingredient).Name));
             }
 
             _recipeIngredientRepo.Delete(c => c.RecipeId == recipeId && c.IngredientId == ingredientId);
@@ -61,7 +61,7 @@ namespace Core.Services
         {
             if (!_recipesRepo.Exists(recipeId))
             {
-                throw new Exception(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
+                throw new KeyNotFoundException(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
             }
 
             var resultList = _recipeIngredientRepo.Get(c => c.RecipeId == recipeId);
@@ -77,7 +77,7 @@ namespace Core.Services
             {
                 if (!_recipesRepo.Exists(recipeId))
                 {
-                    throw new Exception(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
+                    throw new KeyNotFoundException(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
                 }
 
                 foreach (var recipeIngredient in _recipeIngredientRepo.Get(c => c.RecipeId == recipeId))
@@ -106,12 +106,12 @@ namespace Core.Services
         {
             if (!_recipesRepo.Exists(recipeId))
             {
-                throw new Exception(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
+                throw new KeyNotFoundException(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
             }
 
             if (!_ingredientsRepo.Exists(ingredientId))
             {
-                throw new Exception(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Ingredient).Name));
+                throw new KeyNotFoundException(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Ingredient).Name));
             }
 
             var recipeIngredient = _recipeIngredientRepo.Get(c => c.RecipeId == recipeId && c.IngredientId == ingredientId).FirstOrDefault();
@@ -123,7 +123,7 @@ namespace Core.Services
         {
             if (!_recipesRepo.Exists(recipeId))
             {
-                throw new Exception(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
+                throw new KeyNotFoundException(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
             }
 
             var usedIngredients = _recipeIngredientRepo.Get(c => c.RecipeId == recipeId);
@@ -137,7 +137,7 @@ namespace Core.Services
         {
             if (!_recipesRepo.Exists(recipeId))
             {
-                throw new Exception(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
+                throw new KeyNotFoundException(string.Format(Constants.Exceptions.SpecificEntityNotFound, typeof(Recipe).Name));
             }
 
             var resultList = _preparationStepsRepo.Get(c => c.RecipeId == recipeId).OrderBy(c => c.OrderNumber).ToList();

@@ -29,14 +29,14 @@ namespace Core.Services
 
             if (dbUser == null)
             {
-                throw new Exception(Constants.Exceptions.InvalidCredentials);
+                throw new UnauthorizedAccessException(Constants.Exceptions.InvalidCredentials);
             }
             
             if (dbUser.LoginAttemptsStreak > maxLoginAtteptsStreak || !dbUser.IsActive || !_cryptographyService.IsCorrectPassword(password, dbUser.PasswordHash, dbUser.PasswordSalt))
             {
                 AddLogInAttept(dbUser);
 
-                throw new Exception(Constants.Exceptions.InvalidCredentials);
+                throw new UnauthorizedAccessException(Constants.Exceptions.InvalidCredentials);
             }
             
             ResetLogInAttept(dbUser);
@@ -54,23 +54,23 @@ namespace Core.Services
 
             if (invite == null)
             {
-                throw new Exception(Constants.Exceptions.InvalidCodeOrEmail);
+                throw new ArgumentException(Constants.Exceptions.InvalidCodeOrEmail);
             }
 
             if (invite.ValidUntil < DateTime.UtcNow)
             {
                 _userInviteRepo.Delete(invite.Id);
-                throw new Exception(Constants.Exceptions.InviteExpired);
+                throw new ArgumentException(Constants.Exceptions.InviteExpired);
             }
 
             if (email != invite.Email)
             {
-                throw new Exception(Constants.Exceptions.InvalidCodeOrEmail);
+                throw new ArgumentException(Constants.Exceptions.InvalidCodeOrEmail);
             }
 
             if (_cryptographyService.IsSafePassword(password))
             {
-                throw new Exception(Constants.Exceptions.NotSafePassword);
+                throw new ArgumentException(Constants.Exceptions.NotSafePassword);
             }
 
             var passwordSalt = _cryptographyService.GeneratePasswordSalt();
@@ -95,22 +95,22 @@ namespace Core.Services
         {
             if (string.IsNullOrEmpty(email))
             {
-                throw new Exception(Constants.Exceptions.InvalidEmail);
+                throw new ArgumentException(Constants.Exceptions.InvalidEmail);
             }
 
             if (_userInviteRepo.Get(c => c.Email == email).Count() > 0)
             {
-                throw new Exception(Constants.Exceptions.InviteAlreadyExists);
+                throw new ArgumentException(Constants.Exceptions.InviteAlreadyExists);
             }
 
             if (GetUserByEmail(email) != null)
             {
-                throw new Exception(Constants.Exceptions.InvalidEmail);
+                throw new ArgumentException(Constants.Exceptions.InvalidEmail);
             }
 
             if (!Enum.IsDefined(role))
             {
-                throw new Exception(Constants.Exceptions.InvalidRole);
+                throw new ArgumentException(Constants.Exceptions.InvalidRole);
             }
 
             var validity = 7;
@@ -139,24 +139,24 @@ namespace Core.Services
 
             if (email == null)
             {
-                throw new Exception(Constants.Exceptions.UserNotFound);
+                throw new ArgumentException(Constants.Exceptions.UserNotFound);
             }
 
             var user = GetUserByEmail(email);
 
             if (user == null)
             {
-                throw new Exception(Constants.Exceptions.UserNotFound);
+                throw new ArgumentException(Constants.Exceptions.UserNotFound);
             }
 
             if (!_cryptographyService.IsCorrectPassword(oldPassword, user.PasswordHash, user.PasswordSalt))
             {
-                throw new Exception(Constants.Exceptions.IncorectOldPassword);
+                throw new ArgumentException(Constants.Exceptions.IncorectOldPassword);
             }
 
             if (!_cryptographyService.IsSafePassword(newPassword))
             {
-                throw new Exception(Constants.Exceptions.NotSafePassword);
+                throw new ArgumentException(Constants.Exceptions.NotSafePassword);
             }
 
             user.PasswordHash = _cryptographyService.HashPassword(newPassword, user.PasswordSalt);
@@ -171,7 +171,7 @@ namespace Core.Services
 
             if (dbUser == null)
             {
-                throw new Exception(Constants.Exceptions.UserNotFound);
+                throw new KeyNotFoundException(Constants.Exceptions.UserNotFound);
             }
 
             dbUser.IsActive = true;
@@ -185,7 +185,7 @@ namespace Core.Services
 
             if (dbUser == null)
             {
-                throw new Exception(Constants.Exceptions.UserNotFound);
+                throw new KeyNotFoundException(Constants.Exceptions.UserNotFound);
             }
 
             dbUser.IsActive = false;
@@ -199,7 +199,7 @@ namespace Core.Services
 
             if (dbUser == null)
             {
-                throw new Exception(Constants.Exceptions.UserNotFound);
+                throw new KeyNotFoundException(Constants.Exceptions.UserNotFound);
             }
 
             ResetLogInAttept(dbUser);

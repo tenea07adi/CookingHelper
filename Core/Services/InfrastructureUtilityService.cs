@@ -27,7 +27,7 @@ namespace Core.Services
         {
             if (string.IsNullOrEmpty(defaultUserEmail) || string.IsNullOrEmpty(defaultUserName))
             {
-                throw new Exception(Constants.Exceptions.InvalidAppConfig);
+                throw new ArgumentException(Constants.Exceptions.InvalidAppConfig);
             }
 
             string response = "";
@@ -68,7 +68,7 @@ namespace Core.Services
 
             if (_authService.GetUserByEmail(defaultUserEmail) != null)
             {
-                throw new Exception("User already initilized!");
+                throw new ArgumentException("User already initilized!");
             }
 
             User defaultUser = new User();

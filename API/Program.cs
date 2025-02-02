@@ -1,3 +1,4 @@
+using API.Controllers.ActionFilters;
 using API.Factories;
 using API.Interfaces;
 using Core.Ports.Driven;
@@ -21,7 +22,11 @@ namespace API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(CustomExceptionFilter));
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
