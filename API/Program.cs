@@ -1,8 +1,15 @@
-using API.DataBase;
-using API.Repository.Generics;
+using API.Controllers.ActionFilters;
+using API.Factories;
+using API.Interfaces;
+using Core.Ports.Driven;
+using Core.Ports.Driving;
+using Core.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Persistence.DataBase;
+using Persistence.Repository;
+using Persistence.Services;
 using System.Text;
 
 namespace API
@@ -15,7 +22,11 @@ namespace API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(CustomExceptionFilter));
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -25,8 +36,22 @@ namespace API
 
             builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
-            //builder.Services.AddScoped<IMyDependency, MyDependency>();
+            // Persistence services
             builder.Services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
+            builder.Services.AddScoped<IDataBaseService, DataBaseService>();
+
+            // Core services
+            builder.Services.AddScoped(typeof(IGenericEntityService<>), typeof(GenericEntityService<>));
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IInfrastructureUtilityService, InfrastructureUtilityService>();
+            builder.Services.AddScoped<IIngredientsService, IngredientsService>();
+            builder.Services.AddScoped<IPreparationStepsService, PreparationStepsService>();
+            builder.Services.AddScoped<IRecipesServices, RecipesServices>();
+            builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+            builder.Services.AddScoped<ICryptographyService, CryptographyService>();
+
+            // WebApi services
+            builder.Services.AddScoped<IEnumValueDtoFactory, EnumValueDtoFactory>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
              .AddJwtBearer(options =>

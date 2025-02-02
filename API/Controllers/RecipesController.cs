@@ -1,8 +1,8 @@
 ﻿using API.Controllers.ActionFilters;
 using API.Controllers.Generics;
-using API.Models.DBModels;
-using API.Models.DTOs;
-using API.Repository.Generics;
+using API.DTOs;
+using Core.Entities.Persisted;
+using Core.Ports.Driving;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -10,42 +10,22 @@ namespace API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [AuthActionFilterAttribute]
-    public class RecipesController : GenericController<RecipeDBM>
+    public class RecipesController : GenericController<Recipe>
     {
-        private readonly IGenericRepo<RecipeDBM> _recipesRepo;
-        private readonly IGenericRepo<IngredientDBM> _ingredientsRepo;
-        private readonly IGenericRepo<RecipeIngredientDBM> _recipeIngredientRepo;
-        private readonly IGenericRepo<PreparationStepDBM> _preparationStepsRepo;
+        private readonly IRecipesServices _recipesServices;
+        private readonly IIngredientsService _ingredientsService;
 
-        public RecipesController(
-            IGenericRepo<RecipeDBM> recipesRepo, 
-            IGenericRepo<IngredientDBM> ingredientsRepo, 
-            IGenericRepo<RecipeIngredientDBM> recipeIngredientRepo,
-            IGenericRepo<PreparationStepDBM> preparationStepRepo) : base(recipesRepo, "Name")
+        public RecipesController(IRecipesServices recipesServices, IIngredientsService ingredientsService) : base(recipesServices)
         {
-            _recipesRepo = recipesRepo;
-            _ingredientsRepo = ingredientsRepo;
-            _recipeIngredientRepo = recipeIngredientRepo;
-            _preparationStepsRepo = preparationStepRepo;
-
-            onDeleteAction = RemoveLinkedEntitiesOnDelete;
+            _recipesServices = recipesServices;
+            _ingredientsService = ingredientsService;
         }
 
         [HttpPost("{recipeId}/ingredient/{ingredientId}")]
-        [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
+        [AuthActionFilterAttribute(Roles.Admin)]
         public IActionResult AddIngredient(int recipeId, int ingredientId, RecipeIngredientQuantityDTO quantity)
         {
-            if(!_recipesRepo.Exists(recipeId))
-            {
-                return BadRequest("Not valid recipe id!");
-            }
-
-            if (!_ingredientsRepo.Exists(ingredientId))
-            {
-                return BadRequest("Not valid ingredient id!");
-            }
-
-            var newRecipeIngredient = new RecipeIngredientDBM()
+            var newRecipeIngredient = new RecipeIngredient()
             {
                 RecipeId = recipeId,
                 IngredientId = ingredientId,
@@ -53,26 +33,16 @@ namespace API.Controllers
                 Quantity = quantity.Quantity,
             };
 
-            _recipeIngredientRepo.Add(newRecipeIngredient);
+            var result = _recipesServices.AddIngredient(newRecipeIngredient);
 
-            return Ok(RecipeIngredientToDTO(newRecipeIngredient));
+            return Ok(RecipeIngredientToDTO(result));
         }
 
         [HttpDelete("{recipeId}/ingredient/{ingredientId}")]
-        [AuthActionFilterAttribute(Models.DBModels.Roles.Admin)]
+        [AuthActionFilterAttribute(Roles.Admin)]
         public IActionResult RemoveIngredient(int recipeId, int ingredientId)
         {
-            if (!_recipesRepo.Exists(recipeId))
-            {
-                return BadRequest("Not valid recipe id!");
-            }
-
-            if (!_ingredientsRepo.Exists(ingredientId))
-            {
-                return BadRequest("Not valid ingredient id!");
-            }
-
-            _recipeIngredientRepo.Delete(c => c.RecipeId == recipeId && c.IngredientId == ingredientId);
+            _recipesServices.RemoveIngredient(recipeId, ingredientId);
 
             return Ok();
         }
@@ -80,14 +50,11 @@ namespace API.Controllers
         [HttpGet("{recipeId}/ingredients")]
         public IActionResult GetIngredients(int recipeId)
         {
-            if (!_recipesRepo.Exists(recipeId))
-            {
-                return BadRequest("Not valid recipe id!");
-            }
+            var ingredinets = _recipesServices.GetIngredients(recipeId);
 
             var resultList = new List<RecipeIngredientDTO>();
 
-            foreach(var recipeIngredient in _recipeIngredientRepo.Get(c => c.RecipeId == recipeId))
+            foreach(var recipeIngredient in ingredinets)
             {
                 resultList.Add(RecipeIngredientToDTO(recipeIngredient));
             }
@@ -98,33 +65,7 @@ namespace API.Controllers
         [HttpGet("ingredients")]
         public IActionResult GetIngredientsForManyRecipes([FromQuery(Name = "recipesIds")]List<int> recipesIds)
         {
-            var resultList = new List<RecipeIngredientDTO>();
-            foreach (var recipeId in recipesIds)
-            {
-                if (!_recipesRepo.Exists(recipeId))
-                {
-                    return BadRequest("Not valid recipe id!");
-                }
-
-                foreach (var recipeIngredient in _recipeIngredientRepo.Get(c => c.RecipeId == recipeId))
-                {
-                    var i = RecipeIngredientToDTO(recipeIngredient);
-                    i.RecipeId = -1;
-
-                    var foundIngredient = resultList.FirstOrDefault(c => c.IngredientId == i.IngredientId && c.MeasureUnit == i.MeasureUnit);
-
-                    if (foundIngredient != null)
-                    {
-                        foundIngredient.Quantity += i.Quantity;
-                    }
-                    else
-                    {
-                        resultList.Add(i);
-                    }
-                }
-            }
-
-            resultList = resultList.OrderBy(c => c.Name).ToList();
+            var resultList = _recipesServices.GetIngredientsForManyRecipes(recipesIds);
 
             return Ok(resultList);
         }
@@ -132,17 +73,7 @@ namespace API.Controllers
         [HttpGet("{recipeId}/ingredient/{ingredientId}")]
         public IActionResult GetIngredient(int recipeId, int ingredientId)
         {
-            if (!_recipesRepo.Exists(recipeId))
-            {
-                return BadRequest("Not valid recipe id!");
-            }
-
-            if (!_ingredientsRepo.Exists(ingredientId))
-            {
-                return BadRequest("Not valid ingredient id!");
-            }
-
-            var recipeIngredient = _recipeIngredientRepo.Get(c => c.RecipeId == recipeId && c.IngredientId == ingredientId).FirstOrDefault();
+            var recipeIngredient = _recipesServices.GetIngredient(recipeId, ingredientId);
 
             return Ok(RecipeIngredientToDTO(recipeIngredient));
         }
@@ -150,16 +81,7 @@ namespace API.Controllers
         [HttpGet("{recipeId}/AvailableIngredients")]
         public IActionResult GetAvailableIngredients(int recipeId)
         {
-            if (!_recipesRepo.Exists(recipeId))
-            {
-                return BadRequest("Not valid recipe id!");
-            }
-
-            var resultList = new List<RecipeIngredientDTO>();
-
-            var usedIngredients = _recipeIngredientRepo.Get(c => c.RecipeId == recipeId);
-
-            var availableIngredients = _ingredientsRepo.Get(c => usedIngredients.Where(x => x.IngredientId == c.Id).Count() <= 0, c => c.Name);
+            var availableIngredients = _recipesServices.GetAvailableIngredients(recipeId);
 
             return Ok(availableIngredients);
         }
@@ -167,23 +89,18 @@ namespace API.Controllers
         [HttpGet("{recipeId}/PreparationSteps")]
         public IActionResult GetPreparationSteps(int recipeId)
         {
-            if (!_recipesRepo.Exists(recipeId))
-            {
-                return BadRequest("Not valid recipe id!");
-            }
-
-            var resultList = _preparationStepsRepo.Get(c => c.RecipeId == recipeId).OrderBy(c => c.OrderNumber).ToList();
+            var resultList = _recipesServices.GetPreparationSteps(recipeId);
 
             return Ok(resultList);
         }
 
-        private RecipeIngredientDTO RecipeIngredientToDTO(RecipeIngredientDBM recipeIngredientDBM)
+        private RecipeIngredientDTO RecipeIngredientToDTO(RecipeIngredient recipeIngredientDBM)
         {
-            var ingredient = _ingredientsRepo.Get(recipeIngredientDBM.IngredientId);
+            var ingredient = _ingredientsService.Get(recipeIngredientDBM.IngredientId);
 
             if(ingredient == null)
             {
-                _recipeIngredientRepo.Delete(recipeIngredientDBM.Id);
+                _ingredientsService.Delete(recipeIngredientDBM.Id);
                 return null;
             }
 
@@ -197,11 +114,6 @@ namespace API.Controllers
                 MeasureUnitName = Enum.GetName(typeof(MeasureUnit), recipeIngredientDBM.MeasureUnit),
                 Quantity = recipeIngredientDBM.Quantity
             };
-        }
-
-        private void RemoveLinkedEntitiesOnDelete(RecipeDBM entity)
-        {
-            _recipeIngredientRepo.Delete(c => c.RecipeId == entity.Id);
         }
     }
 }

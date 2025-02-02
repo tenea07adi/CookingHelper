@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{D6D468AF-BD5F-466D-99B3-B536EF8EFECC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{9DAC488A-1CB0-41ED-A0CB-C0AF6B529CD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{D88CADE5-1E5B-4C72-8B98-118EF2849DC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{D6D468AF-BD5F-466D-99B3-B536EF8EFECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6D468AF-BD5F-466D-99B3-B536EF8EFECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6D468AF-BD5F-466D-99B3-B536EF8EFECC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DAC488A-1CB0-41ED-A0CB-C0AF6B529CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DAC488A-1CB0-41ED-A0CB-C0AF6B529CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DAC488A-1CB0-41ED-A0CB-C0AF6B529CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DAC488A-1CB0-41ED-A0CB-C0AF6B529CD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D88CADE5-1E5B-4C72-8B98-118EF2849DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D88CADE5-1E5B-4C72-8B98-118EF2849DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D88CADE5-1E5B-4C72-8B98-118EF2849DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D88CADE5-1E5B-4C72-8B98-118EF2849DC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

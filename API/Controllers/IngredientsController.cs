@@ -1,32 +1,26 @@
 ﻿using API.Controllers.Generics;
-using API.Helpers;
-using API.Models.DBModels;
-using API.Repository.Generics;
+using API.Interfaces;
+using Core.Entities.Persisted;
+using Core.Ports.Driving;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IngredientsController : GenericController<IngredientDBM>
+    public class IngredientsController : GenericController<Ingredient>
     {
-        private readonly IGenericRepo<RecipeIngredientDBM> _recipeIngredientRepo;
+        private readonly IEnumValueDtoFactory _enumValueDtoFactory;
 
-        public IngredientsController(IGenericRepo<IngredientDBM> ingredientRepo, IGenericRepo<RecipeIngredientDBM> recipeIngredientRepo) : base(ingredientRepo, "Name")
+        public IngredientsController(IIngredientsService ingredientsService, IEnumValueDtoFactory enumValueDtoFactory) : base(ingredientsService)
         {
-            _recipeIngredientRepo = recipeIngredientRepo;
-            onDeleteAction = RemoveLinkedEntitiesOnDelete;
+            _enumValueDtoFactory = enumValueDtoFactory;
         }
 
         [HttpGet("MeasureUnits")]
         public IActionResult GetMeasureUnits()
         {
-            return Ok(EnumHelper.GetEnumValues<MeasureUnit>());
-        }
-
-        private void RemoveLinkedEntitiesOnDelete(IngredientDBM entity)
-        {
-            _recipeIngredientRepo.Delete(c => c.IngredientId == entity.Id);
+            return Ok(_enumValueDtoFactory.Create<MeasureUnit>());
         }
     }
 }
