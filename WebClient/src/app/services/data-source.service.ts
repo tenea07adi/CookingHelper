@@ -11,6 +11,7 @@ import { IngredientModel } from "../models/data-models/ingredient-model";
 import { AppConfigService } from "./app-config.service";
 import { AuthService } from "./auth.service";
 import { PreparationStepModel } from "../models/data-models/preparation-step-model";
+import { AppInfoModel } from "../models/data-models/app-info-model";
 
 @Injectable({providedIn: "root"})
 export class DataSourceService {
@@ -132,6 +133,13 @@ export class DataSourceService {
     moveDownPreparationSteps(stepId: number) : Observable<any>{
       let url = `${this.restApiUrl}/preparationSteps/${stepId}/moveDown`; 
       return this.DoGet<any>(url);
+    }
+
+    // Utility specific
+
+    getAppInfo() : Observable<AppInfoModel>{
+      let url = `${this.restApiUrl}/utility/appInfo`; 
+      return this.DoGet<AppInfoModel>(url);
     }
 
     // Private
