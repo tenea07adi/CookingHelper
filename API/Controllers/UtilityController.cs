@@ -1,4 +1,5 @@
-﻿using Core.Ports.Driving;
+﻿using API.DTOs;
+using Core.Ports.Driving;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -33,6 +34,17 @@ namespace API.Controllers
             _infrastructureUtilityService.RunDatabaseUpdate();
 
             return NoContent();
+        }
+
+        [HttpGet("AppInfo")]
+        public IActionResult GetAppInfo()
+        {
+            var appInfo = new AppInfoDTO()
+            {
+                AppVersion = _configuration["AppInfo:AppVersion"] ?? "?-?-?"
+            };
+
+            return Ok(appInfo);
         }
     }
 }

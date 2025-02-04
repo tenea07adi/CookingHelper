@@ -24,6 +24,15 @@
                     <button class="btn btn-warning" style="width: 100%;" (click)="logOut()"><i class="fa fa-sign-out"></i> Log out</button> <br><br>
                     <button class="btn btn-warning" style="width: 100%;"><i class="fa fa-user-circle-o"></i> About me</button> <br><br>
                 }
+                <div class="text-center">
+                    <i class="fa fa-code-fork"></i>
+                    @if(appInfo != null && appInfo.appVersion){
+                        Version: <b>{{appInfo.appVersion}}</b>
+                    }
+                    @else {
+                        Version not specified!
+                    }
+                </div>
             </div>
         </div>
         <div class="col-sm-10" style="overflow-y:scroll; height:100vh; padding: 5px;">
