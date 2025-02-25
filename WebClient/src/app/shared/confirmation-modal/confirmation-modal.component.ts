@@ -1,4 +1,5 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ViewChild } from '@angular/core';
+import { SimpleModalComponent } from '../simple-modal/simple-modal.component';
 
 @Component({
   selector: 'app-confirmation-modal',
@@ -6,19 +7,27 @@ import { Component, input, output } from '@angular/core';
   styleUrl: './confirmation-modal.component.css'
 })
 export class ConfirmationModalComponent {
-  display = input.required<boolean>();
   questionText = input.required<string>();
   close = output<void>();
   confirm = output<void>();
 
+  @ViewChild("simpleModal") simpleModal! : SimpleModalComponent;
+  
   onClose(){
     this.close.emit();
   }
 
   onConfirm(){
-    this.onClose();
+    this.closeModal();
     this.confirm.emit();
   }
+
+  openModal(){
+    this.simpleModal.openModal();
+  }
+
+  closeModal(){
+    this.simpleModal.closeModal();
+    this.onClose();
+  }
 }
-
-

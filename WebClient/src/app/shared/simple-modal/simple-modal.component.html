@@ -1,4 +1,4 @@
-@if (display()) {
+@if (display) {
     <!-- The Modal -->
     <div class="modal ">
         <!-- Modal content -->
@@ -7,7 +7,7 @@
                 <div style="width: 80%;">
                     <h2>{{headerText()}}</h2>
                 </div>
-                <button class="btn btn-danger" style="width: 20%;" (click)="onCloseModal()" >
+                <button class="btn btn-danger" style="width: 20%;" (click)="closeModal()" >
                     <i class="fa fa-remove"></i> Close
                 </button>
             </div>

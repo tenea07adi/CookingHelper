@@ -16,6 +16,9 @@ namespace Persistence.DataBase
         public DbSet<User> Users { get; set; }
         public DbSet<UserInvite> UserInvites { get; set; }
         public DbSet<PreparationStep> PreparationSteps { get; set; }
+        public DbSet<GroceryList> GroceryLists { get; set; }
+        public DbSet<GroceryListItem> GroceryListItems { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

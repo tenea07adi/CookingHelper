@@ -12,6 +12,7 @@ import { AppConfigService } from "./app-config.service";
 import { AuthService } from "./auth.service";
 import { PreparationStepModel } from "../models/data-models/preparation-step-model";
 import { AppInfoModel } from "../models/data-models/app-info-model";
+import { GroceryListItemModel } from "../models/data-models/grocery-list-item.model";
 
 @Injectable({providedIn: "root"})
 export class DataSourceService {
@@ -45,7 +46,7 @@ export class DataSourceService {
 
         if(searchField && searchField.length > 0 && 
           searchValue && searchValue.length > 0 && 
-          searchType){
+          searchType != undefined){
             params= params.append('filterField', searchField);
             params= params.append('filterValue', searchValue);
             params= params.append('filterType', searchType);
@@ -133,6 +134,33 @@ export class DataSourceService {
     moveDownPreparationSteps(stepId: number) : Observable<any>{
       let url = `${this.restApiUrl}/preparationSteps/${stepId}/moveDown`; 
       return this.DoGet<any>(url);
+    }
+
+    // Grocery list specific functions
+
+    getGroceryListItems(listId: number) : Observable<GroceryListItemModel[]>{
+      let url = `${this.restApiUrl}/groceryLists/${listId}/items`; 
+      return this.DoGet<GroceryListItemModel[]>(url);
+    }
+
+    switchGroceryListToCompleted(listId: number) : Observable<void>{
+      let url = `${this.restApiUrl}/groceryLists/${listId}/SwitchToCompleted`; 
+      return this.DoGet<void>(url);
+    }
+
+    switchGroceryListToNotCompleted(listId: number) : Observable<void>{
+      let url = `${this.restApiUrl}/groceryLists/${listId}/SwitchToNotCompleted`; 
+      return this.DoGet<void>(url);
+    }
+
+    switchGroceryListItemToCompleted(listId: number) : Observable<void>{
+      let url = `${this.restApiUrl}/groceryListItems/${listId}/SwitchToCompleted`; 
+      return this.DoGet<void>(url);
+    }
+
+    switchGroceryListItemToNotCompleted(listId: number) : Observable<void>{
+      let url = `${this.restApiUrl}/groceryListItems/${listId}/SwitchToNotCompleted`; 
+      return this.DoGet<void>(url);
     }
 
     // Utility specific

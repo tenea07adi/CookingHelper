@@ -13,7 +13,7 @@
         <div class="col-sm-12">
             <h3>
                 Ingredients 
-                <button class="btn btn-warning" (click)="displayNewIngredientModal = true"><i class="fa fa-plus"></i></button>
+                <button class="btn btn-warning" (click)="openNewIngredientModal()"><i class="fa fa-plus"></i></button>
             </h3>
             <hr>
                 <app-loading-screen [loaded]="loadedIngredients">
@@ -30,14 +30,14 @@
         <div class="col-sm-6">
             <h3>
                 Details
-                <button class="btn btn-warning" (click)="displayUpdateRecipeModal = true"><i class="fa fa-pencil"></i></button>
+                <button class="btn btn-warning" (click)="openUpdateRecipeModal()"><i class="fa fa-pencil"></i></button>
             </h3><hr>
             <p>{{recipe.description}}</p>
         </div>
         <div class="col-sm-6">
             <h3>
                 Preparation steps
-                <button class="btn btn-warning" (click)="displayNewPreparationStepModal = true"><i class="fa fa-plus"></i></button>
+                <button class="btn btn-warning" (click)="openNewPreparationStepModal()"><i class="fa fa-plus"></i></button>
             </h3><hr>
             <app-loading-screen [loaded]="loadedPreparationSteps">
                 <div class="container-fluid row">
@@ -57,8 +57,8 @@
     <br><hr>
     <div class="btn-group" style="width: 100%;">
         <button class="btn btn-success" style="width: 100%;" (click)="openIngredientsExportModal()"><i class="fa fa-print"></i> Export ingredients list</button>
-        <button class="btn btn-warning" style="width: 100%;" (click)="displayUpdateRecipeModal = true"><i class="fa fa-pencil"></i> Update</button>
-        <button class="btn btn-danger" style="width: 100%;" (click)="displayDeleteRecipeConfirmationModal = true" ><i class="fa fa-remove"></i> Delete</button>
+        <button class="btn btn-warning" style="width: 100%;" (click)="openUpdateRecipeModal()"><i class="fa fa-pencil"></i> Update</button>
+        <button class="btn btn-danger" style="width: 100%;" (click)="openDeleteConfirmationModal()" ><i class="fa fa-remove"></i> Delete</button>
     </div>
     <br>
     </div>
@@ -70,17 +70,17 @@
         <app-ingredients-list-export-modal [ingredients]="ingredients" [recipeName]="recipe.name" #ingredientsExportModal></app-ingredients-list-export-modal>
     }
 
-    <app-simple-modal [display]="displayUpdateRecipeModal" [headerText]="'Update recipe'" (close)="displayUpdateRecipeModal = false">
+    <app-simple-modal #updateRecipeModal [headerText]="'Update recipe'" >
         <app-recipe-form [recipe]="recipe" (submitRecipe)="onUpdateRecipe($event)"></app-recipe-form>
     </app-simple-modal>
 
-    <app-simple-modal [display]="displayNewIngredientModal" [headerText]="'Add ingredient to recipe'"  (close)="displayNewIngredientModal = false">
+    <app-simple-modal #newIngredientModal [headerText]="'Add ingredient to recipe'" >
         <app-recipe-ingredient-form [ingredients]="availableIngredients" [measureUnits]="measureUnits" (submitRecipeIngredient)="onAddIngredient($event)"></app-recipe-ingredient-form>
     </app-simple-modal>
 
-    <app-simple-modal [display]="displayNewPreparationStepModal" [headerText]="'Add preparation step to recipe'"  (close)="displayNewPreparationStepModal = false">
+    <app-simple-modal #newPreparationStepModal [headerText]="'Add preparation step to recipe'" >
         <app-preparation-step-form (submitPreparationStep)="onAddPreparationStep($event)"></app-preparation-step-form>
     </app-simple-modal>
     
-    <app-confirmation-modal [display]="displayDeleteRecipeConfirmationModal" [questionText]="'Do you want to delete the recipe named: ' + recipe.name" (close)="displayDeleteRecipeConfirmationModal = false" (confirm)="onDeleteRecipe()"></app-confirmation-modal>
+    <app-confirmation-modal #deleteConfirmationModal [questionText]="'Do you want to delete the recipe named: ' + recipe.name" (confirm)="onDeleteRecipe()"></app-confirmation-modal>
 }

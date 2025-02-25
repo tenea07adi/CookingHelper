@@ -2,30 +2,27 @@
     <div class="card-body"><b>{{preparationStep().orderNumber + 1}}</b>: {{preparationStep().instructions}}</div>
     <div class="card-footer">
         <div class="btn-group" role="group" style="width: 100%;">
-            <button class="btn btn-danger" style="width: 100%;" (click)="displayRemoveModal = true"><i class="fa fa-remove"></i></button>
-            <button class="btn btn-warning" style="width: 100%;" (click)="displayMoveUpModal = true"><i class="fa fa-caret-square-o-up"></i></button>
-            <button class="btn btn-warning" style="width: 100%;" (click)="displayMoveDownModal = true"><i class="fa fa-caret-square-o-down"></i></button>
+            <button class="btn btn-danger" style="width: 100%;" (click)="openConfirmationRemoveModal()"><i class="fa fa-remove"></i></button>
+            <button class="btn btn-warning" style="width: 100%;" (click)="openConfirmationMoveUpModal()"><i [class]="enumClusterService.getIcons().Up"></i></button>
+            <button class="btn btn-warning" style="width: 100%;" (click)="openConfirmationMoveDownModal()"><i [class]="enumClusterService.getIcons().Down"></i></button>
           </div>
     </div>
 </div><br>
 
 <app-confirmation-modal 
-[display]="displayRemoveModal" 
+#confirmationRemoveModal
 [questionText]="'Do you want to remove the preparation step?'" 
-(close)="displayRemoveModal = false" 
 (confirm)="onRemove()">
 </app-confirmation-modal>
 
 <app-confirmation-modal 
-[display]="displayMoveUpModal" 
+#confirmationMoveUpModal
 [questionText]="'Do you want to move up the preparation step?'" 
-(close)="displayMoveUpModal = false" 
 (confirm)="onMoveUp()">
 </app-confirmation-modal>
 
 <app-confirmation-modal 
-[display]="displayMoveDownModal" 
+#confirmationMoveDownModal
 [questionText]="'Do you want to move down the preparation step?'" 
-(close)="displayMoveDownModal = false" 
 (confirm)="onMoveDown()">
 </app-confirmation-modal>

@@ -47,8 +47,12 @@ namespace API
             builder.Services.AddScoped<IIngredientsService, IngredientsService>();
             builder.Services.AddScoped<IPreparationStepsService, PreparationStepsService>();
             builder.Services.AddScoped<IRecipesServices, RecipesServices>();
+            builder.Services.AddScoped<IGroceryListService, GroceryListService>();
+            builder.Services.AddScoped<IGroceryListItemService, GroceryListItemService>();
             builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
             builder.Services.AddScoped<ICryptographyService, CryptographyService>();
+
+            builder.Services.AddScoped<ISessionInfoService, SessionInfoService>();
 
             // WebApi services
             builder.Services.AddScoped<IEnumValueDtoFactory, EnumValueDtoFactory>();

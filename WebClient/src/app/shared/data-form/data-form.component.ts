@@ -63,7 +63,12 @@ export class DataFormComponent {
 
   private populateForm(){
     this.formFields().forEach(field => {
-      this.dataForm.addControl(field.fieldName, new FormControl(field.fieldDefaultValue, field.fieldValidators));
+      if(field.fieldType == "checkbox"){
+        this.dataForm.addControl(field.fieldName, new FormControl(JSON.parse(field.fieldDefaultValue!), field.fieldValidators));
+      }
+      else {
+        this.dataForm.addControl(field.fieldName, new FormControl(field.fieldDefaultValue, field.fieldValidators));
+      }
     });
   }
 }

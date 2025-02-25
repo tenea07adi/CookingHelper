@@ -1,5 +1,7 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ViewChild } from '@angular/core';
 import { IngredientModel } from 'src/app/models/data-models/ingredient-model';
+import { ConfirmationModalComponent } from 'src/app/shared/confirmation-modal/confirmation-modal.component';
+import { SimpleModalComponent } from 'src/app/shared/simple-modal/simple-modal.component';
 
 @Component({
   selector: 'app-ingredient-preview',
@@ -13,16 +15,24 @@ export class IngredientPreviewComponent {
   delete = output<number>();
   update = output<IngredientModel>();
 
-  displayUpdateIngredientModal: boolean = false;
-  displayDeleteIngredientModal: boolean = false;
+  @ViewChild("updateIngredientModal") updateIngredientModal! : SimpleModalComponent;
+  @ViewChild("deleteConfirmationModal") deleteConfirmationModal! : ConfirmationModalComponent;
 
   onDelete(){
-    this.displayDeleteIngredientModal = false;
+    this.deleteConfirmationModal.closeModal();
     this.delete.emit(this.ingredient().id);
   }
 
   onUpdate(ingredient: IngredientModel){
-    this.displayUpdateIngredientModal = false;
+    this.updateIngredientModal.closeModal();
     this.update.emit(ingredient);
+  }
+
+  openUpdateIngredientModal(){
+    this.updateIngredientModal.openModal();
+  }
+
+  openDeleteConfirmationModal(){
+    this.deleteConfirmationModal.openModal();
   }
 }

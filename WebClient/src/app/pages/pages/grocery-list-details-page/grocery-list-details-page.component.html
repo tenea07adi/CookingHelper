@@ -1,0 +1,82 @@
+<app-loading-screen [loaded]="loadedGroceryList">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                @if(loadedGroceryList){
+                    <app-display-card
+                    [elementIdentifier]="'list:'+ groceryList.id.toString()"
+                    [titleText]="!groceryList.isCompleted ? groceryList.name : groceryList.name + ' (completed)'"
+                    [isCollapsable]="false"
+                    [isDefaultCollapsed]="false"
+                    [buttons]="cardButtons"
+                    >
+                        Visibility: {{groceryList.isPrivate ? "Private" : "Public"}}<br>
+                        Status: {{!groceryList.isCompleted ? "Active": "Completed"}}<br>
+                        Details: {{groceryList.description}}<br>
+                    </app-display-card><br>
+                }
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header  text-center">
+                        <h2>To do:</h2>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <button style="width: 100%;" class="btn btn-warning" (click)="openNewGroceryListItemModal()"><i class="fa fa-plus"></i></button>
+                        </div>
+                        @if(groceryListItemsNotCompleted.length == 0){
+                            <br>
+                            <h3>No items...</h3>
+                        }
+                        @for(item of groceryListItemsNotCompleted; track item.id){
+                            <br>
+                            <app-grocery-list-item-preview (onDeleted)="loadGroceryListItems()" (onSwitchedComplete)="loadGroceryListItems()" [groceryListItem]="item" [measureUnits]="measureUnits"></app-grocery-list-item-preview>
+                        }
+                    </div>
+            </div>
+    
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                        <div class="card-header text-center">
+                            <h2>Done:</h2>
+                        </div>
+                        <div class="card-body">
+                            @if(groceryListItemsCompleted.length == 0){
+                                <h3>No items...</h3>
+                            }
+                            @for(item of groceryListItemsCompleted; track item.id){
+                                <br>
+                                <app-grocery-list-item-preview (onDeleted)="loadGroceryListItems()" (onSwitchedComplete)="loadGroceryListItems()" [groceryListItem]="item" [measureUnits]="measureUnits"></app-grocery-list-item-preview>
+                            }
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-loading-screen>
+
+@if(loadedGroceryList){
+    @if(measureUnits && measureUnits.length > 0){
+        <app-simple-modal #newGroceryListItemModal [headerText]="'New grocery list item'">
+            <app-grocery-list-item-form [measureUnits]="measureUnits" (submitGroceryListItem)="addGroceryListItem($event)"></app-grocery-list-item-form >
+        </app-simple-modal>
+    }
+    
+    <app-simple-modal #updateGroceryListModal [headerText]="'Update grocery list'">
+        <app-grocery-list-form [groceryList]="groceryList" (submitGroceryList)="updateList($event)"></app-grocery-list-form >
+    </app-simple-modal>
+    
+    <app-confirmation-modal 
+    #confirmationDeleteModal
+    [questionText]="'Do you want to delete the list?'" 
+    (confirm)="deleteList()">
+    </app-confirmation-modal>
+    
+    <app-confirmation-modal 
+    #confirmationSwitchCompletedModal
+    [questionText]="'Do you want to toggle completed status?'" 
+    (confirm)="switchListCompleted()">
+    </app-confirmation-modal>
+}

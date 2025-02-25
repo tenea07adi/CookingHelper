@@ -31,6 +31,14 @@ import { IngredientsListExportModalComponent } from './pages/page-parts/ingredie
 import { SelectedRecipesActionsComponent } from './pages/page-parts/selected-recipes-actions/selected-recipes-actions.component';
 import { PreparationStepFormComponent } from './pages/page-parts/preparation-step-form/preparation-step-form.component';
 import { PreparationStepPreviewComponent } from './pages/page-parts/preparation-step-preview/preparation-step-preview.component';
+import { GroceryListsPageComponent } from './pages/pages/grocery-lists-page/grocery-lists-page.component';
+import { GroceryListFormComponent } from './pages/page-parts/grocery-list-form/grocery-list-form.component';
+import { GroceryListItemFormComponent } from './pages/page-parts/grocery-list-item-form/grocery-list-item-form.component';
+import { GroceryListItemPreviewComponent } from './pages/page-parts/grocery-list-item-preview/grocery-list-item-preview.component';
+import { GroceryListPreviewComponent } from './pages/page-parts/grocery-list-preview/grocery-list-preview.component';
+import { GroceryListDetailsPageComponent } from './pages/pages/grocery-list-details-page/grocery-list-details-page.component';
+import { DisplayCardComponent } from './shared/display-card/display-card.component';
+import { ButtonComponent } from './shared/button/button.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +67,15 @@ import { PreparationStepPreviewComponent } from './pages/page-parts/preparation-
     IngredientsListExportModalComponent,
     SelectedRecipesActionsComponent,
     PreparationStepFormComponent,
-    PreparationStepPreviewComponent
+    PreparationStepPreviewComponent,
+    GroceryListsPageComponent,
+    GroceryListFormComponent,
+    GroceryListItemFormComponent,
+    GroceryListItemPreviewComponent,
+    GroceryListPreviewComponent,
+    GroceryListDetailsPageComponent,
+    DisplayCardComponent,
+    ButtonComponent
   ],
   imports: [
     BrowserModule,

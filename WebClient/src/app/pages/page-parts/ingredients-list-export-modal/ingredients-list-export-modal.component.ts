@@ -1,5 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ViewChild } from '@angular/core';
 import { RecipeIngredientModel } from 'src/app/models/data-models/recipe-ingredient-model';
+import { SimpleModalComponent } from 'src/app/shared/simple-modal/simple-modal.component';
 
 @Component({
   selector: 'app-ingredients-list-export-modal',
@@ -10,8 +11,8 @@ export class IngredientsListExportModalComponent {
   ingredients = input.required<RecipeIngredientModel[]>();
   recipeName = input<string>('');
 
-  displayIngredientsListModal: boolean = false;
-
+  @ViewChild("ingredientsListModal") ingredientsListModal! : SimpleModalComponent;
+  
   onCopyIngredientsToClipboard(){
     let lineSeparator = '\r\n';
     
@@ -35,10 +36,10 @@ export class IngredientsListExportModalComponent {
   }
 
   openModal(){
-    this.displayIngredientsListModal = true;
+    this.ingredientsListModal.openModal();
   }
 
   closeModal(){
-    this.displayIngredientsListModal = false;
+    this.ingredientsListModal.closeModal();
   }
 }
