@@ -9,6 +9,8 @@ import { DataModelsMapper } from 'src/app/models/ModelMappers/data-models-mapper
 import { DataSourceService } from 'src/app/services/data-source.service';
 import { IngredientsListExportModalComponent } from '../../page-parts/ingredients-list-export-modal/ingredients-list-export-modal.component';
 import { PreparationStepModel } from 'src/app/models/data-models/preparation-step-model';
+import { SimpleModalComponent } from 'src/app/shared/simple-modal/simple-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-recipe-details-page',
@@ -24,12 +26,6 @@ export class RecipeDetailsPageComponent {
   loadedIngredients: boolean = false;
   loadedPreparationSteps: boolean = false;
 
-  displayNewIngredientModal: boolean = false;
-  displayUpdateRecipeModal: boolean = false;
-  displayNewPreparationStepModal: boolean = false;
-
-  displayDeleteRecipeConfirmationModal: boolean = false;
-
   recipeId = input.required<number>();
 
   recipe: RecipeModel = {} as RecipeModel;
@@ -40,7 +36,13 @@ export class RecipeDetailsPageComponent {
 
   preparationSteps: PreparationStepModel[] = [];
   
+  @ViewChild("updateRecipeModal") updateRecipeModal! : SimpleModalComponent;
+  @ViewChild("newIngredientModal") newIngredientModal! : SimpleModalComponent;
+  @ViewChild("newPreparationStepModal") newPreparationStepModal! : SimpleModalComponent;
+
   @ViewChild("ingredientsExportModal") ingredientsExportModal! : IngredientsListExportModalComponent;
+
+  @ViewChild("deleteConfirmationModal") deleteConfirmationModal! : ConfirmationModalComponent;
 
   ngOnInit(){
     this.loadRecipe();
@@ -102,7 +104,7 @@ export class RecipeDetailsPageComponent {
     this.dataSourceService.addRecord<PreparationStepModel>(newPreparationStep, DataModelsMapper.PreparationSteps).subscribe({
       next: (data) => {
         this.loadPreparationSteps();
-        this.displayNewPreparationStepModal = false;
+        this.newPreparationStepModal.closeModal();
       }
     })
   }
@@ -115,7 +117,7 @@ export class RecipeDetailsPageComponent {
     this.dataSourceService.addRecipeIngredient(this.recipeId(), newRecipeIngredient.ingredientId, newRecipeIngredient).subscribe({
       complete: () => {
         this.loadIngredeints();
-        this.displayNewIngredientModal = false;
+        this.newIngredientModal.closeModal();
       }
     })
   }
@@ -131,7 +133,7 @@ export class RecipeDetailsPageComponent {
   onUpdateRecipe(recipe: RecipeModel){
     this.dataSourceService.updateRecord<RecipeModel>(recipe, DataModelsMapper.Recipe).subscribe({
       complete: () => {
-        this.displayUpdateRecipeModal = false;
+        this.updateRecipeModal.closeModal();
         this.router.navigate(['/recipe-details', this.recipeId()]);
       }
     })
@@ -145,7 +147,23 @@ export class RecipeDetailsPageComponent {
     })
   }
 
+  openUpdateRecipeModal(){
+    this.updateRecipeModal.openModal();
+  }
+
+  openNewIngredientModal(){
+    this.newIngredientModal.openModal();
+  }
+
+  openNewPreparationStepModal(){
+    this.newPreparationStepModal.openModal();
+  }
+
   openIngredientsExportModal(){
     this.ingredientsExportModal.openModal();
+  }
+
+  openDeleteConfirmationModal(){
+    this.deleteConfirmationModal.openModal();
   }
 }

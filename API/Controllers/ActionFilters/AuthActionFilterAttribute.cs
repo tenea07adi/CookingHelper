@@ -47,6 +47,7 @@ namespace API.Controllers.ActionFilters
 
             if (isValid)
             {
+                PopulateSessionInfo(context, user!);
                 base.OnActionExecuting(context);
             }
             else
@@ -65,6 +66,13 @@ namespace API.Controllers.ActionFilters
             var email = jwtTokenService.GetEmailFromJwtToken(jwtToken);
 
             return authService.GetUserByEmail(email);
+        }
+
+        private void PopulateSessionInfo(ActionExecutingContext context, User user)
+        {
+            var sessionInfoService = context.HttpContext.RequestServices.GetService<ISessionInfoService>();
+
+            sessionInfoService!.SetCurrentUserInfo(user);
         }
     }
 }

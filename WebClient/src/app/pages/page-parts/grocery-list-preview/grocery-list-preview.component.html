@@ -1,0 +1,21 @@
+<div class="card">
+    <div class="card-header">
+        <h3>
+            @if(groceryList().isPrivate){
+                <i class="fa fa-user-secret" data-bs-toggle="tooltip" data-bs-placement="top" title="Private list"></i>
+            }
+            @else {
+                <i class="fa fa-users" data-bs-toggle="tooltip" data-bs-placement="top" title="Public list"></i>
+            }
+            {{groceryList().name}}
+        </h3>
+
+    </div>
+    <div class="card-body">
+        <b>Details:</b><br>
+        {{groceryList().description}}
+    </div> 
+    <div class="card-footer">
+        <a class="btn btn-success" [routerLink]="['/grocery-list-details', groceryList().id]"><i class='fa fa-clipboard'></i> Show items</a>
+    </div>
+  </div>

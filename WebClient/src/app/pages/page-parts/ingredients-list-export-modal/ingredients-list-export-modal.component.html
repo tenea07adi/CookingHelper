@@ -1,4 +1,4 @@
-<app-simple-modal [display]="displayIngredientsListModal" [headerText]="'Ingredeints list'" (close)="displayIngredientsListModal = false">
+<app-simple-modal #ingredientsListModal [headerText]="'Ingredeints list'">
     <ul>
         @for (ing of ingredients(); track ing.ingredientId) 
         {

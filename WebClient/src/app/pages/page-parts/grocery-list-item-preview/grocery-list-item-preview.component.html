@@ -1,0 +1,22 @@
+<app-display-card
+[elementIdentifier]="groceryListItem().id.toString()"
+[titleText]="groceryListItem().name"
+[isCollapsable]="true"
+[isDefaultCollapsed]="true"
+[buttons]="cardButtons"
+>
+    Description: {{groceryListItem().description}}<br>  
+    Quantity: {{groceryListItem().quantity}} {{getMeasureUnitName()}}
+</app-display-card>
+
+<app-confirmation-modal 
+#confirmationDeleteModal
+[questionText]="'Do you want to delete the list item?'" 
+(confirm)="delete()">
+</app-confirmation-modal>
+
+<app-confirmation-modal 
+#confirmationSwitchCompletedModal
+[questionText]="'Do you want to toggle completed status?'" 
+(confirm)="switchComplete()">
+</app-confirmation-modal>

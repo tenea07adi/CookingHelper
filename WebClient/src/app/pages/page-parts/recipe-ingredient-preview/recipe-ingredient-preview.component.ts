@@ -1,5 +1,6 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ViewChild } from '@angular/core';
 import { RecipeIngredientModel } from 'src/app/models/data-models/recipe-ingredient-model';
+import { ConfirmationModalComponent } from 'src/app/shared/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-recipe-ingredient-preview',
@@ -10,9 +11,13 @@ export class RecipeIngredientPreviewComponent {
   recipeIngredient = input.required<RecipeIngredientModel>(); 
   remove = output<number>();
 
-  displayRemoveIngredientConfirmationModal: boolean = false;
+  @ViewChild("deleteConfirmationModal") deleteConfirmationModal! : ConfirmationModalComponent;
 
   onRemove(){
     this.remove.emit(this.recipeIngredient().ingredientId);
+  }
+
+  openDeleteConfirmationModal(){
+    this.deleteConfirmationModal.openModal();
   }
 }

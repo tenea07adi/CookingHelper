@@ -1,4 +1,4 @@
-<app-simple-modal [display]="display()" [headerText]="'Confirmation needed'" (close)="onClose()">
+<app-simple-modal #simpleModal [headerText]="'Confirmation needed'" (close)="onClose()">
     <h4>
         {{questionText()}}
     </h4><br><br>

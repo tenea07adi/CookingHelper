@@ -6,11 +6,23 @@ import { Component, input, output } from '@angular/core';
   styleUrl: './simple-modal.component.css'
 })
 export class SimpleModalComponent {
-  display = input<boolean>(false);
   headerText = input.required<string>();
   close = output<void>();
+
+  display : boolean = false;
 
   onCloseModal(){
     this.close.emit();
   }
+
+  openModal(){
+    this.display = true;
+  }
+
+  closeModal(){
+    this.display = false;
+    this.onCloseModal();
+  }
+
+
 }

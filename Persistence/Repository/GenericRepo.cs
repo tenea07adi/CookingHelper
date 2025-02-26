@@ -7,10 +7,12 @@ namespace Persistence.Repository
     public class GenericRepo<T> : IGenericRepo<T> where T : BaseEntity
     {
         protected readonly DataBaseContext _dbContext;
+        protected readonly ISessionInfoService _sessionInfoService;
 
-        public GenericRepo(DataBaseContext dbContext)
+        public GenericRepo(DataBaseContext dbContext, ISessionInfoService sessionInfoService)
         {
             _dbContext = dbContext;
+            _sessionInfoService = sessionInfoService;
         }
 
         public T? Get(int id)
@@ -61,6 +63,11 @@ namespace Persistence.Repository
 
         public void Add(T entity)
         {
+            var currentInfo = _sessionInfoService.GetCurrentUserInfo();
+
+            entity.CreatedBy = currentInfo.Id;
+            entity.UpdatedBy = currentInfo.Id;
+
             entity.CreatedAt = DateTime.Now;
             entity.UpdatedAt = DateTime.Now;
 
@@ -70,6 +77,10 @@ namespace Persistence.Repository
 
         public void Update(T entity)
         {
+            var currentInfo = _sessionInfoService.GetCurrentUserInfo();
+
+            entity.UpdatedBy = currentInfo.Id;
+
             entity.UpdatedAt = DateTime.Now;
 
             _dbContext.Set<T>().Update(entity);

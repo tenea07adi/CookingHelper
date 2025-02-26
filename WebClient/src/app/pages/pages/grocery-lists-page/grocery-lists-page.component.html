@@ -1,0 +1,30 @@
+  <app-loading-screen [loaded]="loadedGroceryLists">
+    <div class="container-fluid row mx-auto" style="margin-top: 1vh;">
+        <app-search-bar (onSearch)="onSearch($event)">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a [class]="getListTypeActiveClass(listsTypes().Active)"(click)="toggleLists(listsTypes().Active)">Active lists</a>
+                </li>
+                <li class="nav-item">
+                  <a [class]="getListTypeActiveClass(listsTypes().Completed)" (click)="toggleLists(listsTypes().Completed)">Completed lists</a>
+                </li>
+                <li class="nav-item">
+                  <a [class]="getListTypeActiveClass(listsTypes().Pinned)" (click)="toggleLists(listsTypes().Pinned)">Pinned lists</a>
+                </li>
+              </ul>
+              <br>
+        </app-search-bar>
+    </div>
+    <div class="container-fluid row mx-auto">
+        @for(gList of groceryLists; track gList.id) {
+            <div class="col-sm-{{12/recordsOnRow}}" style="padding:15px;">
+                <app-grocery-list-preview [groceryList]="gList"></app-grocery-list-preview>
+            </div>
+        }
+    </div>
+
+    <button class="btn btn-warning" style="width: 100%;" [disabled]="groceryListsOffset < 0" (click)="loadGroceryLists()"><i class="fa fa-plus"></i> Load more</button>
+
+    <app-set-row-size-buttons (onSizeChange)="setRowSize($event)" [initialSize]="1" [maxSize]="4"></app-set-row-size-buttons>
+
+</app-loading-screen>

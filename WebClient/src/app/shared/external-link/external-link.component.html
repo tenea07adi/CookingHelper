@@ -12,5 +12,5 @@
         }
     }
     
-    <app-confirmation-modal [display]="displayConfirmationModal" [questionText]="'Do you want to navigate to: ' + url()" (close)="displayConfirmationModal = false" (confirm)="openUrl()" style="text-align: left;"></app-confirmation-modal>
+    <app-confirmation-modal #confirmationModal [questionText]="'Do you want to navigate to: ' + url()" (confirm)="openUrl()" style="text-align: left;"></app-confirmation-modal>
 }

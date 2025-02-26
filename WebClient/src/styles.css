@@ -15,3 +15,6 @@ body {
     font-weight: 600 !important;
     font-style: bold !important;
 }
+
+.cursor-pointer {cursor: pointer;}
+.cursor-not-allowed {cursor: not-allowed;}

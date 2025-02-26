@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, input, ViewChild } from '@angular/core';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-external-link',
@@ -11,7 +12,7 @@ export class ExternalLinkComponent {
   type = input<number>(1); // 0: text, 1: lable, 2: button
   showConfirmationModal = input<boolean>(false);
 
-  displayConfirmationModal: boolean = false;
+  @ViewChild("confirmationModal") confirmationModal! : ConfirmationModalComponent;
 
   get isUrlValid() : boolean {
     if(this.url() == undefined){
@@ -35,7 +36,7 @@ export class ExternalLinkComponent {
 
   onClick(){
     if(this.showConfirmationModal()){
-      this.displayConfirmationModal = true;
+      this.openConfirmationModal();
     }
     else{
       this.openUrl();
@@ -44,5 +45,9 @@ export class ExternalLinkComponent {
 
   openUrl(){
     window.open(this.url(), "_blank");
+  }
+
+  openConfirmationModal(){
+    this.confirmationModal.openModal();
   }
 }

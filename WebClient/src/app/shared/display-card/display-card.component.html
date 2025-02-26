@@ -1,0 +1,36 @@
+<div class="card">
+    <div class="card-header" [class]="[titleClasses()]">
+
+        <h3>
+            @if(isCollapsable()){
+                <button 
+                type="button" 
+                class="btn btn-light" 
+                data-bs-toggle="collapse" 
+                [attr.data-bs-target]="'#card-col-' + elementIdentifier()">
+                <i [class]='enumClusterService.getIcons().CollapseSwitch'></i>
+                </button>
+            }
+            {{titleText()}}
+        </h3>
+    </div>
+    <div [id]="'card-col-' + elementIdentifier()" [class]="isCollapsable() && isDefaultCollapsed() ? 'collapse' : ''">
+        <div class="card-body">
+            <ng-content></ng-content>
+        </div>
+        @if(buttons().length > 0){
+            <div class="card-footer">
+                <div class="btn-group" [style]="fullSizeButtonsGrid() ? 'width: 100%;' : ''">
+                    @for(btn of buttons(); track btn.text){
+                        <button 
+                        [class]="'btn btn-' + btn.colorClass" 
+                        (click)="btn.onClick(elementIdentifier())">
+                            <i [class]='btn.icon'></i> {{btn.text}}
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

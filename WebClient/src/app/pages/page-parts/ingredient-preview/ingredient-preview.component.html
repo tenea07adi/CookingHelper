@@ -10,14 +10,14 @@
     </div> 
     <div class="card-footer">
         <div class="btn-group" style="width: 100%;">
-            <button class="btn btn-warning" style="width: 100%;" (click)="displayUpdateIngredientModal = true"><i class="fa fa-pencil"></i> Update</button>
-            <button class="btn btn-danger" style="width: 100%;"(click)="displayDeleteIngredientModal = true" ><i class="fa fa-remove"></i> Delete</button>
+            <button class="btn btn-warning" style="width: 100%;" (click)="openUpdateIngredientModal()"><i class="fa fa-pencil"></i> Update</button>
+            <button class="btn btn-danger" style="width: 100%;"(click)="openDeleteConfirmationModal()" ><i class="fa fa-remove"></i> Delete</button>
         </div>
     </div>
   </div>
 
-  <app-simple-modal [display]="displayUpdateIngredientModal" [headerText]="'Update ingredient'" (close)="displayUpdateIngredientModal = false">
+  <app-simple-modal #updateIngredientModal [headerText]="'Update ingredient'">
     <app-ingredient-form [ingredient]="ingredient()" (submitIngredient)="onUpdate($event)"></app-ingredient-form>
   </app-simple-modal>
 
-<app-confirmation-modal [display]="displayDeleteIngredientModal" [questionText]="'Do you want to delete the ingredient named: ' + ingredient().name" (close)="displayDeleteIngredientModal = false" (confirm)="onDelete()"></app-confirmation-modal>
+<app-confirmation-modal #deleteConfirmationModal [questionText]="'Do you want to delete the ingredient named: ' + ingredient().name" (confirm)="onDelete()"></app-confirmation-modal>
