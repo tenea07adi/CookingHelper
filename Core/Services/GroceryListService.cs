@@ -11,6 +11,8 @@ namespace Core.Services
             IGenericRepo<GroceryListItem> groceryListItemRepo) : base(genericRepo)
         {
             _groceryListItemRepo = groceryListItemRepo;
+
+            _defaultOrderField = "CreatedAt";
         }
 
         public List<GroceryListItem> GetItems(int listId)

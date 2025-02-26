@@ -10,6 +10,8 @@ namespace Core.Services
         {
             _recipeIngredientRepo = recipeIngredientRepo;
             onDeleteAction = RemoveLinkedEntitiesOnDelete;
+
+            _defaultOrderField = "Name";
         }
 
         private void RemoveLinkedEntitiesOnDelete(Ingredient entity)

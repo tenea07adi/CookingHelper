@@ -8,6 +8,7 @@ namespace Core.Services
         public GroceryListItemService(
             IGenericRepo<GroceryListItem> genericRepo) : base(genericRepo)
         {
+            _defaultOrderField = "CreatedAt";
         }
 
         public void SwitchCompleted(int listId, bool completed)
