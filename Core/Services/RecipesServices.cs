@@ -23,6 +23,8 @@ namespace Core.Services
             _preparationStepsRepo = preparationStepRepo;
 
             onDeleteAction = RemoveLinkedEntitiesOnDelete;
+
+            _defaultOrderField = "Name";
         }
 
         public RecipeIngredient AddIngredient(RecipeIngredient recipeIngredient)
