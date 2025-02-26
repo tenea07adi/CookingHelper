@@ -65,8 +65,16 @@ namespace Persistence.Repository
         {
             var currentInfo = _sessionInfoService.GetCurrentUserInfo();
 
-            entity.CreatedBy = currentInfo.Id;
-            entity.UpdatedBy = currentInfo.Id;
+            if (currentInfo != null)
+            {
+                entity.CreatedBy = currentInfo.Id;
+                entity.UpdatedBy = currentInfo.Id;
+            }
+            else
+            {
+                entity.CreatedBy = 0;
+                entity.UpdatedBy = 0;
+            }
 
             entity.CreatedAt = DateTime.Now;
             entity.UpdatedAt = DateTime.Now;
@@ -79,7 +87,14 @@ namespace Persistence.Repository
         {
             var currentInfo = _sessionInfoService.GetCurrentUserInfo();
 
-            entity.UpdatedBy = currentInfo.Id;
+            if (currentInfo != null)
+            {
+                entity.UpdatedBy = currentInfo.Id;
+            }
+            else
+            {
+                entity.UpdatedBy = 0;
+            }
 
             entity.UpdatedAt = DateTime.Now;
 
