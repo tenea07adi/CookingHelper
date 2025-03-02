@@ -24,6 +24,7 @@
                     @for(btn of buttons(); track btn.text){
                         <button 
                         [class]="'btn btn-' + btn.colorClass" 
+                        [disabled]="btn.disabled"
                         (click)="btn.onClick(elementIdentifier())">
                             <i [class]='btn.icon'></i> {{btn.text}}
                         </button>

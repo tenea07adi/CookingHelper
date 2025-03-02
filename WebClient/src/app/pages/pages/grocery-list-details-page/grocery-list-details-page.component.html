@@ -13,6 +13,12 @@
                         Visibility: {{groceryList.isPrivate ? "Private" : "Public"}}<br>
                         Status: {{!groceryList.isCompleted ? "Active": "Completed"}}<br>
                         Details: {{groceryList.description}}<br>
+                        Owner: {{isCreatedByCurrentUser ? "You" : "Other"}} 
+                        <i 
+                        [class]='enumClusterService.getIcons().Info' 
+                        data-bs-toggle="tooltip" 
+                        data-bs-placement="right" 
+                        title="The grocery lists can be updated/deleted just by their owners."></i><br>
                     </app-display-card><br>
                 }
             </div>
@@ -78,5 +84,11 @@
     #confirmationSwitchCompletedModal
     [questionText]="'Do you want to toggle completed status?'" 
     (confirm)="switchListCompleted()">
+    </app-confirmation-modal>
+
+    <app-confirmation-modal 
+    #confirmationSwitchPinnedModal
+    [questionText]="'Do you want to toggle pinned status?'" 
+    (confirm)="switchListPinned()">
     </app-confirmation-modal>
 }

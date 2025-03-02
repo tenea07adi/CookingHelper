@@ -153,6 +153,16 @@ export class DataSourceService {
       return this.DoGet<void>(url);
     }
 
+    switchGroceryListToPinned(listId: number) : Observable<void>{
+      let url = `${this.restApiUrl}/groceryLists/${listId}/SwitchToPinned`; 
+      return this.DoGet<void>(url);
+    }
+
+    switchGroceryListToNotPinned(listId: number) : Observable<void>{
+      let url = `${this.restApiUrl}/groceryLists/${listId}/SwitchToNotPinned`; 
+      return this.DoGet<void>(url);
+    }
+
     switchGroceryListItemToCompleted(listId: number) : Observable<void>{
       let url = `${this.restApiUrl}/groceryListItems/${listId}/SwitchToCompleted`; 
       return this.DoGet<void>(url);

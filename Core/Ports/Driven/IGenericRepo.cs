@@ -6,6 +6,8 @@ namespace Core.Ports.Driving
     {
         public T? Get(int id);
 
+        public T? Get(int id, Func<T, bool>? conditions = null);
+
         public List<T> Get(Func<T, bool>? filter = null, Func<T, object>? orderByExpresion = null);
 
         public List<T> Get(int offset, int maxsize);
@@ -20,8 +22,16 @@ namespace Core.Ports.Driving
 
         public void Delete(Func<T, bool> filter);
 
-        public bool Exists(int Id);
+        public bool Exists(int id);
+
+        public bool Exists(int id, Func<T, bool> filter);
 
         public int Count();
+
+        public int Count(Func<T, bool>? filter);
+
+        public bool IsEntityCreatedByCurrentUser(int entityId);
+
+        public bool IsEntityCreatedBy(int entityId, int userId);
     }
 }

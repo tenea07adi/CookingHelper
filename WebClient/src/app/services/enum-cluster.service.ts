@@ -31,7 +31,9 @@ export enum IconsEnum {
     Public = "fa fa-users",
     Time = "fa fa-clock-o",
     Completed = "fa fa-check-circle",
-    CollapseSwitch = "fa fa-sort"
+    CollapseSwitch = "fa fa-sort",
+    Pin = "fa fa-map-pin",
+    Info = "fa fa-info-circle"
 }
 
 export enum ColorClassEnum {
@@ -40,5 +42,6 @@ export enum ColorClassEnum {
     Delete = "danger",
     Add = "success",
     Success = "success",
-    Inactive = "secondary"
+    Inactive = "secondary",
+    Info = "info"
 }
