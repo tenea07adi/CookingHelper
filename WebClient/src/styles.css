@@ -7,7 +7,6 @@
     --app-title-height: 7vh;
 }
 
-
 body {
     background-color: var(--bg-color);
     font-family: "Playfair Display", serif !important;
@@ -18,3 +17,27 @@ body {
 
 .cursor-pointer {cursor: pointer;}
 .cursor-not-allowed {cursor: not-allowed;}
+
+.scroll-left {
+    direction: rtl;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }

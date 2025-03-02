@@ -33,7 +33,11 @@ export enum IconsEnum {
     Completed = "fa fa-check-circle",
     CollapseSwitch = "fa fa-sort",
     Pin = "fa fa-map-pin",
-    Info = "fa fa-info-circle"
+    Info = "fa fa-info-circle",
+    CaseUp = "fa fa-toggle-up",
+    CaseDown = "fa fa-toggle-down",
+    Ascending = "fa fa-sort-asc",
+    Descending = "fa fa-sort-desc"
 }
 
 export enum ColorClassEnum {

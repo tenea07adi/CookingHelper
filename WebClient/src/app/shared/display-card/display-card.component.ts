@@ -20,4 +20,18 @@ export class DisplayCardComponent {
 
   buttons = input<CardButtonModel[]>([]);
   fullSizeButtonsGrid = input<boolean>(false);
+
+  currentCollapseState : boolean = false;
+
+  ngOnInit(){
+    this.currentCollapseState = this.isDefaultCollapsed();
+  }
+
+  get currentStateClass() : string {
+    return this.currentCollapseState ? "collapsedBody" : "notCollapsedBody";
+  }
+
+  switchState(){
+    this.currentCollapseState = !this.currentCollapseState;
+  }
 }

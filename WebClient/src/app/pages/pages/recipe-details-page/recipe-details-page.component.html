@@ -1,68 +1,131 @@
-<app-loading-screen [loaded]="loadedRecipe">
-    <app-image-from-url-source [imageUrl]="recipe.imageUrl" style="margin: auto;"  [cssToApply]="'display: block; max-height: 80vh; max-width: 100%; margin-left: auto; margin-right: auto;'"></app-image-from-url-source>
-    <br><br>
-    <div style="padding: 15px;">
-        <h1 class="text-center">{{recipe.name}}</h1>
-    <hr>
-    <div class="text-center">
-        <span class="badge rounded-pill bg-secondary"><i class="fa fa-clock-o"></i> {{recipe.estimatedDurationInMinutes}} min</span>
-        <app-external-link [url]="recipe.externalLink" [text]="'External link'" [showConfirmationModal]="true"></app-external-link>
-    </div>
-    <br><br>
-    <div class="container-fluid row mx-auto">
-        <div class="col-sm-12">
-            <h3>
-                Ingredients 
-                <button class="btn btn-warning" (click)="openNewIngredientModal()"><i class="fa fa-plus"></i></button>
-            </h3>
-            <hr>
-                <app-loading-screen [loaded]="loadedIngredients">
-                    <div class="container-fluid row">
-                        @for (ing of ingredients; track ing.ingredientId) 
-                        {
-                            <div class="col-sm-4">
-                                <app-recipe-ingredient-preview [recipeIngredient]="ing" (remove)="onRemoveIngredient($event)"></app-recipe-ingredient-preview>
-                            </div>
-                        }
-                    </div>
-                </app-loading-screen>
-        </div>
-        <div class="col-sm-6">
-            <h3>
-                Details
-                <button class="btn btn-warning" (click)="openUpdateRecipeModal()"><i class="fa fa-pencil"></i></button>
-            </h3><hr>
-            <p>{{recipe.description}}</p>
-        </div>
-        <div class="col-sm-6">
-            <h3>
-                Preparation steps
-                <button class="btn btn-warning" (click)="openNewPreparationStepModal()"><i class="fa fa-plus"></i></button>
-            </h3><hr>
-            <app-loading-screen [loaded]="loadedPreparationSteps">
-                <div class="container-fluid row">
-                    @if(preparationSteps.length <= 0){
-                        <p>Missing preparation steps :(</p>
-                    }
-                    @for (step of preparationSteps; track step.id) 
-                    {
-                        <div class="col-sm-12">
-                            <app-preparation-step-preview [preparationStep]="step" (onChanged)="onChangedPreparationStep($event)"></app-preparation-step-preview>
+<app-page-layout
+    [pageTitle]="'Recipe details'"
+    [pageDetails]="recipe.name"
+    [routeOptions]="[
+        {
+            name: 'Recipes',
+            route: 'recipes'
+        },
+        {
+            name: 'Details'
+        }
+    ]">
+    <app-loading-screen [loaded]="loadedRecipe">
+        <br>
+        <div class="container-fluid row mx-auto">
+            <app-display-card
+            [elementIdentifier]="'recipeDetails'+ recipe.id.toString()"
+            [titleText]="'Details'"
+            [isCollapsable]="true"
+            [isDefaultCollapsed]="false"
+            [buttons]="[{
+                text: 'Export ingredients list',
+                icon: enumClusterService.getIcons().Export,
+                colorClass: enumClusterService.getColorClasses().Add,
+                onClick: openIngredientsExportModal
+            },
+            {
+                text: 'Update',
+                icon: enumClusterService.getIcons().Update,
+                colorClass: enumClusterService.getColorClasses().Update,
+                onClick: openUpdateRecipeModal
+            },
+            {
+                text: 'Delete',
+                icon: enumClusterService.getIcons().Delete,
+                colorClass: enumClusterService.getColorClasses().Delete,
+                onClick: openDeleteConfirmationModal
+            }]"
+            >
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <app-image-from-url-source [imageUrl]="recipe.imageUrl" style="margin: auto;"  [cssToApply]="'display: block; max-height: 80vh; max-width: 100%; margin-left: auto; margin-right: auto;'"></app-image-from-url-source>
                         </div>
-                    }
+                        <div class="col-sm-6">
+                            <div style="padding: 15px;">
+                                <h1 class="text-center">{{recipe.name}}</h1>
+                            </div>
+                            <hr>
+                            <div class="text-center">
+                                <span class="badge rounded-pill bg-secondary"><i class="fa fa-clock-o"></i> {{recipe.estimatedDurationInMinutes}} min</span>
+                                <app-external-link [url]="recipe.externalLink" [text]="'External link'" [showConfirmationModal]="true"></app-external-link>
+                            </div>
+                            <br>
+                            <p>Creation moment: {{getDisplayDate(recipe.createdAt)}}</p>
+                            <p>Description: <br>{{recipe.description}}</p>
+                        </div>
+                    </div>
                 </div>
-            </app-loading-screen>
+            </app-display-card>
         </div>
-    </div>
-    <br><hr>
-    <div class="btn-group" style="width: 100%;">
-        <button class="btn btn-success" style="width: 100%;" (click)="openIngredientsExportModal()"><i class="fa fa-print"></i> Export ingredients list</button>
-        <button class="btn btn-warning" style="width: 100%;" (click)="openUpdateRecipeModal()"><i class="fa fa-pencil"></i> Update</button>
-        <button class="btn btn-danger" style="width: 100%;" (click)="openDeleteConfirmationModal()" ><i class="fa fa-remove"></i> Delete</button>
-    </div>
-    <br>
-    </div>
-</app-loading-screen>
+        <br>
+        <div class="container-fluid row mx-auto">
+            <div class="col-sm-8">
+                <app-display-card
+                [elementIdentifier]="'recipe:'+ recipe.id.toString()"
+                [titleText]="'Ingredients'"
+                [isCollapsable]="true"
+                [isDefaultCollapsed]="false"
+                [buttons]="[{
+                    text: 'Add',
+                    icon: enumClusterService.getIcons().Add,
+                    colorClass: enumClusterService.getColorClasses().General,
+                    onClick: openNewIngredientModal
+                }]"
+                >
+                    <app-loading-screen [loaded]="loadedIngredients">
+                        <div class="container-fluid">
+                            <div class="row">
+                                @if(ingredients.length <= 0){
+                                    <p>Missing ingredients :(</p>
+                                }
+                                @else {
+                                    @for (ing of ingredients; track ing.ingredientId) 
+                                    {
+                                        <div class="col-sm-4">
+                                            <app-recipe-ingredient-preview [recipeIngredient]="ing" (remove)="onRemoveIngredient($event)" ></app-recipe-ingredient-preview>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </app-loading-screen>
+                </app-display-card><br>
+            </div><br>
+            <div class="col-sm-4">
+                <app-display-card
+                [elementIdentifier]="'prepSteps'+ recipe.id.toString()"
+                [titleText]="'Preparation steps'"
+                [isCollapsable]="true"
+                [isDefaultCollapsed]="false"
+                [buttons]="[{
+                    text: 'Add',
+                    icon: enumClusterService.getIcons().Add,
+                    colorClass: enumClusterService.getColorClasses().General,
+                    onClick: openNewPreparationStepModal
+                }]"
+                >
+                    <app-loading-screen [loaded]="loadedPreparationSteps">
+                        <div class="container-fluid">
+                            <div class="row">
+                                @if(preparationSteps.length <= 0){
+                                    <p>Missing preparation steps :(</p>
+                                }
+                                @for (step of preparationSteps; track step.id) 
+                                {
+                                    <div class="col-sm-12">
+                                        <app-preparation-step-preview [preparationStep]="step" (onChanged)="onChangedPreparationStep($event)"></app-preparation-step-preview>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </app-loading-screen>
+                </app-display-card>
+            </div><br>
+        </div><br>
+    </app-loading-screen>
+</app-page-layout>
 
 @if(loadedRecipe){
 

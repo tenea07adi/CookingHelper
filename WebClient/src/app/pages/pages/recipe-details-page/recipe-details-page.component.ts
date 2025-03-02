@@ -11,6 +11,7 @@ import { IngredientsListExportModalComponent } from '../../page-parts/ingredient
 import { PreparationStepModel } from 'src/app/models/data-models/preparation-step-model';
 import { SimpleModalComponent } from 'src/app/shared/simple-modal/simple-modal.component';
 import { ConfirmationModalComponent } from 'src/app/shared/confirmation-modal/confirmation-modal.component';
+import { EnumClusterService } from 'src/app/services/enum-cluster.service';
 
 @Component({
   selector: 'app-recipe-details-page',
@@ -21,6 +22,7 @@ export class RecipeDetailsPageComponent {
 
   private dataSourceService = inject(DataSourceService);
   private router = inject(Router);
+  public enumClusterService = inject(EnumClusterService);
 
   loadedRecipe: boolean = false;
   loadedIngredients: boolean = false;
@@ -43,6 +45,15 @@ export class RecipeDetailsPageComponent {
   @ViewChild("ingredientsExportModal") ingredientsExportModal! : IngredientsListExportModalComponent;
 
   @ViewChild("deleteConfirmationModal") deleteConfirmationModal! : ConfirmationModalComponent;
+
+  constructor() {
+    this.openIngredientsExportModal = this.openIngredientsExportModal.bind(this);
+    this.openUpdateRecipeModal = this.openUpdateRecipeModal.bind(this);
+    this.openDeleteConfirmationModal = this.openDeleteConfirmationModal.bind(this);
+    this.openNewIngredientModal = this.openNewIngredientModal.bind(this);
+    this.openNewPreparationStepModal = this.openNewPreparationStepModal.bind(this);
+
+  }
 
   ngOnInit(){
     this.loadRecipe();
@@ -165,5 +176,15 @@ export class RecipeDetailsPageComponent {
 
   openDeleteConfirmationModal(){
     this.deleteConfirmationModal.openModal();
+  }
+
+  getDisplayDate(date: Date | string): string {
+    let convertedDate = new Date(date);
+
+    if(convertedDate == undefined || isNaN(convertedDate.getTime()) || convertedDate.getFullYear() == 1){
+      return "Not found...";
+    }
+
+    return `${convertedDate.getFullYear()}-${convertedDate.getMonth()}-${convertedDate.getDay()}`
   }
 }

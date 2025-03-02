@@ -1,0 +1,7 @@
+.notCollapsedBody{
+    display: fixed;
+}
+
+.collapsedBody{
+    display: none;
+}

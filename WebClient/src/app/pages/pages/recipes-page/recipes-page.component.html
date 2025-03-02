@@ -1,18 +1,28 @@
-<app-loading-screen [loaded]="loadedRecipes">
-    <div class="container-fluid row mx-auto" style="margin-top: 1vh;">
-        <app-search-bar (onSearch)="onSearch($event)">
-        </app-search-bar>
-    </div>
-    <div class="container-fluid row mx-auto">
-        @for (recipe of recipesList; track recipe.id) {
-            <div class="col-sm-{{12/recordsOnRow}} {{getSelectionStyles(recipe.id)}}" style="padding:15px;" (longPress)="toggleSelection(recipe.id)">
-                <app-recipe-preview style="width: 100%;" [recipe]="recipe"></app-recipe-preview>
-            </div>
+<app-page-layout
+    [pageTitle]="'Recipes'"
+    [routeOptions]="[
+        {
+            name: 'Recipes'
         }
-    </div>
-    <button class="btn btn-warning" style="width: 100%;" [disabled]="recipesOffset < 0" (click)="loadRecipes()"><i class="fa fa-plus"></i> Load more</button>
+    ]">
+    <app-loading-screen [loaded]="loadedRecipes">
+        <div class="container-fluid row mx-auto" style="margin-top: 1vh; padding: 0;">
+            <app-search-bar (onSearch)="onSearch($event)">
+            </app-search-bar>
+        </div>
+        <div class="container-fluid row mx-auto">
+            @for (recipe of recipesList; track recipe.id) {
+                <div class="col-sm-{{12/recordsOnRow}} {{getSelectionStyles(recipe.id)}}" style="padding:15px;" (longPress)="toggleSelection(recipe.id)">
+                    <app-recipe-preview style="width: 100%;" [recipe]="recipe"></app-recipe-preview>
+                </div>
+            }
+            <div style="padding:15px;">
+                <button class="btn btn-warning" style="width: 100%;" [disabled]="recipesOffset < 0" (click)="loadRecipes()"><i class="fa fa-plus"></i> Load more</button>
+            </div>
+        </div>
 
-    <app-set-row-size-buttons (onSizeChange)="setRowSize($event)" [initialSize]="3" [maxSize]="4"></app-set-row-size-buttons>
+        <app-set-row-size-buttons (onSizeChange)="setRowSize($event)" [initialSize]="3" [maxSize]="4"></app-set-row-size-buttons>
 
-    <app-selected-recipes-actions [selectedRecipesList]="selectedRecipesList" (onResetSelection)="resetSelection()"></app-selected-recipes-actions>
-</app-loading-screen>
+        <app-selected-recipes-actions [selectedRecipesList]="selectedRecipesList" (onResetSelection)="resetSelection()"></app-selected-recipes-actions>
+    </app-loading-screen>
+</app-page-layout>

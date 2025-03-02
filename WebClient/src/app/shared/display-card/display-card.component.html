@@ -1,20 +1,18 @@
 <div class="card">
     <div class="card-header" [class]="[titleClasses()]">
-
         <h3>
             @if(isCollapsable()){
                 <button 
                 type="button" 
-                class="btn btn-light" 
-                data-bs-toggle="collapse" 
-                [attr.data-bs-target]="'#card-col-' + elementIdentifier()">
-                <i [class]='enumClusterService.getIcons().CollapseSwitch'></i>
+                class="btn btn-light"
+                (click)="switchState()">
+                    <i [class]='enumClusterService.getIcons().CollapseSwitch'></i>
                 </button>
             }
             {{titleText()}}
         </h3>
     </div>
-    <div [id]="'card-col-' + elementIdentifier()" [class]="isCollapsable() && isDefaultCollapsed() ? 'collapse' : ''">
+    <div [class]="[currentStateClass]">
         <div class="card-body">
             <ng-content></ng-content>
         </div>

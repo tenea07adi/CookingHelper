@@ -1,0 +1,18 @@
+.pageHeader {
+    background-color: var(--main-color);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 2vw;
+}
+
+.content {
+    padding: 5px;
+}
+
+.enabledRoute {
+    cursor: pointer;
+}
+
+.disabledRoute {
+    cursor: not-allowed;
+}
