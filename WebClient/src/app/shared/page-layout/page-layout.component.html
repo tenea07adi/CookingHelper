@@ -1,0 +1,13 @@
+<div>
+    <div class="col-sm-12 pageHeader container-fluid">
+        <div>
+            @for(route of routes; track route.name){
+                /<a [class]="route.route != undefined ? ['enabledRoute', 'text-warning'] : ['disabledRoute', 'text-muted']" (click)="navigate(route)">{{route.name}}</a>
+            }
+        </div>
+        <h1>{{pageTitle()}} <strong class="text-warning">{{pageDetails()}}</strong></h1>
+    </div>
+    <div class="col-sm-12 content">
+        <ng-content></ng-content>
+    </div>
+</div>

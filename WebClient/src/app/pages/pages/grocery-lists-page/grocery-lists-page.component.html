@@ -1,5 +1,12 @@
+<app-page-layout
+[pageTitle]="'Grocery lists'"
+[routeOptions]="[
+    {
+        name: 'GroceryLists'
+    }
+]">
   <app-loading-screen [loaded]="loadedGroceryLists">
-    <div class="container-fluid row mx-auto" style="margin-top: 1vh;">
+    <div class="container-fluid row mx-auto" style="margin-top: 1vh; padding: 0;">
         <app-search-bar (onSearch)="onSearch($event)">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
@@ -21,10 +28,11 @@
                 <app-grocery-list-preview [groceryList]="gList"></app-grocery-list-preview>
             </div>
         }
+
+        <div style="padding:15px;">
+          <button class="btn btn-warning" style="width: 100%;" [disabled]="groceryListsOffset < 0" (click)="loadGroceryLists()"><i class="fa fa-plus"></i> Load more</button>
+        </div>
     </div>
-
-    <button class="btn btn-warning" style="width: 100%;" [disabled]="groceryListsOffset < 0" (click)="loadGroceryLists()"><i class="fa fa-plus"></i> Load more</button>
-
     <app-set-row-size-buttons (onSizeChange)="setRowSize($event)" [initialSize]="1" [maxSize]="4"></app-set-row-size-buttons>
-
-</app-loading-screen>
+  </app-loading-screen>
+</app-page-layout>

@@ -6,11 +6,14 @@
     box-shadow: 10px 0px 5px 0px rgba(0,0,0,0.2);
 
     padding: 0;
+
+    overflow-y:auto;
+    height:100vh;
 }
 
 .menu{
     padding: 5%;
-
+    direction: ltr;
 }
 
 .appTitle{
@@ -27,4 +30,21 @@
 
     filter: blur(0px);
     -webkit-filter: blur(0px);
+}
+
+.transparent-button {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+.transparent-button-with-border {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
 }

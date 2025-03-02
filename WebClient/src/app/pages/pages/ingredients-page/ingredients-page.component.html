@@ -1,18 +1,26 @@
-<app-loading-screen [loaded]="loadedIngredients">
-    <div class="container-fluid row mx-auto" style="margin-top: 1vh;">
-        <app-search-bar (onSearch)="onSearch($event)">
-        </app-search-bar>
-    </div>
-    <div class="container-fluid row mx-auto">
-        @for(ing of ingredients; track ing.id) {
-            <div class="col-sm-{{12/recordsOnRow}}" style="padding:15px;">
-                <app-ingredient-preview [ingredient]="ing" (update)="onUpdateIngredient($event)" (delete)="onDeleteIngredient($event)" ></app-ingredient-preview>
+<app-page-layout
+[pageTitle]="'Ingredients'"
+[routeOptions]="[
+    {
+        name: 'Ingredients'
+    }
+]">
+    <app-loading-screen [loaded]="loadedIngredients">
+        <div class="container-fluid row mx-auto" style="margin-top: 1vh; padding: 0;">
+            <app-search-bar (onSearch)="onSearch($event)">
+            </app-search-bar>
+        </div>
+        <div class="container-fluid row mx-auto">
+            @for(ing of ingredients; track ing.id) {
+                <div class="col-sm-{{12/recordsOnRow}}" style="padding:15px;">
+                    <app-ingredient-preview [ingredient]="ing" (update)="onUpdateIngredient($event)" (delete)="onDeleteIngredient($event)" ></app-ingredient-preview>
+                </div>
+            }
+
+            <div style="padding:15px;">
+                <button class="btn btn-warning" style="width: 100%;" [disabled]="ingredientsOffset < 0" (click)="loadIngredients()"><i class="fa fa-plus"></i> Load more</button>
             </div>
-        }
-    </div>
-
-    <button class="btn btn-warning" style="width: 100%;" [disabled]="ingredientsOffset < 0" (click)="loadIngredients()"><i class="fa fa-plus"></i> Load more</button>
-
-    <app-set-row-size-buttons (onSizeChange)="setRowSize($event)" [initialSize]="1" [maxSize]="4"></app-set-row-size-buttons>
-
-</app-loading-screen>
+        </div>
+        <app-set-row-size-buttons (onSizeChange)="setRowSize($event)" [initialSize]="1" [maxSize]="4"></app-set-row-size-buttons>
+    </app-loading-screen>
+</app-page-layout>

@@ -39,6 +39,7 @@ import { GroceryListPreviewComponent } from './pages/page-parts/grocery-list-pre
 import { GroceryListDetailsPageComponent } from './pages/pages/grocery-list-details-page/grocery-list-details-page.component';
 import { DisplayCardComponent } from './shared/display-card/display-card.component';
 import { ButtonComponent } from './shared/button/button.component';
+import { PageLayoutComponent } from './shared/page-layout/page-layout.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { ButtonComponent } from './shared/button/button.component';
     GroceryListPreviewComponent,
     GroceryListDetailsPageComponent,
     DisplayCardComponent,
-    ButtonComponent
+    ButtonComponent,
+    PageLayoutComponent
   ],
   imports: [
     BrowserModule,
