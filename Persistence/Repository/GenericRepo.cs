@@ -1,5 +1,6 @@
 ﻿using Core.Entities.Abstract;
 using Core.Ports.Driving;
+using Microsoft.EntityFrameworkCore;
 using Persistence.DataBase;
 
 namespace Persistence.Repository
@@ -17,7 +18,17 @@ namespace Persistence.Repository
 
         public T? Get(int id)
         {
-            return _dbContext.Set<T>().FirstOrDefault(x => x.Id == id);
+            return Get(id, null);
+        }
+
+        public T? Get(int id, Func<T, bool>? filter)
+        {
+            if(filter == null)
+            {
+                filter = (c => true);
+            }
+
+            return _dbContext.Set<T>().AsEnumerable().FirstOrDefault(x => x.Id == id && filter(x));
         }
 
         public List<T> Get(Func<T, bool>? filter = null, Func<T, object>? orderByExpresion = null)
@@ -99,6 +110,10 @@ namespace Persistence.Repository
             entity.UpdatedAt = DateTime.Now;
 
             _dbContext.Set<T>().Update(entity);
+
+            _dbContext.Entry(entity).Property(c => c.CreatedAt).IsModified = false;
+            _dbContext.Entry(entity).Property(c => c.CreatedBy).IsModified = false;
+
             _dbContext.SaveChanges();
         }
 
@@ -120,19 +135,56 @@ namespace Persistence.Repository
             _dbContext.SaveChanges();
         }
 
-        public bool Exists(int Id)
+        public bool Exists(int id)
         {
-            if (Get(Id) == null)
+            return Exists(id, null);
+        }
+
+        public bool Exists(int id, Func<T, bool>? filter)
+        {
+            if (filter == null)
             {
-                return false;
+                filter = c => true;
             }
 
-            return true;
+            if (_dbContext.Set<T>().AsNoTracking().AsEnumerable().Where(c => c.Id == id && filter(c)).Any())
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public int Count()
         {
-            return _dbContext.Set<T>().Count();
+            return Count(null);
+        }
+
+        public int Count(Func<T, bool>? filter)
+        {
+            if(filter == null)
+            {
+                filter = c => true;
+            }
+
+            return _dbContext.Set<T>().AsNoTracking().AsEnumerable().Where(filter).Count();
+        }
+
+        public bool IsEntityCreatedByCurrentUser(int entityId)
+        {
+            var currentUser = _sessionInfoService.GetCurrentUserInfo();
+
+            if (currentUser == null)
+            {
+                return false;
+            }
+
+            return IsEntityCreatedBy(entityId, currentUser.Id);
+        }
+
+        public bool IsEntityCreatedBy(int entityId, int userId)
+        {
+            return _dbContext.Set<T>().AsNoTracking().AsEnumerable().Where(c => c.Id == entityId && c.CreatedBy == userId).Any();
         }
     }
 }

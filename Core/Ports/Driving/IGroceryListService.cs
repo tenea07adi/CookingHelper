@@ -6,5 +6,6 @@ namespace Core.Ports.Driving
     {
         public List<GroceryListItem> GetItems(int listId);
         public void SwitchCompleted(int listId, bool completed);
+        public void SwitchPin(int listId, bool pinned);
     }
 }

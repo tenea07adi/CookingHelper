@@ -40,5 +40,21 @@ namespace API.Controllers
 
             return Ok();
         }
+
+        [HttpGet("{listId}/SwitchToPinned")]
+        public IActionResult SwitchToPinned(int listId)
+        {
+            _groceryListService.SwitchPin(listId, true);
+
+            return Ok();
+        }
+
+        [HttpGet("{listId}/SwitchToNotPinned")]
+        public IActionResult SwitchToNotPinned(int listId)
+        {
+            _groceryListService.SwitchPin(listId, false);
+
+            return Ok();
+        }
     }
 }

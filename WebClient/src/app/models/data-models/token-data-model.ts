@@ -1,4 +1,5 @@
 export interface TokenDataModel{
+    userId: number,
     email: string;
     name: string;
     role: number;

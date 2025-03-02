@@ -27,6 +27,7 @@ This project started as an Angular sandbox when I decided to refresh my skills. 
 | Preparation steps  | The recipes can have preparation steps  |
 | Recipe ingredients export  | Possibility to extract required ingredients for a recipe with the quantities  |
 | Multiple recipes actions  | Multiple recipes actions like ingredients export  |
+| Grocery store lists | Management of grocery store lists including private/public options and pin feature. |
 | Comming soon  | Comming soon  |
 
 ## Technical features
@@ -36,4 +37,5 @@ This project started as an Angular sandbox when I decided to refresh my skills. 
 | Authentication  | Authentication system based on JWT token with user invite system  |
 | Pagination  | Pagination for records  |
 | Filtration  | Filtration system for records implemented as search box in frontend  |
+| User actions traking | Logic to store data about users interactions with entities. |
 | More  | More  |

@@ -5,5 +5,7 @@ export interface CardButtonModel {
     icon: IconsEnum | undefined;
     colorClass: ColorClassEnum;
 
+    disabled?: boolean;
+
     onClick: (identifier: string | undefined) => void;
 }

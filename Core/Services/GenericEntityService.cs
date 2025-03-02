@@ -18,6 +18,10 @@ namespace Core.Services
         protected Action<T> afterUpdateAction = (t) => { };
         protected Action<T> afterDeleteAction = (t) => { };
 
+        protected Func<T, bool> additionalGetCondition = (t) => true;
+        protected Func<T, bool> additionalUpdateCondition = (t) => true;
+        protected Func<T, bool> additionalDeleteCondition = (t) => true;
+
         public GenericEntityService(IGenericRepo<T> genericRepo)
         {
             _genericRepo = genericRepo;
@@ -25,7 +29,7 @@ namespace Core.Services
 
         public T? Get(int id)
         {
-            return _genericRepo.Get(id);
+            return _genericRepo.Get(id, additionalGetCondition);
         }
 
         public List<T> Get(PaginationParameters paginationParameters, SearchParameters searchParameters)
@@ -45,11 +49,17 @@ namespace Core.Services
                 paginationParameters.OrderBy = _defaultOrderField;
             }
 
+            var condition = MergeConditions(
+                [
+                    GetFilterExpresion<T>(searchParameters),
+                    additionalGetCondition
+                ]);
+
             var entities = _genericRepo.Get(
                 paginationParameters.Offset, 
                 paginationParameters.Maxsize, 
-                GetOrderByExpresion<T>(paginationParameters.OrderBy!), 
-                GetFilterExpresion<T>(searchParameters));
+                GetOrderByExpresion<T>(paginationParameters.OrderBy!),
+                condition);
 
             return entities;
         }
@@ -74,6 +84,11 @@ namespace Core.Services
 
         public T Update(int id, T entity)
         {
+            if (!_genericRepo.Exists(id, additionalUpdateCondition))
+            {
+                throw new KeyNotFoundException(Constants.Exceptions.EntityNotFound);
+            }
+
             entity.Id = id;
 
             onUpdateAction(entity);
@@ -90,6 +105,11 @@ namespace Core.Services
             var entity = _genericRepo.Get(id);
 
             if (entity == null)
+            {
+                return false;
+            }
+
+            if (!additionalDeleteCondition(entity))
             {
                 return false;
             }
@@ -112,16 +132,15 @@ namespace Core.Services
 
         public int Count(SearchParameters searchParameters)
         {
-            var filter = GetFilterExpresion<T>(searchParameters);
-
             var count = 0;
 
-            if (filter == null)
-            {
-                count = Count();
-            }
+            var condition = MergeConditions(
+            [
+                GetFilterExpresion<T>(searchParameters),
+                additionalGetCondition
+            ]);
 
-            count = _genericRepo.Get().Where(filter!).Count();
+            count = _genericRepo.Get().Where(condition).Count();
 
             return count;
         }
@@ -187,6 +206,27 @@ namespace Core.Services
             }
 
             return returnExp;
+        }
+
+        protected Func<T, bool> MergeConditions(Func<T, bool>?[] conditions)
+        {
+            return c =>
+            {
+                foreach (var condition in conditions)
+                {
+                    if (condition == null)
+                    {
+                        continue;
+                    }
+                    
+                    if(condition(c) == false)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
         }
     }
 }

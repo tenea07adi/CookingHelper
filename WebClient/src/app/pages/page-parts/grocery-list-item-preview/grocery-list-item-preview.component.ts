@@ -75,7 +75,7 @@ export class GroceryListItemPreviewComponent {
   private loadCardButtons(){
     this.cardButtons = [
       {
-        text: "Toggle completed",
+        text: this.groceryListItem().isCompleted ? "Re-open" : "Complete",
         icon: this.enumClusterService.getIcons().Completed,
         colorClass: this.groceryListItem().isCompleted ? this.enumClusterService.getColorClasses().Inactive : this.enumClusterService.getColorClasses().Success,
         onClick: (identifier) => {

@@ -55,6 +55,7 @@ namespace Core.Services
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim> {
+                new Claim("userId", user.Id.ToString()),
                 new Claim("email", user.Email),
                 new Claim("name", user.DisplayName),
                 new Claim("role", ((int)user.Role).ToString()),

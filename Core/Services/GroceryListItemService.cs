@@ -5,9 +5,19 @@ namespace Core.Services
 {
     public class GroceryListItemService : GenericEntityService<GroceryListItem>, IGroceryListItemService
     {
+        private readonly IGenericRepo<GroceryList> _groceryListRepo;
+        private readonly ISessionInfoService _sessionInfoService;
+
         public GroceryListItemService(
-            IGenericRepo<GroceryListItem> genericRepo) : base(genericRepo)
+            IGenericRepo<GroceryListItem> groceryListItemRepo,
+            IGenericRepo<GroceryList> groceryListRepo,
+            ISessionInfoService sessionInfoService) : base(groceryListItemRepo)
         {
+            _groceryListRepo = groceryListRepo;
+            _sessionInfoService = sessionInfoService;
+
+            additionalGetCondition = PrivateListFilter;
+
             _defaultOrderField = "CreatedAt";
         }
 
@@ -23,6 +33,29 @@ namespace Core.Services
             record.IsCompleted = completed;
 
             _genericRepo.Update(record);
+        }
+
+        private bool PrivateListFilter(GroceryListItem listItem)
+        {
+            var currentUser = _sessionInfoService.GetCurrentUserInfo();
+            var list = _groceryListRepo.Get(listItem.Id);
+
+            if (listItem == null || list == null || currentUser == null)
+            {
+                return false;
+            }
+
+            if (!list.IsPrivate)
+            {
+                return true;
+            }
+
+            if (currentUser.Id == list.CreatedBy)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

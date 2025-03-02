@@ -171,6 +171,7 @@ namespace Core.Services
         private void RemoveLinkedEntitiesOnDelete(Recipe entity)
         {
             _recipeIngredientRepo.Delete(c => c.RecipeId == entity.Id);
+            _preparationStepsRepo.Delete(c => c.RecipeId == entity.Id);
         }
     }
 }
